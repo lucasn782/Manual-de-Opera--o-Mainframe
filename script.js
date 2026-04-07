@@ -1,53 +1,48 @@
-// Accordion Logic
-document.querySelectorAll('.accordion-header').forEach(button => {
-    button.addEventListener('click', () => {
-        const body = button.nextElementSibling;
-        const isOpen = body.style.display === 'block';
-        
-        // Fecha todos antes de abrir o clicado
-        document.querySelectorAll('.accordion-body').forEach(b => b.style.display = 'none');
-        
-        body.style.display = isOpen ? 'none' : 'block';
+document.addEventListener('DOMContentLoaded', () => {
+    // Accordion Logic
+    const headers = document.querySelectorAll('.acc-header');
+    headers.forEach(header => {
+        header.addEventListener('click', () => {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('i');
+            const isOpen = content.style.display === 'block';
+            
+            content.style.display = isOpen ? 'none' : 'block';
+            icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
     });
-});
 
-// Busca em Tempo Real
-const searchInput = document.getElementById('searchInput');
-searchInput.addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
-    const sections = document.querySelectorAll('.topic-section, .accordion-item, .card');
+    // Search Logic
+    const searchInput = document.getElementById('mainSearch');
+    searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const cards = document.querySelectorAll('.topic, .acc-item, .card, .status-card');
 
-    sections.forEach(section => {
-        const text = section.innerText.toLowerCase();
-        if (text.includes(term)) {
-            section.style.display = 'block';
-            // Se estiver dentro de um accordion, abre ele
-            if (section.classList.contains('accordion-item') && term.length > 2) {
-                section.querySelector('.accordion-body').style.display = 'block';
+        cards.forEach(card => {
+            const content = card.textContent.toLowerCase();
+            if (content.includes(term)) {
+                card.style.display = '';
+                // Se for um item de accordion, abre ele para mostrar o resultado
+                if(card.classList.contains('acc-item') && term !== "") {
+                    card.querySelector('.acc-content').style.display = 'block';
+                }
+            } else {
+                card.style.display = 'none';
             }
+        });
+    });
+
+    // Scroll to Top Logic
+    const scrollBtn = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            scrollBtn.style.display = 'block';
         } else {
-            section.style.display = 'none';
+            scrollBtn.style.display = 'none';
         }
     });
-});
 
-// Botão Voltar ao Topo
-const btt = document.getElementById('backToTop');
-window.onscroll = () => {
-    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-        btt.style.display = "block";
-    } else {
-        btt.style.display = "none";
-    }
-};
-btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
-
-// Smooth Scroll para o menu lateral
-document.querySelectorAll('.sidebar a').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
+    scrollBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });

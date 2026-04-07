@@ -3,168 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manual de Operação Mainframe - 3AM/Global Hitss</title>
+    <title>OpsWiki - Mainframe 3AM/Global Hitss</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <header class="top-header">
+    <header class="navbar">
         <div class="logo">
-            <i class="fas fa-terminal"></i> <span>Mainframe Ops Dashboard</span>
+            <i class="fas fa-microchip"></i>
+            <span>Ops<strong>Wiki</strong> <small>Mainframe</small></span>
         </div>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Buscar comando, IP ou rotina...">
+        <div class="search-box">
             <i class="fas fa-search"></i>
+            <input type="text" id="mainSearch" placeholder="Pesquisar comandos, IPs ou rotinas...">
         </div>
     </header>
 
-    <div class="main-container">
-        <nav class="sidebar">
-            <ul>
-                <li><a href="#intro"><i class="fas fa-home"></i> Visão Geral</a></li>
-                <li><a href="#comandos"><i class="fas fa-code"></i> Comandos TSO/SDSF</a></li>
-                <li><a href="#infra"><i class="fas fa-server"></i> Infraestrutura e IPs</a></li>
-                <li><a href="#tabelas"><i class="fas fa-table"></i> Tabelas de Controle</a></li>
-                <li><a href="#rotinas"><i class="fas fa-calendar-alt"></i> Rotinas de E-mail</a></li>
-                <li><a href="#monitoramento"><i class="fas fa-chart-line"></i> Grafana & Monitoria</a></li>
-                <li><a href="#incidentes"><i class="fas fa-exclamation-triangle"></i> Gestão de Incidentes</a></li>
-            </ul>
-        </nav>
+    <div class="layout">
+        <aside class="sidebar">
+            <nav>
+                <div class="nav-group">Comandos & Navegação</div>
+                <a href="#tso-basics" class="nav-item"><i class="fas fa-terminal"></i> TSO/SDSF Básico</a>
+                <a href="#zcto-putproc" class="nav-item"><i class="fas fa-sync"></i> ZCTO & PutProc</a>
+                
+                <div class="nav-group">Infraestrutura</div>
+                <a href="#ips-infra" class="nav-item"><i class="fas fa-network-wired"></i> IPs e Ambientes</a>
+                <a href="#tabelas-ctrl" class="nav-item"><i class="fas fa-table"></i> Tabelas (Rins/TCO)</a>
+                
+                <div class="nav-group">Rotina e SLA</div>
+                <a href="#planilhas" class="nav-item"><i class="fas fa-file-excel"></i> As 4 Planilhas</a>
+                <a href="#emails-sla" class="nav-item"><i class="fas fa-envelope-open-text"></i> Cronograma E-mails</a>
+                
+                <div class="nav-group">Ferramentas</div>
+                <a href="#grafana-dash" class="nav-item"><i class="fas fa-chart-area"></i> Grafana Dashboards</a>
+                <a href="#jira-fluxo" class="nav-item"><i class="fas fa-ticket-alt"></i> Jira (PDST/DPS)</a>
+            </nav>
+        </aside>
 
         <main class="content">
-            <section id="intro" class="topic-section">
-                <h2><i class="fas fa-info-circle"></i> Visão Geral da Operação</h2>
-                <div class="card">
-                    <p>Manual técnico unificado para operação de <strong>Plataforma Alta</strong>, com foco em <strong>Faturamento (EBPP)</strong> e <strong>Bilhetagem</strong> na Global Hitss.</p>
-                </div>
-            </section>
-
-            <section id="comandos" class="topic-section">
-                <h2><i class="fas fa-terminal"></i> Comandos Essenciais TSO/SDSF</h2>
-                
+            <section id="tso-basics" class="topic">
+                <h2><i class="fas fa-terminal"></i> Comandos e Navegação TSO</h2>
                 <div class="accordion">
-                    <div class="accordion-item">
-                        <button class="accordion-header">Gerenciamento de Sessão (ZCTO)</button>
-                        <div class="accordion-body">
-                            <p><span class="highlight">TSO ZCTO</span>: Utilitário de controle de terminais virtuais. Usado para derrubar sessões travadas e limpar conexões de faturamento.</p>
-                            <p><span class="highlight">PUTPROC</span>: Comando para injetar novas versões de procedimentos (JCL) na memória ativa sem reiniciar o sistema.</p>
-                        </div>
-                    </div>
-
-                    <div class="accordion-item">
-                        <button class="accordion-header">Navegação e Edição (4E, V, I)</button>
-                        <div class="accordion-body" style="padding-left: 32px;">
-                            <ul>
-                                <li><strong>4E:</strong> Atalho para Edição (Edit). Abre JCLs para correção de erros.</li>
-                                <li><strong>V (View):</strong> Modo de leitura protegida. Ideal para conferir logs sem risco de alteração.</li>
-                                <li><strong>I (Information):</strong> Exibe o "RG" do arquivo (espaço, extensões e volume).</li>
+                    <div class="acc-item">
+                        <div class="acc-header">Menu de Atalhos (Jump Commands) <i class="fas fa-chevron-down"></i></div>
+                        <div class="acc-content">
+                            <p>Utilize <span class="badge">*J</span> para mudar de ambiente rapidamente.</p>
+                            <ul class="ident">
+                                <li><span class="tag">7</span> TSO Principal</li>
+                                <li><span class="tag">10</span> CTMS (Control-M)</li>
+                                <li><span class="tag">19</span> TSO DSV (GML)</li>
+                                <li><span class="tag">20</span> TSO EBPP (Subir Convite/Faturamento)</li>
+                                <li><span class="tag">24</span> CICS DSV (Produção Online)</li>
                             </ul>
                         </div>
                     </div>
-
-                    <div class="accordion-item">
-                        <button class="accordion-header">Filtros SDSF (Owner, Pre)</button>
-                        <div class="accordion-body">
-                            <p><strong>OWNER IBMPROD:</strong> Filtra apenas Jobs oficiais de produção.</p>
-                            <p><strong>OWNER CICUSER:</strong> Monitora transações online (CICS).</p>
-                            <p><strong>PRE [JOBNAME]*:</strong> Filtra Jobs por prefixo (ex: PC* para bilhetagem).</p>
+                    <div class="acc-item">
+                        <div class="acc-header">Filtros de Visualização (SDSF) <i class="fas fa-chevron-down"></i></div>
+                        <div class="acc-content">
+                            <p><strong>OWNER IBMPROD:</strong> Filtra apenas jobs de produção oficial.</p>
+                            <p><strong>OWNER CICUSER:</strong> Monitora transações online e telas de atendimento.</p>
+                            <p><strong>PRE:</strong> Filtra pelo prefixo do Job (Ex: <span class="code">PRE PC*</span>).</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section id="infra" class="topic-section">
-                <h2><i class="fas fa-network-wired"></i> Infraestrutura e IPs</h2>
+            <section id="zcto-putproc" class="topic">
+                <h2><i class="fas fa-sync"></i> ZCTO & PutProc</h2>
                 <div class="card">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>IP</th>
-                                <th>Ambiente</th>
-                                <th>Foco Principal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>10.4.23.30</td>
-                                <td>PRD3</td>
-                                <td>Produção / Faturamento / SLA</td>
-                            </tr>
-                            <tr>
-                                <td>10.0.197.20</td>
-                                <td>PRD2</td>
-                                <td>Bilhetagem (Carga CDRs)</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <p><strong>TSO ZCTO:</strong> Controle de terminais. Usado para derrubar sessões travadas e limpar o caminho para o faturamento.</p>
+                    <p><strong>PUTPROC:</strong> Atualiza a lógica de um processo sem derrubar o sistema. Caminho: <span class="code">ZCTO -> 4E -> Histórico</span>.</p>
+                    <blockquote>Sempre peça o estatístico (statistic) do dia anterior. No comando <strong>V</strong>, verifique o <strong>TOTAL</strong>.</blockquote>
                 </div>
             </section>
 
-            <section id="tabelas" class="topic-section">
-                <h2><i class="fas fa-layer-group"></i> Tabelas de Controle</h2>
-                <div class="grid-container">
-                    <div class="card">
-                        <h3>Rins</h3>
-                        <p>Interconexão de rede entre Mainframe e sistemas externos.</p>
+            <section id="ips-infra" class="topic">
+                <h2><i class="fas fa-network-wired"></i> IPs e Ambientes Críticos</h2>
+                <div class="grid">
+                    <div class="status-card">
+                        <h3>10.4.23.30</h3>
+                        <p class="subtitle">PRD3 - Produção / Faturamento</p>
+                        <p>Ambiente onde roda o TSOEBPP e o BILFIM. Foco total em SLA.</p>
                     </div>
-                    <div class="card">
-                        <h3>TCOs</h3>
-                        <p>Controle de terminais e sessões ativas (ZCTO).</p>
-                    </div>
-                    <div class="card">
-                        <h3>STIs</h3>
-                        <p>Indicadores de saúde das interfaces de serviço.</p>
+                    <div class="status-card">
+                        <h3>10.0.197.20</h3>
+                        <p class="subtitle">PRD2 - Bilhetagem</p>
+                        <p>Fábrica de dados. Onde o PCPBKD19 processa os CDRs brutos.</p>
                     </div>
                 </div>
             </section>
 
-            <section id="rotinas" class="topic-section">
-                <h2><i class="fas fa-envelope-open-text"></i> Cronograma de E-mails (SLA)</h2>
-                <div class="timeline" style="margin-left: 20px;">
-                    <div class="timeline-item">
-                        <strong>08:00</strong> - Combo Abertura: Tasks (Grafana), SLA (Planilha 04) e Chamados Violados (Jira).
+            <section id="planilhas" class="topic">
+                <h2><i class="fas fa-file-excel"></i> As 4 Planilhas de Rotina</h2>
+                <div class="accordion">
+                    <div class="acc-item">
+                        <div class="acc-header">Plan 01: Bilhetadoras <i class="fas fa-chevron-down"></i></div>
+                        <div class="acc-content">
+                            <p>Conferir no e-mail; anotar o último horário que consta no corpo do e-mail recebido.</p>
+                        </div>
                     </div>
-                    <div class="timeline-item">
-                        <strong>09:30</strong> - Checkpoint Wait Schedule: Jobs parados no CTMS (ODATE -2).
+                    <div class="acc-item">
+                        <div class="acc-header">Plan 02: PutProc (TSO) <i class="fas fa-chevron-down"></i></div>
+                        <div class="acc-content">
+                            <p>Pegar informações via <span class="code">TSO ZCTO -> 4E</span>. Verificar o TOTAL no modo View (V).</p>
+                        </div>
                     </div>
-                    <div class="timeline-item">
-                        <strong>13:30</strong> - E-mail da Daily: Status total da malha e transição de IPs.
+                    <div class="acc-item">
+                        <div class="acc-header">Plan 03: Espaço em Produção <i class="fas fa-chevron-down"></i></div>
+                        <div class="acc-content">
+                            <p><strong>AS400:</strong> Checa e-mail de marcação de disco (SP e Rio). Copiar valor.</p>
+                            <p><strong>Mainframe:</strong> Usar comando <span class="badge">STG LAST</span> para pegar o espaço de PRD2 e PRD3.</p>
+                        </div>
+                    </div>
+                    <div class="acc-item">
+                        <div class="acc-header">Plan 04: SLA (ODATE D-1) <i class="fas fa-chevron-down"></i></div>
+                        <div class="acc-content">
+                            <p>Caminho: <span class="code">SD (DA/JOB) -> Pre -> Owner IBMPROD</span>. Comando <strong>I</strong> mostra a fila para entrar.</p>
+                        </div>
                     </div>
                 </div>
-                <br>
             </section>
 
-            <section id="monitoramento" class="topic-section">
-                <h2><i class="fas fa-eye"></i> Dashboards Grafana</h2>
+            <section id="emails-sla" class="topic">
+                <h2><i class="fas fa-envelope-open-text"></i> Cronograma de E-mails</h2>
                 <div class="card">
-                    <ul class="tag-list" style="margin-left: 30px;">
-                        <li>tasks-ebpp</li>
-                        <li>ServicosEntireX</li>
-                        <li>Espaço Adabas</li>
-                        <li>tasks-p2</li>
-                        <li>Connect</li>
-                    </ul>
+                    <div class="timeline-item"><strong>08:00:</strong> Combo 3 e-mails (Tasks/Grafana, SLA Planilha e Chamados Violados).</div>
+                    <div class="timeline-item"><strong>09:30:</strong> Checkpoint Wait Schedule (ODATE -2). Listar Jobs em Hold.</div>
+                    <div class="timeline-item"><strong>12:30:</strong> Revalidação de Tasks.</div>
+                    <div class="timeline-item"><strong>13:30:</strong> E-mail da Daily (Status PRD2/PRD3 e Total Jobs).</div>
+                    <div class="timeline-item"><strong>16:00:</strong> Chamados Violados (Print do Jira).</div>
+                    <div class="timeline-item"><strong>19:00:</strong> Passagem de Turno.</div>
                 </div>
             </section>
 
-            <section id="incidentes" class="topic-section">
-                <h2><i class="fas fa-tools"></i> Procedimento OPS (Destrave)</h2>
-                <div class="step-card">
-                    <ol style="margin-left: 30px;">
-                        <li>Acesse <strong>CTMS</strong> (Tela 3).</li>
-                        <li>Localize o Job e verifique status <strong>H (Hold)</strong>.</li>
-                        <li>Comando <strong>O</strong> e <strong>Y</strong> para Force OK.</li>
-                        <li>Comando <strong>F</strong> para liberar (Free).</li>
-                        <li>Anexe evidência no <strong>Jira</strong>.</li>
-                    </ol>
+            <section id="jira-fluxo" class="topic">
+                <h2><i class="fas fa-ticket-alt"></i> Gestão Jira (PDST & OPS)</h2>
+                <div class="card">
+                    <p><i class="fas fa-check-circle"></i> <strong>PDST:</strong> Execuções (Rename, Transmissão, Sysout). Se houver ABEND, escrever no campo de texto antes de atualizar.</p>
+                    <p><i class="fas fa-bug"></i> <strong>OPS:</strong> Local dos Abends. Localizar via <span class="code">FIND [StepName]</span>. Usar F11 (Direita) e F10 (Esquerda).</p>
+                    <div class="step-box">
+                        <strong>Fluxo OPS:</strong> CTMS Tela 3 -> Find Job -> Se Hold (H) -> Comando O e Y (Force OK) -> Comando F (Free) -> Printar evidência.
+                    </div>
                 </div>
             </section>
-
         </main>
     </div>
 
-    <button id="backToTop" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
+    <button id="scrollTop"><i class="fas fa-chevron-up"></i></button>
 
     <script src="script.js"></script>
 </body>
