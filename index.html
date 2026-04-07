@@ -94,6 +94,36 @@
                 </div>
             </section>
 
+            <section id="tabelas-ctrl" class="topic">
+                <h2><i class="fas fa-table"></i> Tabelas (Rins/TCO)</h2>
+                <div class="accordion">
+                    <div class="acc-item">
+                        <div class="acc-header">Tabelas de Controle de Rotinas (Rins) <i class="fas fa-chevron-down"></i></div>
+                        <div class="acc-content">
+                            <p>As tabelas Rins são responsáveis pelo controle das rotinas de processamento no Mainframe. Elas definem os parâmetros de execução, dependências e horários.</p>
+                            <ul class="ident">
+                                <li><strong>Rin01:</strong> Controle de Bilhetagem - Define os jobs de processamento de CDRs.</li>
+                                <li><strong>Rin02:</strong> Controle de Faturamento - Gerencia as rotinas de fechamento mensal.</li>
+                                <li><strong>Rin03:</strong> Controle de Transmissão - Coordena envios para sistemas externos.</li>
+                            </ul>
+                            <p><strong>Comando de Verificação:</strong> Use <span class="code">TSO DISPLAY RINS</span> para visualizar o status atual.</p>
+                        </div>
+                    </div>
+                    <div class="acc-item">
+                        <div class="acc-header">Tabelas de Controle Operacional (TCO) <i class="fas fa-chevron-down"></i></div>
+                        <div class="acc-content">
+                            <p>As tabelas TCO controlam as operações críticas do sistema, incluindo failovers e recuperações.</p>
+                            <ul class="ident">
+                                <li><strong>TCO01:</strong> Controle de Ambientes - Define os IPs e configurações por ambiente (PRD2, PRD3).</li>
+                                <li><strong>TCO02:</strong> Controle de SLA - Monitora os tempos de resposta e alertas.</li>
+                                <li><strong>TCO03:</strong> Controle de Espaço - Gerencia alocação de disco e limpeza.</li>
+                            </ul>
+                            <p><strong>Atualização:</strong> Sempre verificar as tabelas antes de manutenções críticas.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section id="planilhas" class="topic">
                 <h2><i class="fas fa-file-excel"></i> As 4 Planilhas de Rotina</h2>
                 <div class="accordion">
@@ -134,6 +164,35 @@
                     <div class="timeline-item"><strong>13:30:</strong> E-mail da Daily (Status PRD2/PRD3 e Total Jobs).</div>
                     <div class="timeline-item"><strong>16:00:</strong> Chamados Violados (Print do Jira).</div>
                     <div class="timeline-item"><strong>19:00:</strong> Passagem de Turno.</div>
+                </div>
+            </section>
+
+            <section id="grafana-dash" class="topic">
+                <h2><i class="fas fa-chart-area"></i> Grafana Dashboards</h2>
+                <div class="grid">
+                    <div class="status-card">
+                        <h3>Dashboard Principal</h3>
+                        <p class="subtitle">Visão Geral do Sistema</p>
+                        <p>Monitora CPU, memória e jobs ativos em tempo real. URL: <span class="code">http://grafana.3am.com/d/main</span></p>
+                        <p><strong>Métricas Chave:</strong> Utilização PRD2/PRD3, fila de jobs, alertas SLA.</p>
+                    </div>
+                    <div class="status-card">
+                        <h3>Dashboard de SLA</h3>
+                        <p class="subtitle">Monitoramento de Performance</p>
+                        <p>Acompanha os tempos de processamento das rotinas críticas. Inclui gráficos de tendência histórica.</p>
+                        <p><strong>Alertas:</strong> Notificações automáticas quando SLA é violado.</p>
+                    </div>
+                    <div class="status-card">
+                        <h3>Dashboard de Infraestrutura</h3>
+                        <p class="subtitle">Recursos de Sistema</p>
+                        <p>Monitora espaço em disco, rede e conectividade entre ambientes.</p>
+                        <p><strong>Comandos:</strong> Integrado com comandos STG e ZCTO para alertas proativos.</p>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <p><strong>Acesso:</strong> Use credenciais do domínio 3AM. Dashboards atualizam a cada 5 minutos.</p>
+                    <p><strong>Relatórios:</strong> Exportar dados para as planilhas diárias via API do Grafana.</p>
                 </div>
             </section>
 
