@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Operação Mainframe - 3AM/Global Hitss</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="top-header">
+        <div class="logo">
+            <i class="fas fa-terminal"></i> <span>Mainframe Ops Dashboard</span>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Buscar comando, IP ou rotina...">
+            <i class="fas fa-search"></i>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <nav class="sidebar">
+            <ul>
+                <li><a href="#intro"><i class="fas fa-home"></i> Visão Geral</a></li>
+                <li><a href="#comandos"><i class="fas fa-code"></i> Comandos TSO/SDSF</a></li>
+                <li><a href="#infra"><i class="fas fa-server"></i> Infraestrutura e IPs</a></li>
+                <li><a href="#tabelas"><i class="fas fa-table"></i> Tabelas de Controle</a></li>
+                <li><a href="#rotinas"><i class="fas fa-calendar-alt"></i> Rotinas de E-mail</a></li>
+                <li><a href="#monitoramento"><i class="fas fa-chart-line"></i> Grafana & Monitoria</a></li>
+                <li><a href="#incidentes"><i class="fas fa-exclamation-triangle"></i> Gestão de Incidentes</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <section id="intro" class="topic-section">
+                <h2><i class="fas fa-info-circle"></i> Visão Geral da Operação</h2>
+                <div class="card">
+                    <p>Manual técnico unificado para operação de <strong>Plataforma Alta</strong>, com foco em <strong>Faturamento (EBPP)</strong> e <strong>Bilhetagem</strong> na Global Hitss.</p>
+                </div>
+            </section>
+
+            <section id="comandos" class="topic-section">
+                <h2><i class="fas fa-terminal"></i> Comandos Essenciais TSO/SDSF</h2>
+                
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <button class="accordion-header">Gerenciamento de Sessão (ZCTO)</button>
+                        <div class="accordion-body">
+                            <p><span class="highlight">TSO ZCTO</span>: Utilitário de controle de terminais virtuais. Usado para derrubar sessões travadas e limpar conexões de faturamento.</p>
+                            <p><span class="highlight">PUTPROC</span>: Comando para injetar novas versões de procedimentos (JCL) na memória ativa sem reiniciar o sistema.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header">Navegação e Edição (4E, V, I)</button>
+                        <div class="accordion-body" style="padding-left: 32px;">
+                            <ul>
+                                <li><strong>4E:</strong> Atalho para Edição (Edit). Abre JCLs para correção de erros.</li>
+                                <li><strong>V (View):</strong> Modo de leitura protegida. Ideal para conferir logs sem risco de alteração.</li>
+                                <li><strong>I (Information):</strong> Exibe o "RG" do arquivo (espaço, extensões e volume).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header">Filtros SDSF (Owner, Pre)</button>
+                        <div class="accordion-body">
+                            <p><strong>OWNER IBMPROD:</strong> Filtra apenas Jobs oficiais de produção.</p>
+                            <p><strong>OWNER CICUSER:</strong> Monitora transações online (CICS).</p>
+                            <p><strong>PRE [JOBNAME]*:</strong> Filtra Jobs por prefixo (ex: PC* para bilhetagem).</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="infra" class="topic-section">
+                <h2><i class="fas fa-network-wired"></i> Infraestrutura e IPs</h2>
+                <div class="card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>IP</th>
+                                <th>Ambiente</th>
+                                <th>Foco Principal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>10.4.23.30</td>
+                                <td>PRD3</td>
+                                <td>Produção / Faturamento / SLA</td>
+                            </tr>
+                            <tr>
+                                <td>10.0.197.20</td>
+                                <td>PRD2</td>
+                                <td>Bilhetagem (Carga CDRs)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tabelas" class="topic-section">
+                <h2><i class="fas fa-layer-group"></i> Tabelas de Controle</h2>
+                <div class="grid-container">
+                    <div class="card">
+                        <h3>Rins</h3>
+                        <p>Interconexão de rede entre Mainframe e sistemas externos.</p>
+                    </div>
+                    <div class="card">
+                        <h3>TCOs</h3>
+                        <p>Controle de terminais e sessões ativas (ZCTO).</p>
+                    </div>
+                    <div class="card">
+                        <h3>STIs</h3>
+                        <p>Indicadores de saúde das interfaces de serviço.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="rotinas" class="topic-section">
+                <h2><i class="fas fa-envelope-open-text"></i> Cronograma de E-mails (SLA)</h2>
+                <div class="timeline" style="margin-left: 20px;">
+                    <div class="timeline-item">
+                        <strong>08:00</strong> - Combo Abertura: Tasks (Grafana), SLA (Planilha 04) e Chamados Violados (Jira).
+                    </div>
+                    <div class="timeline-item">
+                        <strong>09:30</strong> - Checkpoint Wait Schedule: Jobs parados no CTMS (ODATE -2).
+                    </div>
+                    <div class="timeline-item">
+                        <strong>13:30</strong> - E-mail da Daily: Status total da malha e transição de IPs.
+                    </div>
+                </div>
+                <br>
+            </section>
+
+            <section id="monitoramento" class="topic-section">
+                <h2><i class="fas fa-eye"></i> Dashboards Grafana</h2>
+                <div class="card">
+                    <ul class="tag-list" style="margin-left: 30px;">
+                        <li>tasks-ebpp</li>
+                        <li>ServicosEntireX</li>
+                        <li>Espaço Adabas</li>
+                        <li>tasks-p2</li>
+                        <li>Connect</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="incidentes" class="topic-section">
+                <h2><i class="fas fa-tools"></i> Procedimento OPS (Destrave)</h2>
+                <div class="step-card">
+                    <ol style="margin-left: 30px;">
+                        <li>Acesse <strong>CTMS</strong> (Tela 3).</li>
+                        <li>Localize o Job e verifique status <strong>H (Hold)</strong>.</li>
+                        <li>Comando <strong>O</strong> e <strong>Y</strong> para Force OK.</li>
+                        <li>Comando <strong>F</strong> para liberar (Free).</li>
+                        <li>Anexe evidência no <strong>Jira</strong>.</li>
+                    </ol>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <button id="backToTop" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
+
+    <script src="script.js"></script>
+</body>
+</html>
