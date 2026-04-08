@@ -82,7 +82,15 @@ pre code {
 }
 
 @media (max-width: 768px) {
+    .navbar {
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    .navbar > div:first-child {
+        width: 100%;
+    }
     .sidebar { display: none; }
     .content { margin-left: 0; }
-    .search-box { width: 150px; }
+    .search-box { width: 100%; }
 }
