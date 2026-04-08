@@ -21,6 +21,7 @@ body { background: var(--bg); color: var(--text); line-height: 1.6; }
     width: 100%; padding: 0.6rem 1rem 0.6rem 2.5rem; border-radius: 8px; border: none; outline: none;
 }
 .search-box i { position: absolute; left: 12px; top: 12px; color: #64748b; }
+.step-box { background: #fff7ed; border: 1px solid #fed7aa; padding: 1rem; border-radius: 8px; margin-top: 1rem; }
 
 .layout { display: flex; }
 .sidebar {
