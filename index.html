@@ -11,198 +11,196 @@
 
     <header class="navbar">
         <div class="logo">
-            <i class="fas fa-microchip"></i>
-            <span>Ops<strong>Wiki</strong> <small>Mainframe</small></span>
+            <i class="fas fa-terminal"></i>
+            <span>Ops<strong>Wiki</strong> <small>3AM/Global Hitss</small></span>
         </div>
         <div class="search-box">
             <i class="fas fa-search"></i>
-            <input type="text" id="mainSearch" placeholder="Pesquisar comandos, IPs ou rotinas...">
+            <input type="text" id="mainSearch" placeholder="Pesquisar comandos, GML, IPs, Grafana...">
         </div>
     </header>
 
     <div class="layout">
         <aside class="sidebar">
             <nav>
-                <div class="nav-group">Comandos & Navegação</div>
-                <a href="#tso-basics" class="nav-item"><i class="fas fa-terminal"></i> TSO/SDSF Básico</a>
-                <a href="#zcto-putproc" class="nav-item"><i class="fas fa-sync"></i> ZCTO & PutProc</a>
+                <div class="nav-group">Acesso e Ambientes</div>
+                <a href="#infra-ips" class="nav-item"><i class="fas fa-network-wired"></i> IPs e Ambientes</a>
+                <a href="#tso-basics" class="nav-item"><i class="fas fa-keyboard"></i> Atalhos e Comandos</a>
                 
-                <div class="nav-group">Infraestrutura</div>
-                <a href="#ips-infra" class="nav-item"><i class="fas fa-network-wired"></i> IPs e Ambientes</a>
-                <a href="#tabelas-ctrl" class="nav-item"><i class="fas fa-table"></i> Tabelas (Rins/TCO)</a>
+                <div class="nav-group">Monitoramento Crítico</div>
+                <a href="#ctms-screens" class="nav-item"><i class="fas fa-desktop"></i> Telas CTMS (2 e 3)</a>
+                <a href="#tabelas-ctrl" class="nav-item"><i class="fas fa-table"></i> Tabelas (Rins/TCO/STI)</a>
+                <a href="#grafana-dash" class="nav-item"><i class="fas fa-chart-line"></i> Grafana Dashboards</a>
                 
-                <div class="nav-group">Rotina e SLA</div>
+                <div class="nav-group">Processos e GML</div>
+                <a href="#gml-flow" class="nav-item"><i class="fas fa-file-export"></i> Promoção de GML</a>
+                <a href="#ops-destrave" class="nav-item"><i class="fas fa-unlock-alt"></i> Procedimento OPS</a>
+                
+                <div class="nav-group">Rotinas e SLA</div>
                 <a href="#planilhas" class="nav-item"><i class="fas fa-file-excel"></i> As 4 Planilhas</a>
-                <a href="#emails-sla" class="nav-item"><i class="fas fa-envelope-open-text"></i> Cronograma E-mails</a>
+                <a href="#emails-sla" class="nav-item"><i class="fas fa-mail-bulk"></i> Cronograma de E-mails</a>
                 
-                <div class="nav-group">Ferramentas</div>
-                <a href="#grafana-dash" class="nav-item"><i class="fas fa-chart-area"></i> Grafana Dashboards</a>
-                <a href="#jira-fluxo" class="nav-item"><i class="fas fa-ticket-alt"></i> Jira (PDST/DPS)</a>
+                <div class="nav-group">Suporte</div>
+                <a href="#jira-fluxo" class="nav-item"><i class="fas fa-ticket-alt"></i> Gestão Jira (PDST/DPS)</a>
             </nav>
         </aside>
 
         <main class="content">
-            <section id="tso-basics" class="topic">
-                <h2><i class="fas fa-terminal"></i> Comandos e Navegação TSO</h2>
-                <div class="accordion">
-                    <div class="acc-item">
-                        <div class="acc-header">Menu de Atalhos (Jump Commands) <i class="fas fa-chevron-down"></i></div>
-                        <div class="acc-content">
-                            <p>Utilize <span class="badge">*J</span> para mudar de ambiente rapidamente.</p>
-                            <ul class="ident">
-                                <li><span class="tag">7</span> TSO Principal</li>
-                                <li><span class="tag">10</span> CTMS (Control-M)</li>
-                                <li><span class="tag">19</span> TSO DSV (GML)</li>
-                                <li><span class="tag">20</span> TSO EBPP (Subir Convite/Faturamento)</li>
-                                <li><span class="tag">24</span> CICS DSV (Produção Online)</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="acc-item">
-                        <div class="acc-header">Filtros de Visualização (SDSF) <i class="fas fa-chevron-down"></i></div>
-                        <div class="acc-content">
-                            <p><strong>OWNER IBMPROD:</strong> Filtra apenas jobs de produção oficial.</p>
-                            <p><strong>OWNER CICUSER:</strong> Monitora transações online e telas de atendimento.</p>
-                            <p><strong>PRE:</strong> Filtra pelo prefixo do Job (Ex: <span class="code">PRE PC*</span>).</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="zcto-putproc" class="topic">
-                <h2><i class="fas fa-sync"></i> ZCTO & PutProc</h2>
-                <div class="card">
-                    <p><strong>TSO ZCTO:</strong> Controle de terminais. Usado para derrubar sessões travadas e limpar o caminho para o faturamento.</p>
-                    <p><strong>PUTPROC:</strong> Atualiza a lógica de um processo sem derrubar o sistema. Caminho: <span class="code">ZCTO -> 4E -> Histórico</span>.</p>
-                    <blockquote>Sempre peça o estatístico (statistic) do dia anterior. No comando <strong>V</strong>, verifique o <strong>TOTAL</strong>.</blockquote>
-                </div>
-            </section>
-
-            <section id="ips-infra" class="topic">
-                <h2><i class="fas fa-network-wired"></i> IPs e Ambientes Críticos</h2>
+            <section id="infra-ips" class="topic">
+                <h2><i class="fas fa-network-wired"></i> Infraestrutura e Coordenadas</h2>
                 <div class="grid">
-                    <div class="status-card">
-                        <h3>10.4.23.30</h3>
-                        <p class="subtitle">PRD3 - Produção / Faturamento</p>
-                        <p>Ambiente onde roda o TSOEBPP e o BILFIM. Foco total em SLA.</p>
+                    <div class="status-card blue">
+                        <h3>10.4.23.30 (PRD3)</h3>
+                        <strong>IBM 630 - Faturamento / SLA / EBPP</strong>
+                        <p>Ambiente onde o BILFIM é processado. Foco total em janelas de entrega.</p>
                     </div>
-                    <div class="status-card">
-                        <h3>10.0.197.20</h3>
-                        <p class="subtitle">PRD2 - Bilhetagem</p>
-                        <p>Fábrica de dados. Onde o PCPBKD19 processa os CDRs brutos.</p>
+                    <div class="status-card green">
+                        <h3>10.0.197.20 (PRD2)</h3>
+                        <strong>IBM 800 - Bilhetagem / Carga CDRs</strong>
+                        <p>Fábrica de dados. Onde o PCPBKD19 processa os registros brutos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tso-basics" class="topic">
+                <h2><i class="fas fa-keyboard"></i> Comandos e Atalhos TSO</h2>
+                <div class="card">
+                    <p>Use o prefixo <span class="badge">*J</span> para saltar entre ambientes (Ex: *J CTMS).</p>
+                    <div class="grid">
+                        <ul class="list-unstyled">
+                            <li><span class="tag">7</span> TSO Principal</li>
+                            <li><span class="tag">10</span> CTMS (Control-M)</li>
+                            <li><span class="tag">19</span> TSO DSV (GML)</li>
+                        </ul>
+                        <ul class="list-unstyled">
+                            <li><span class="tag">20</span> TSO EBPP (Faturamento)</li>
+                            <li><span class="tag">24</span> CICS DSV (Produção Online)</li>
+                        </ul>
+                    </div>
+                    <p class="mt-1"><strong>SDSF:</strong> <span class="code">OWNER IBMPROD</span> (Prod) | <span class="code">OWNER CICUSER</span> (Online) | <span class="code">PRE [Prefix]*</span> (Jobs).</p>
+                </div>
+            </section>
+
+            <section id="ctms-screens" class="topic">
+                <h2><i class="fas fa-desktop"></i> Telas do Control-M (CTMS)</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Tela 3: Monitoring</h3>
+                        <p>Visão de monitoração em tempo real. Localização de Jobs em <strong>Hold (H)</strong> ou <strong>Wait (WC)</strong>.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Tela 2: Planning</h3>
+                        <p>Visão de planejamento. Conferência da malha agendada e tabelas de carga.</p>
                     </div>
                 </div>
             </section>
 
             <section id="tabelas-ctrl" class="topic">
-                <h2><i class="fas fa-table"></i> Tabelas (Rins/TCO)</h2>
+                <h2><i class="fas fa-table"></i> Tabelas de Controle (Mapas do Sistema)</h2>
                 <div class="accordion">
                     <div class="acc-item">
-                        <div class="acc-header">Tabelas de Controle de Rotinas (Rins) <i class="fas fa-chevron-down"></i></div>
-                        <div class="acc-content">
-                            <p>As tabelas Rins são responsáveis pelo controle das rotinas de processamento no Mainframe. Elas definem os parâmetros de execução, dependências e horários.</p>
-                            <ul class="ident">
-                                <li><strong>Rin01:</strong> Controle de Bilhetagem - Define os jobs de processamento de CDRs.</li>
-                                <li><strong>Rin02:</strong> Controle de Faturamento - Gerencia as rotinas de fechamento mensal.</li>
-                                <li><strong>Rin03:</strong> Controle de Transmissão - Coordena envios para sistemas externos.</li>
-                            </ul>
-                            <p><strong>Comando de Verificação:</strong> Use <span class="code">TSO DISPLAY RINS</span> para visualizar o status atual.</p>
-                        </div>
+                        <div class="acc-header">Rins (Rede e Interconexão) <i class="fas fa-chevron-down"></i></div>
+                        <div class="acc-content">Monitora as rotas de dados externos. Rin inativo = falha na recepção de bilhetes.</div>
                     </div>
                     <div class="acc-item">
-                        <div class="acc-header">Tabelas de Controle Operacional (TCO) <i class="fas fa-chevron-down"></i></div>
-                        <div class="acc-content">
-                            <p>As tabelas TCO controlam as operações críticas do sistema, incluindo failovers e recuperações.</p>
-                            <ul class="ident">
-                                <li><strong>TCO01:</strong> Controle de Ambientes - Define os IPs e configurações por ambiente (PRD2, PRD3).</li>
-                                <li><strong>TCO02:</strong> Controle de SLA - Monitora os tempos de resposta e alertas.</li>
-                                <li><strong>TCO03:</strong> Controle de Espaço - Gerencia alocação de disco e limpeza.</li>
-                            </ul>
-                            <p><strong>Atualização:</strong> Sempre verificar as tabelas antes de manutenções críticas.</p>
-                        </div>
+                        <div class="acc-header">TCOs / TFI (Terminais e Sessões) <i class="fas fa-chevron-down"></i></div>
+                        <div class="acc-content">Gerencia terminais ativos. Use o <strong>ZCTO</strong> para identificar e derrubar IDs travadas.</div>
+                    </div>
+                    <div class="acc-item">
+                        <div class="acc-header">STI / FTC / EBC <i class="fas fa-chevron-down"></i></div>
+                        <div class="acc-content">STI (Saúde de Serviços), FTC (Transferência de Arquivos), EBC (Faturamento Digital).</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="grafana-dash" class="topic">
+                <h2><i class="fas fa-chart-line"></i> Grafana Dashboards</h2>
+                <div class="card">
+                    <div class="grid">
+                        <ul class="tag-list">
+                            <li>tasks-ebpp (Faturamento)</li>
+                            <li>tasks-p2 / prod3 (Saúde)</li>
+                            <li>ServicosEntireX (Ponte)</li>
+                            <li>Adabas (Espaço Disco)</li>
+                            <li>zOS (CPU/MIPS)</li>
+                            <li>Connect (Transmissão)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="gml-flow" class="topic">
+                <h2><i class="fas fa-file-export"></i> Fluxo de Promoção GML</h2>
+                <div class="card">
+                    <div class="step-box">
+                        <ol style="padding: 0 20px;">
+                            <li>Acesse <span class="badge">19 TSODSV</span> -> Opção <strong>GML</strong>.</li>
+                            <li>Vá para <span class="badge">TSO SPROD</span> e use o prefixo <span class="code">MP(GML)</span> para aprovação.</li>
+                            <li>No Job <span class="code">NUMGML</span>, marque com <span class="tag">S</span> e Enter.</li>
+                            <li><strong>Evidência:</strong> Copie o conteúdo e cole no Jira (comentários e atividade).</li>
+                            <li><strong>Promover:</strong> Apenas quando status for <span class="tag">P</span> (Liberado). Logue no Jira.</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ops-destrave" class="topic">
+                <h2><i class="fas fa-unlock-alt"></i> Procedimento OPS (Destravar Job)</h2>
+                <div class="card">
+                    <p>Execute este procedimento quando um Job crítico na malha estiver travado ou não iniciar automaticamente no CTMS.</p>
+                    <div class="step-box">
+                        <strong>Passo a Passo no CTMS (Tela 3 - Monitoring):</strong>
+                        <ol style="padding: 20px;">
+                            <li>Na Tela 3, localize o Job travado com o comando <span class="code">FIND [NomeDoJob]</span>.</li>
+                            <li>Verifique se o status do Job é <strong>H (Hold)</strong> ou <strong>WC (Wait Condition)</strong>.</li>
+                            <li>Se estiver em Hold ou Wait, aplique o comando <span class="badge">O</span> e depois <span class="badge">Y</span> para <strong>Force OK</strong>. Isso libera as condições de espera.</li>
+                            <li>Aplique o comando <span class="badge">F</span> para <strong>Free</strong> (Liberar). O Job tentará executar novamente.</li>
+                            <li><strong>Evidência:</strong> Tire um print da Tela 3 mostrando o Job rodando (em verde) e anexe ao chamado correspondente no Jira.</li>
+                        </ol>
                     </div>
                 </div>
             </section>
 
             <section id="planilhas" class="topic">
-                <h2><i class="fas fa-file-excel"></i> As 4 Planilhas de Rotina</h2>
+                <h2><i class="fas fa-file-excel"></i> As 4 Planilhas Diárias (Até 11h)</h2>
                 <div class="accordion">
                     <div class="acc-item">
-                        <div class="acc-header">Plan 01: Bilhetadoras <i class="fas fa-chevron-down"></i></div>
+                        <div class="acc-header">Plan 01 & 02: Bilhetadoras e PutProc <i class="fas fa-chevron-down"></i></div>
                         <div class="acc-content">
-                            <p>Conferir no e-mail; anotar o último horário que consta no corpo do e-mail recebido.</p>
+                            <p><strong>Plan 01:</strong> Conferir último e-mail recebido.</p>
+                            <p><strong>Plan 02:</strong> <span class="code">ZCTO -> 4E -> Histórico</span>. Pegar TOTAL no modo View (V).</p>
                         </div>
                     </div>
                     <div class="acc-item">
-                        <div class="acc-header">Plan 02: PutProc (TSO) <i class="fas fa-chevron-down"></i></div>
+                        <div class="acc-header">Plan 03 & 04: Espaço e SLA <i class="fas fa-chevron-down"></i></div>
                         <div class="acc-content">
-                            <p>Pegar informações via <span class="code">TSO ZCTO -> 4E</span>. Verificar o TOTAL no modo View (V).</p>
-                        </div>
-                    </div>
-                    <div class="acc-item">
-                        <div class="acc-header">Plan 03: Espaço em Produção <i class="fas fa-chevron-down"></i></div>
-                        <div class="acc-content">
-                            <p><strong>AS400:</strong> Checa e-mail de marcação de disco (SP e Rio). Copiar valor.</p>
-                            <p><strong>Mainframe:</strong> Usar comando <span class="badge">STG LAST</span> para pegar o espaço de PRD2 e PRD3.</p>
-                        </div>
-                    </div>
-                    <div class="acc-item">
-                        <div class="acc-header">Plan 04: SLA (ODATE D-1) <i class="fas fa-chevron-down"></i></div>
-                        <div class="acc-content">
-                            <p>Caminho: <span class="code">SD (DA/JOB) -> Pre -> Owner IBMPROD</span>. Comando <strong>I</strong> mostra a fila para entrar.</p>
+                            <p><strong>Plan 03:</strong> E-mail AS400 (SP/Rio) + Mainframe <span class="code">STG LAST</span>.</p>
+                            <p><strong>Plan 04:</strong> ODATE (D-1). Conferir fila via comando <strong>I</strong>.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             <section id="emails-sla" class="topic">
-                <h2><i class="fas fa-envelope-open-text"></i> Cronograma de E-mails</h2>
+                <h2><i class="fas fa-mail-bulk"></i> Cronograma de E-mails</h2>
                 <div class="card">
-                    <div class="timeline-item"><strong>08:00:</strong> Combo 3 e-mails (Tasks/Grafana, SLA Planilha e Chamados Violados).</div>
-                    <div class="timeline-item"><strong>09:30:</strong> Checkpoint Wait Schedule (ODATE -2). Listar Jobs em Hold.</div>
-                    <div class="timeline-item"><strong>12:30:</strong> Revalidação de Tasks.</div>
-                    <div class="timeline-item"><strong>13:30:</strong> E-mail da Daily (Status PRD2/PRD3 e Total Jobs).</div>
-                    <div class="timeline-item"><strong>16:00:</strong> Chamados Violados (Print do Jira).</div>
+                    <div class="timeline-item"><strong>08:00:</strong> Combo Abertura (Tasks/Grafana, SLA Plan e Chamados Violados).</div>
+                    <div class="timeline-item"><strong>09:30:</strong> Wait Schedule (Jobs em Hold ODATE -2).</div>
+                    <div class="timeline-item"><strong>13:30:</strong> E-mail da Daily (Status Geral, IPs e Total de Jobs).</div>
                     <div class="timeline-item"><strong>19:00:</strong> Passagem de Turno.</div>
                 </div>
             </section>
 
-            <section id="grafana-dash" class="topic">
-                <h2><i class="fas fa-chart-area"></i> Grafana Dashboards</h2>
-                <div class="grid">
-                    <div class="status-card">
-                        <h3>Dashboard Principal</h3>
-                        <p class="subtitle">Visão Geral do Sistema</p>
-                        <p>Monitora CPU, memória e jobs ativos em tempo real. URL: <span class="code">http://grafana.3am.com/d/main</span></p>
-                        <p><strong>Métricas Chave:</strong> Utilização PRD2/PRD3, fila de jobs, alertas SLA.</p>
-                    </div>
-                    <div class="status-card">
-                        <h3>Dashboard de SLA</h3>
-                        <p class="subtitle">Monitoramento de Performance</p>
-                        <p>Acompanha os tempos de processamento das rotinas críticas. Inclui gráficos de tendência histórica.</p>
-                        <p><strong>Alertas:</strong> Notificações automáticas quando SLA é violado.</p>
-                    </div>
-                    <div class="status-card">
-                        <h3>Dashboard de Infraestrutura</h3>
-                        <p class="subtitle">Recursos de Sistema</p>
-                        <p>Monitora espaço em disco, rede e conectividade entre ambientes.</p>
-                        <p><strong>Comandos:</strong> Integrado com comandos STG e ZCTO para alertas proativos.</p>
-                    </div>
-                </div>
-                <br>
-                <div class="card">
-                    <p><strong>Acesso:</strong> Use credenciais do domínio 3AM. Dashboards atualizam a cada 5 minutos.</p>
-                    <p><strong>Relatórios:</strong> Exportar dados para as planilhas diárias via API do Grafana.</p>
-                </div>
-            </section>
-
             <section id="jira-fluxo" class="topic">
-                <h2><i class="fas fa-ticket-alt"></i> Gestão Jira (PDST & OPS)</h2>
-                <div class="card">
-                    <p><i class="fas fa-check-circle"></i> <strong>PDST:</strong> Execuções (Rename, Transmissão, Sysout). Se houver ABEND, escrever no campo de texto antes de atualizar.</p>
-                    <p><i class="fas fa-bug"></i> <strong>OPS:</strong> Local dos Abends. Localizar via <span class="code">FIND [StepName]</span>. Usar F11 (Direita) e F10 (Esquerda).</p>
-                    <div class="step-box">
-                        <strong>Fluxo OPS:</strong> CTMS Tela 3 -> Find Job -> Se Hold (H) -> Comando O e Y (Force OK) -> Comando F (Free) -> Printar evidência.
+                <h2><i class="fas fa-ticket-alt"></i> Gestão de Chamados Jira</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>PDST (Execuções)</h3>
+                        <p>Rename, Transmissão, Sysout. Exige evidência de sucesso.</p>
+                    </div>
+                    <div class="card">
+                        <h3>DPS (Erros/Abends)</h3>
+                        <p>Localizar via <span class="code">FIND [StepName]</span>. Navegue com F10/F11.</p>
                     </div>
                 </div>
             </section>
