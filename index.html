@@ -1,218 +1,450 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpsWiki - Mainframe 3AM/Global Hitss</title>
+    <title>Guia do Operador Mainframe</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-
     <header class="navbar">
-        <div class="logo">
-            <i class="fas fa-terminal"></i>
-            <span>Ops<strong>Wiki</strong> <small>3AM/Global Hitss</small></span>
+        <div>
+            <h1>Guia do Operador Mainframe</h1>
+            <p>Operação, monitoração, acesso, TSO, JCL, abends e Control-M em uma única base</p>
         </div>
         <div class="search-box">
             <i class="fas fa-search"></i>
-            <input type="text" id="mainSearch" placeholder="Pesquisar comandos, GML, IPs, Grafana...">
+            <input id="mainSearch" type="text" placeholder="Buscar tópicos, códigos, jobs, comandos...">
         </div>
     </header>
 
     <div class="layout">
         <aside class="sidebar">
-            <nav>
-                <div class="nav-group">Acesso e Ambientes</div>
-                <a href="#infra-ips" class="nav-item"><i class="fas fa-network-wired"></i> IPs e Ambientes</a>
-                <a href="#tso-basics" class="nav-item"><i class="fas fa-keyboard"></i> Atalhos e Comandos</a>
-                
-                <div class="nav-group">Monitoramento Crítico</div>
-                <a href="#ctms-screens" class="nav-item"><i class="fas fa-desktop"></i> Telas CTMS (2 e 3)</a>
-                <a href="#tabelas-ctrl" class="nav-item"><i class="fas fa-table"></i> Tabelas (Rins/TCO/STI)</a>
-                <a href="#grafana-dash" class="nav-item"><i class="fas fa-chart-line"></i> Grafana Dashboards</a>
-                
-                <div class="nav-group">Processos e GML</div>
-                <a href="#gml-flow" class="nav-item"><i class="fas fa-file-export"></i> Promoção de GML</a>
-                <a href="#ops-destrave" class="nav-item"><i class="fas fa-unlock-alt"></i> Procedimento OPS</a>
-                
-                <div class="nav-group">Rotinas e SLA</div>
-                <a href="#planilhas" class="nav-item"><i class="fas fa-file-excel"></i> As 4 Planilhas</a>
-                <a href="#emails-sla" class="nav-item"><i class="fas fa-mail-bulk"></i> Cronograma de E-mails</a>
-                
-                <div class="nav-group">Suporte</div>
-                <a href="#jira-fluxo" class="nav-item"><i class="fas fa-ticket-alt"></i> Gestão Jira (PDST/DPS)</a>
-            </nav>
+            <div class="nav-group">Operação</div>
+            <a class="nav-item" href="#infra-ips"><i class="fas fa-network-wired"></i>Infraestrutura e Coordenadas</a>
+            <a class="nav-item" href="#tso-basics"><i class="fas fa-terminal"></i>Comandos e Atalhos TSO</a>
+            <a class="nav-item" href="#ctms-screens"><i class="fas fa-diagram-project"></i>Telas do CTMS</a>
+            <a class="nav-item" href="#tabelas-ctrl"><i class="fas fa-link"></i>Tabelas de Controle</a>
+            <a class="nav-item" href="#grafana-dash"><i class="fas fa-chart-line"></i>Grafana Dashboards</a>
+            <a class="nav-item" href="#gml-flow"><i class="fas fa-share-nodes"></i>Promoção GML</a>
+            <a class="nav-item" href="#ops-destrave"><i class="fas fa-triangle-exclamation"></i>Procedimento OPS</a>
+            <a class="nav-item" href="#planilhas"><i class="fas fa-table"></i>As 4 Planilhas</a>
+            <a class="nav-item" href="#emails-sla"><i class="fas fa-envelope"></i>Cronograma de E-mails</a>
+            <a class="nav-item" href="#jira-fluxo"><i class="fas fa-ticket"></i>Gestão Jira</a>
+
+            <div class="nav-group">Referência Técnica</div>
+            <a class="nav-item" href="#javascript"><i class="fas fa-keyboard"></i>ISPF e Edição</a>
+            <a class="nav-item" href="#css"><i class="fas fa-file-code"></i>JCL Essencial</a>
+            <a class="nav-item" href="#tn3270"><i class="fas fa-gears"></i>Utilitários e DFSORT</a>
         </aside>
 
         <main class="content">
-            <section id="infra-ips" class="topic">
-                <h2><i class="fas fa-network-wired"></i> Infraestrutura e Coordenadas</h2>
+            <section class="topic" id="infra-ips">
+                <h2>Infraestrutura e Coordenadas</h2>
+                <div class="card">
+                    <p>Este guia reúne os principais conteúdos de operação para dar ao operador uma sequência prática: acessar o ambiente, localizar o processamento, interpretar sinais de falha, acionar os atalhos corretos e registrar evidências.</p>
+                    <div class="step-box">
+                        O fluxo mais comum do turno é: acessar o host, abrir a fila de monitoração, identificar atraso ou falha, consultar spool e dependências, aplicar a ação operacional permitida, validar o retorno e registrar evidências em planilha, e-mail ou Jira.
+                    </div>
+                </div>
                 <div class="grid">
                     <div class="status-card blue">
-                        <h3>10.4.23.30 (PRD3)</h3>
-                        <strong>IBM 630 - Faturamento / SLA / EBPP</strong>
-                        <p>Ambiente onde o BILFIM é processado. Foco total em janelas de entrega.</p>
+                        <h3>Ambientes de referência</h3>
+                        <p><span class="badge">PRD3</span> <span class="code">10.4.23.30</span> associado ao IBM 630, faturamento, SLA e EBPP.</p>
+                        <p><span class="badge">PRD2</span> <span class="code">10.0.197.20</span> associado ao IBM 800, bilhetagem e carga de CDRs.</p>
+                        <p>Sempre confirme os acessos oficiais vigentes do seu posto antes de qualquer conexão ou atuação operacional.</p>
                     </div>
                     <div class="status-card green">
-                        <h3>10.0.197.20 (PRD2)</h3>
-                        <strong>IBM 800 - Bilhetagem / Carga CDRs</strong>
-                        <p>Fábrica de dados. Onde o PCPBKD19 processa os registros brutos.</p>
+                        <h3>Primeiras verificações de qualquer incidente</h3>
+                        <ul class="tag-list">
+                            <li>Qual job e qual step falhou</li>
+                            <li>RC, abend ou SQLCODE exibido</li>
+                            <li>Status no Control-M ou SDSF</li>
+                            <li>Dependência presa, recurso ou calendário</li>
+                            <li>Arquivo, base ou fila indisponível</li>
+                            <li>Evidência para repasse</li>
+                        </ul>
                     </div>
                 </div>
             </section>
 
-            <section id="tso-basics" class="topic">
-                <h2><i class="fas fa-keyboard"></i> Comandos e Atalhos TSO</h2>
+            <section class="topic" id="tso-basics">
+                <h2>Comandos e Atalhos TSO</h2>
+                <div class="row">
+                    <div class="card">
+                        <h3>Acesso inicial via TN3270</h3>
+                        <p>O acesso pelo emulador 3270 é uma das portas de entrada para navegação no host, autenticação e uso dos painéis operacionais.</p>
+                        <div class="acc-item">
+                            <div class="acc-header">Passo a passo de acesso <i class="fas fa-chevron-down"></i></div>
+                            <div class="acc-content">
+                                <p>Criar a pasta <span class="code">TN3270</span>, extrair o pacote do emulador, criar atalho para <span class="code">TN3270.EXE</span> e abrir a aplicação.</p>
+                                <p>Configurar a conexão com IP <span class="code">177.139.188.25</span>, porta <span class="code">3270</span> e terminal <span class="code">3279</span>. Depois de conectar, pressionar Enter, aguardar a tela e usar <span class="code">ESC</span> quando indicado.</p>
+                                <p>Em seguida, usar o comando <span class="code">L SEUALUNO</span>, autenticar com senha e navegar com o atalho <span class="code">P.3.4</span> até o dataset particionado com membros de COBOL e JCL.</p>
+                            </div>
+                        </div>
+                        <div class="info-box">Valide sempre as credenciais, endereços e parâmetros de conexão vigentes no seu ambiente antes de utilizar o acesso operacional.</div>
+                    </div>
+                    <div class="card">
+                        <h3>Atalhos operacionais em TSO</h3>
+                        <p>Use o prefixo <span class="badge">*J</span> para saltar entre ambientes e chegar mais rápido aos acessos mais recorrentes do turno.</p>
+                        <ul class="tag-list">
+                            <li><span class="code">7</span> TSO principal</li>
+                            <li><span class="code">10</span> CTMS</li>
+                            <li><span class="code">19</span> TSO DSV</li>
+                            <li><span class="code">20</span> TSO EBPP</li>
+                            <li><span class="code">24</span> CICS DSV</li>
+                        </ul>
+                        <p>Em SDSF, os filtros mais usados são <span class="code">OWNER IBMPROD</span>, <span class="code">OWNER CICUSER</span> e prefixo <span class="code">PRE [prefixo]*</span>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="topic" id="ctms-screens">
+                <h2>Telas do Control-M (CTMS)</h2>
                 <div class="card">
-                    <p>Use o prefixo <span class="badge">*J</span> para saltar entre ambientes (Ex: *J CTMS).</p>
-                    <div class="grid" style="padding: 0 20px;">
-                        <ul class="list-unstyled">
-                            <li><span class="tag">7</span> TSO Principal</li>
-                            <li><span class="tag">10</span> CTMS (Control-M)</li>
-                            <li><span class="tag">19</span> TSO DSV (GML)</li>
-                        </ul>
-                        <ul class="list-unstyled">
-                            <li><span class="tag">20</span> TSO EBPP (Faturamento)</li>
-                            <li><span class="tag">24</span> CICS DSV (Produção Online)</li>
-                        </ul>
+                    <p>O Control-M é a camada de automação e monitoração de workloads batch. Na prática do operador, ele organiza tabelas, jobs, calendários, condições de dependência e filas de execução, permitindo acompanhar o que está aguardando, executando, falhando ou liberando etapas seguintes.</p>
+                </div>
+                <div class="grid">
+                    <div class="status-card blue">
+                        <h3>Tela 3: Monitoring</h3>
+                        <p>Visão de monitoração em tempo real. É onde o operador localiza jobs em <span class="code">H</span>, <span class="code">WC</span>, execução, erro ou aguardando dependência.</p>
                     </div>
-                    <p class="mt-1"><strong>SDSF:</strong> <span class="code">OWNER IBMPROD</span> (Prod) | <span class="code">OWNER CICUSER</span> (Online) | <span class="code">PRE [Prefix]*</span> (Jobs).</p>
+                    <div class="status-card green">
+                        <h3>Tela 2: Planning</h3>
+                        <p>Visão de planejamento. Serve para conferir a malha agendada, as tabelas do fluxo, definições de calendarização e o que deveria ter sido ordenado.</p>
+                    </div>
+                    <div class="status-card blue">
+                        <h3>Arquitetura resumida</h3>
+                        <p><span class="code">Control-M</span> automatiza a carga batch. A arquitetura também inclui <span class="code">Control-O</span> para eventos, <span class="code">Control-R</span> para restart e a separação entre <span class="code">Server</span>, <span class="code">Scheduler</span> e <span class="code">Agent</span>.</p>
+                    </div>
+                    <div class="status-card green">
+                        <h3>Elementos do desenho</h3>
+                        <p><span class="tag">Library</span> agrupa definições.</p>
+                        <p><span class="tag">Table</span> organiza o conjunto de jobs.</p>
+                        <p><span class="tag">Job</span> representa a unidade executável monitorada.</p>
+                    </div>
                 </div>
             </section>
 
-            <section id="ctms-screens" class="topic">
-                <h2><i class="fas fa-desktop"></i> Telas do Control-M (CTMS)</h2>
+            <section class="topic" id="tabelas-ctrl">
+                <h2>Tabelas de Controle (Mapas do Sistema)</h2>
+                <div class="acc-item">
+                    <div class="acc-header">Rins (Rede e Interconexão) <i class="fas fa-chevron-down"></i></div>
+                    <div class="acc-content">
+                        <p>Monitora as rotas de dados externos. Rin inativo deve ser tratado como sinal de falha ou interrupção na recepção de bilhetes.</p>
+                    </div>
+                </div>
+                <div class="acc-item">
+                    <div class="acc-header">TCOs / TFI (Terminais e Sessões) <i class="fas fa-chevron-down"></i></div>
+                    <div class="acc-content">
+                        <p>Mapa ligado a terminais e sessões ativas. Use o <span class="code">ZCTO</span> para identificar IDs travadas, consultar histórico e apoiar liberações.</p>
+                    </div>
+                </div>
+                <div class="acc-item">
+                    <div class="acc-header">STI / FTC / EBC <i class="fas fa-chevron-down"></i></div>
+                    <div class="acc-content">
+                        <p><span class="code">STI</span> apoia a leitura da saúde de serviços, <span class="code">FTC</span> a transferência de arquivos e <span class="code">EBC</span> o faturamento digital. Elas funcionam como mapas de apoio para localizar gargalos por domínio.</p>
+                    </div>
+                </div>
+                <div class="acc-item">
+                    <div class="acc-header">Calendários e datas de processamento <i class="fas fa-chevron-down"></i></div>
+                    <div class="acc-content">
+                        <p>O job não depende apenas do horário. O Control-M valida calendário anual, dia útil, periodicidade, último dia útil e outras regras antes de ordenar ou liberar a execução.</p>
+                        <p>Também aparecem os conceitos de <span class="code">RDATE</span> e data operacional do processamento. Se um job não entrou, a primeira checagem é confirmar se o calendário realmente o contempla naquele dia.</p>
+                    </div>
+                </div>
+                <div class="acc-item">
+                    <div class="acc-header">Dependências e sinais operacionais <i class="fas fa-chevron-down"></i></div>
+                    <div class="acc-content">
+                        <p>O fluxo é controlado por condições de entrada e saída. Em termos práticos, o job fica aguardando até que pré-requisitos sejam satisfeitos e, quando conclui, libera condições para os sucessores.</p>
+                        <p>A leitura do encadeamento visual ajuda a descobrir se o atraso vem de predecessor, recurso, janela horária ou intervenção manual pendente.</p>
+                    </div>
+                </div>
                 <div class="grid">
                     <div class="card">
-                        <h3>Tela 3: Monitoring</h3>
-                        <p>Visão de monitoração em tempo real. Localização de Jobs em <strong>Hold (H)</strong> ou <strong>Wait (WC)</strong>.</p>
+                        <h3>Comandos operacionais recorrentes</h3>
+                        <p><span class="code">Order</span> coloca o job na fila de execução considerando as regras.</p>
+                        <p><span class="code">Force</span> ordena sem checagem normal de calendário quando há decisão operacional autorizada.</p>
+                        <p><span class="code">Hold</span> coloca o job em espera manual.</p>
+                        <p><span class="code">Free</span> libera job ou condição presa.</p>
+                        <p><span class="code">Delete</span> remove da monitoração quando a ação for prevista no procedimento.</p>
+                        <p><span class="code">Force OK</span> sinaliza conclusão lógica quando a falha pode ser ignorada por decisão operacional formalizada.</p>
                     </div>
                     <div class="card">
-                        <h3>Tela 2: Planning</h3>
-                        <p>Visão de planejamento. Conferência da malha agendada e tabelas de carga.</p>
+                        <h3>Boas práticas antes de agir</h3>
+                        <ul class="tag-list">
+                            <li>Confirmar o motivo da espera</li>
+                            <li>Validar se existe dependência externa</li>
+                            <li>Checar spool ou mensagem da aplicação</li>
+                            <li>Evitar Force OK sem evidência</li>
+                            <li>Registrar horário e justificativa</li>
+                            <li>Preservar o encadeamento do fluxo</li>
+                        </ul>
                     </div>
                 </div>
             </section>
 
-            <section id="tabelas-ctrl" class="topic">
-                <h2><i class="fas fa-table"></i> Tabelas de Controle (Mapas do Sistema)</h2>
-                <div class="accordion">
-                    <div class="acc-item">
-                        <div class="acc-header">Rins (Rede e Interconexão) <i class="fas fa-chevron-down"></i></div>
-                        <div class="acc-content">Monitora as rotas de dados externos. Rin inativo = falha na recepção de bilhetes.</div>
-                    </div>
-                    <div class="acc-item">
-                        <div class="acc-header">TCOs / TFI (Terminais e Sessões) <i class="fas fa-chevron-down"></i></div>
-                        <div class="acc-content">Gerencia terminais ativos. Use o <strong>ZCTO</strong> para identificar e derrubar IDs travadas.</div>
-                    </div>
-                    <div class="acc-item">
-                        <div class="acc-header">STI / FTC / EBC <i class="fas fa-chevron-down"></i></div>
-                        <div class="acc-content">STI (Saúde de Serviços), FTC (Transferência de Arquivos), EBC (Faturamento Digital).</div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="grafana-dash" class="topic">
-                <h2><i class="fas fa-chart-line"></i> Grafana Dashboards</h2>
-                <div class="card">
-                    <div class="grid">
+            <section class="topic" id="grafana-dash">
+                <h2>Grafana Dashboards</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Painéis de acompanhamento</h3>
                         <ul class="tag-list">
                             <li>tasks-ebpp (Faturamento)</li>
                             <li>tasks-p2 / prod3 (Saúde)</li>
                             <li>ServicosEntireX (Ponte)</li>
-                            <li>Adabas (Espaço Disco)</li>
-                            <li>zOS (CPU/MIPS)</li>
+                            <li>Adabas (Espaço em disco)</li>
+                            <li>zOS (CPU e MIPS)</li>
                             <li>Connect (Transmissão)</li>
                         </ul>
                     </div>
-                </div>
-            </section>
-
-            <section id="gml-flow" class="topic">
-                <h2><i class="fas fa-file-export"></i> Fluxo de Promoção GML</h2>
-                <div class="card">
-                    <div class="step-box">
-                        <ol style="padding: 0 20px;">
-                            <li>Acesse <span class="badge">19 TSODSV</span> -> Opção <strong>GML</strong>.</li>
-                            <li>Vá para <span class="badge">TSO SPROD</span> e use o prefixo <span class="code">MP(GML)</span> para aprovação.</li>
-                            <li>No Job <span class="code">NUMGML</span>, marque com <span class="tag">S</span> e Enter.</li>
-                            <li><strong>Evidência:</strong> Copie o conteúdo e cole no Jira (comentários e atividade).</li>
-                            <li><strong>Promover:</strong> Apenas quando status for <span class="tag">P</span> (Liberado). Logue no Jira.</li>
-                        </ol>
+                    <div class="card">
+                        <h3>Referências operacionais</h3>
+                        <p>Tabelas como <span class="code">Rins</span>, <span class="code">TCO-TFI</span> e <span class="code">STI-FTC-EBC</span> funcionam como apoio de validação em fluxos específicos e devem ser consultadas conforme a trilha operacional vigente do sistema atendido.</p>
                     </div>
                 </div>
             </section>
 
-            <section id="ops-destrave" class="topic">
-                <h2><i class="fas fa-unlock-alt"></i> Procedimento OPS (Destravar Job)</h2>
-                <div class="card">
-                    <p>Execute este procedimento quando um Job crítico na malha estiver travado ou não iniciar automaticamente no CTMS.</p>
-                    <div class="step-box">
-                        <strong>Passo a Passo no CTMS (Tela 3 - Monitoring):</strong>
-                        <ol style="padding: 20px;">
-                            <li>Na Tela 3, localize o Job travado com o comando <span class="code">FIND [NomeDoJob]</span>.</li>
-                            <li>Verifique se o status do Job é <strong>H (Hold)</strong> ou <strong>WC (Wait Condition)</strong>.</li>
-                            <li>Se estiver em Hold ou Wait, aplique o comando <span class="badge">O</span> e depois <span class="badge">Y</span> para <strong>Force OK</strong>. Isso libera as condições de espera.</li>
-                            <li>Aplique o comando <span class="badge">F</span> para <strong>Free</strong> (Liberar). O Job tentará executar novamente.</li>
-                            <li><strong>Evidência:</strong> Tire um print da Tela 3 mostrando o Job rodando (em verde) e anexe ao chamado correspondente no Jira.</li>
-                        </ol>
-                    </div>
-                </div>
-            </section>
-
-            <section id="planilhas" class="topic">
-                <h2><i class="fas fa-file-excel"></i> As 4 Planilhas Diárias (Até 11h)</h2>
-                <div class="accordion">
-                    <div class="acc-item">
-                        <div class="acc-header">Plan 01 & 02: Bilhetadoras e PutProc <i class="fas fa-chevron-down"></i></div>
-                        <div class="acc-content">
-                            <p><strong>Plan 01:</strong> Conferir último e-mail recebido.</p>
-                            <p><strong>Plan 02:</strong> <span class="code">ZCTO -> 4E -> Histórico</span>. Pegar TOTAL no modo View (V).</p>
-                        </div>
-                    </div>
-                    <div class="acc-item">
-                        <div class="acc-header">Plan 03 & 04: Espaço e SLA <i class="fas fa-chevron-down"></i></div>
-                        <div class="acc-content">
-                            <p><strong>Plan 03:</strong> E-mail AS400 (SP/Rio) + Mainframe <span class="code">STG LAST</span>.</p>
-                            <p><strong>Plan 04:</strong> ODATE (D-1). Conferir fila via comando <strong>I</strong>.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="emails-sla" class="topic">
-                <h2><i class="fas fa-mail-bulk"></i> Cronograma de E-mails</h2>
-                <div class="card">
-                    <div class="timeline-item"><strong>08:00:</strong> Combo Abertura (Tasks/Grafana, SLA Plan e Chamados Violados).</div>
-                    <div class="timeline-item"><strong>09:30:</strong> Wait Schedule (Jobs em Hold ODATE -2).</div>
-                    <div class="timeline-item"><strong>12:00:</strong> Revalidação de Tasks.</div>
-                    <div class="timeline-item"><strong>13:30:</strong> E-mail da Daily (Status Geral, IPs e Total de Jobs).</div>
-                    <div class="timeline-item"><strong>16:00:</strong> Chamados Violados.</div>
-                    <div class="timeline-item"><strong>19:00:</strong> Passagem de Turno.</div>
-                </div>
-            </section>
-
-            <section id="jira-fluxo" class="topic">
-                <h2><i class="fas fa-ticket-alt"></i> Gestão de Chamados Jira</h2>
+            <section class="topic" id="gml-flow">
+                <h2>Fluxo de Promoção GML</h2>
                 <div class="row">
                     <div class="card">
-                        <p><i class="fas fa-check-circle"></i> <strong>PDST:</strong> Execuções (Rename, Transmissão, Sysout). Se houver ABEND, escrever no campo de texto antes de atualizar.</p>
+                        <h3>Promoção GML</h3>
+                        <div class="step-box">
+                            <ol style="padding: 0 20px;">
+                                <li>Acessar <span class="badge">19 TSODSV</span> e entrar na opção <span class="code">GML</span>.</li>
+                                <li>Ir para <span class="badge">TSO SPROD</span> e usar o prefixo <span class="code">MP(GML)</span> para aprovação.</li>
+                                <li>No job <span class="code">NUMGML</span>, marcar com <span class="tag">S</span> e confirmar.</li>
+                                <li>Copiar a evidência da tela e registrar no Jira em comentários e atividade.</li>
+                                <li>Promover somente quando o status estiver em <span class="tag">P</span>, indicando liberação.</li>
+                            </ol>
+                        </div>
                     </div>
                     <div class="card">
-                        <p><i class="fas fa-bug"></i> <strong>OPS:</strong> Local dos Abends. Localizar via <span class="code">FIND [StepName]</span>. Usar F11 (Direita) e F10 (Esquerda).</p>
+                        <h3>Visão de turno</h3>
+                        <p>Boa parte do trabalho do operador não é criar processamento, e sim confirmar que o processamento encadeado atravessou com segurança as janelas do dia. Isso inclui Control-M, monitorias, planilhas, dashboards e comunicação de exceções.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="topic" id="ops-destrave">
+                <h2>Procedimento OPS (Destravar Job)</h2>
+                <div class="card">
+                    <p>Esta seção funciona como referência de triagem operacional. O objetivo não é decorar todos os códigos, e sim localizar rapidamente o tipo de erro e fazer as primeiras verificações corretas antes do repasse ou da ação de contorno.</p>
+                </div>
+                <div class="acc-item">
+                    <div class="acc-header">Procedimento OPS de destravar job <i class="fas fa-chevron-down"></i></div>
+                    <div class="acc-content">
+                        <p>O destravamento passa por localizar o job no CTMS, verificar se está em <span class="code">H</span> ou <span class="code">WC</span>, avaliar a justificativa operacional e usar a sequência indicada pelo procedimento: opção <span class="code">O</span>, confirmação <span class="code">Y</span> para <span class="code">Force OK</span> quando autorizado, seguida de <span class="code">F</span> para <span class="code">Free</span>. A evidência da ação deve ser anexada ao controle do turno.</p>
+                    </div>
+                </div>
+                <div class="acc-item">
+                    <div class="acc-header">Leitura rápida de abends e códigos <i class="fas fa-chevron-down"></i></div>
+                    <div class="acc-content">
+                        <p><span class="badge">File Status</span> exemplos recorrentes: <span class="code">05</span> arquivo ausente, <span class="code">22</span> chave duplicada, <span class="code">39</span> conflito de atributo, <span class="code">41</span> arquivo já aberto, <span class="code">44</span> tamanho inconsistente.</p>
+                        <p><span class="badge">VSAM</span> exemplos comuns: <span class="code">92</span> erro lógico, <span class="code">95</span> catalogação ou definição inconsistente, <span class="code">96</span> DD ausente, <span class="code">97</span> arquivo em uso por outra aplicação.</p>
+                        <p><span class="badge">CICS</span> retornos vistos com frequência: <span class="code">NOTFND</span>, <span class="code">DUPKEY</span>, <span class="code">IOERR</span>, <span class="code">MAPFAIL</span>, <span class="code">INVREQ</span>.</p>
+                        <p><span class="badge">DB2</span> atalhos úteis: <span class="code">+100</span> sem linha encontrada, <span class="code">-805</span> package/plano não localizado, <span class="code">-904</span> recurso indisponível, <span class="code">-911</span> rollback por timeout ou deadlock.</p>
+                        <p><span class="badge">System Abend</span> práticos para lembrar: <span class="code">S0C1</span> chamada inválida ou módulo ausente, <span class="code">S0C4</span> acesso indevido à memória, <span class="code">S0C7</span> dado numérico inválido, <span class="code">S878</span> falta de armazenamento, <span class="code">SB37</span>, <span class="code">SD37</span> e <span class="code">SE37</span> falta de espaço.</p>
+                        <p><span class="badge">User Abend</span> exemplos recorrentes: <span class="code">U0004</span>, <span class="code">U0007</span>, <span class="code">U0016</span>, <span class="code">U0039</span>, <span class="code">U3505</span>, <span class="code">U3710</span>.</p>
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="status-card blue">
+                        <h3>Primeira triagem</h3>
+                        <ul class="tag-list">
+                            <li>Job e step exatos</li>
+                            <li>Mensagem principal no spool</li>
+                            <li>Código de retorno ou abend</li>
+                            <li>Arquivo ou recurso citado</li>
+                            <li>Horário da falha</li>
+                            <li>Existe recorrência no turno</li>
+                        </ul>
+                    </div>
+                    <div class="status-card green">
+                        <h3>Quando escalar</h3>
+                        <p>Escalone quando houver risco de perda de encadeamento, falha de base, erro de programa, falta de espaço, deadlock persistente, arquivo indisponível, ou quando a ação exigir decisão de negócio ou sustentação.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="topic" id="planilhas">
+                <h2>As 4 Planilhas Diárias (Até 11h)</h2>
+                <div class="card">
+                    <p>As quatro planilhas diárias funcionam como instrumento de passagem de turno, rastreio de pendências e comprovação de acompanhamento operacional. Elas servem como memória do dia e ajudam a cruzar horário, ação tomada, impacto e repasse.</p>
+                </div>
+                <div class="acc-item">
+                    <div class="acc-header">Plan 01 e Plan 02: Bilhetadoras e PutProc <i class="fas fa-chevron-down"></i></div>
+                    <div class="acc-content">
+                        <p><strong>Plan 01:</strong> conferir o último e-mail recebido e validar se a referência do turno bate com o processamento esperado.</p>
+                        <p><strong>Plan 02:</strong> usar <span class="code">ZCTO -> 4E -> Histórico</span> e coletar o total no modo de visualização para registro da rotina.</p>
+                    </div>
+                </div>
+                <div class="acc-item">
+                    <div class="acc-header">Plan 03 e Plan 04: Espaço e SLA <i class="fas fa-chevron-down"></i></div>
+                    <div class="acc-content">
+                        <p><strong>Plan 03:</strong> conferir o e-mail do AS400 de SP/Rio e validar o mainframe com <span class="code">STG LAST</span>.</p>
+                        <p><strong>Plan 04:</strong> trabalhar com <span class="code">ODATE (D-1)</span> e conferir a fila pelo comando <span class="code">I</span>.</p>
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="card">
+                        <h3>O que registrar</h3>
+                        <ul class="tag-list">
+                            <li>Horário do evento</li>
+                            <li>Job, fluxo ou rotina afetada</li>
+                            <li>Ação executada</li>
+                            <li>Status após intervenção</li>
+                            <li>Escalonamento realizado</li>
+                            <li>Evidência associada</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Objetivo da passagem de turno</h3>
+                        <p>Deixar para a próxima equipe um estado claro do ambiente: o que normalizou, o que ficou pendente, qual janela ainda está aberta e que decisões já foram tomadas para evitar repetição ou conflito de ação.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="topic" id="emails-sla">
+                <h2>Cronograma de E-mails</h2>
+                <div class="card">
+                    <p>O cronograma de e-mails reforça que a comunicação faz parte da operação. Sempre que houver impacto, atraso relevante ou anomalia recorrente, a mensagem deve informar ambiente, fluxo afetado, horário, diagnóstico atual, ação tomada e próximo passo.</p>
+                    <div class="step-box">
+                        Em incidentes com SLA, priorize texto objetivo: o que falhou, desde quando, qual contingência foi aplicada e quem está atuando. Evite e-mails sem horário, sem identificação do job ou sem status atual.
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="timeline-item"><strong>08:00:</strong> combo de abertura com tasks, Grafana, SLA plan e chamados violados.</div>
+                    <div class="timeline-item"><strong>09:30:</strong> wait schedule com jobs em hold e análise de ODATE retroativo.</div>
+                    <div class="timeline-item"><strong>12:00:</strong> revalidação de tasks e pendências do período.</div>
+                    <div class="timeline-item"><strong>13:30:</strong> e-mail da daily com status geral, IPs e total de jobs.</div>
+                    <div class="timeline-item"><strong>16:00:</strong> atualização de chamados violados.</div>
+                    <div class="timeline-item"><strong>19:00:</strong> passagem de turno.</div>
+                </div>
+            </section>
+
+            <section class="topic" id="jira-fluxo">
+                <h2>Gestão de Chamados Jira</h2>
+                <div class="row">
+                    <div class="card">
+                        <h3>Boa abertura de chamado</h3>
+                        <p>O registro precisa permitir que outra equipe reconstrua o caso sem voltar ao operador para pedir o básico. Inclua job, ambiente, data/hora, mensagem principal, ação operacional tentada e anexo da evidência.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Checklist de evidência</h3>
+                        <ul class="tag-list">
+                            <li>Print da tela do Control-M</li>
+                            <li>Mensagem do spool ou SDSF</li>
+                            <li>Código de erro ou abend</li>
+                            <li>Passos aplicados pelo operador</li>
+                            <li>Horário do repasse</li>
+                            <li>Impacto percebido</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <p><strong>PDST:</strong> usado para execuções como rename, transmissão e sysout. Quando houver abend, o conteúdo do erro deve ser descrito antes da atualização do chamado.</p>
+                    </div>
+                    <div class="card">
+                        <p><strong>OPS:</strong> concentrador dos abends e destravamentos. Localize pelo <span class="code">FIND [StepName]</span> e use navegação lateral com PF keys quando necessário.</p>
                         <div class="step-box">
-                            <strong>Fluxo OPS:</strong> CTMS Tela 3 -> Find Job -> Se Hold (H) -> Comando O e Y (Force OK) -> Comando F (Free) -> Printar evidência.
+                            Fluxo resumido OPS: CTMS Tela 3 -> localizar job -> validar <span class="code">H</span> ou <span class="code">WC</span> -> aplicar <span class="code">O</span> e <span class="code">Y</span> para Force OK quando autorizado -> aplicar <span class="code">F</span> -> anexar a evidência.
                         </div>
                     </div>
                 </div>
-                
+            </section>
+
+            <section class="topic" id="javascript">
+                <h2>ISPF e Edição</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Navegação básica</h3>
+                        <p>O operador usa menus, datasets particionados, membros e navegação por opções para localizar bibliotecas, editar membros, submeter JCL e consultar filas no SDSF.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Comandos úteis de editor</h3>
+                        <ul class="tag-list">
+                            <li>Editar com <span class="code">E</span></li>
+                            <li>Browse com <span class="code">B</span></li>
+                            <li>Copiar, mover e repetir linhas</li>
+                            <li>Localizar com <span class="code">F</span></li>
+                            <li>Submit de membro JCL</li>
+                            <li>Voltar por PF keys</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Rotina típica em TSO/ISPF</h3>
+                    <pre><code>1. Entrar no host pelo emulador 3270
+2. Navegar até a biblioteca ou painel necessário
+3. Editar ou consultar o membro desejado
+4. Submeter o JCL quando aplicável
+5. Acompanhar o resultado em SDSF
+6. Registrar evidências e retorno operacional</code></pre>
+                </div>
+            </section>
+
+            <section class="topic" id="css">
+                <h2>JCL Essencial</h2>
+                <div class="row">
+                    <div class="card">
+                        <h3>Blocos fundamentais</h3>
+                        <p><span class="code">JOB</span> identifica a execução, <span class="code">EXEC</span> chama programa ou procedure, e <span class="code">DD</span> descreve datasets, SYSOUT, SYSIN e parâmetros de alocação.</p>
+                        <p>O operador nem sempre altera JCL, mas precisa ler rapidamente <span class="code">DISP</span>, <span class="code">UNIT</span>, <span class="code">SPACE</span> e <span class="code">DCB</span> para entender por que um arquivo não abriu, não foi criado ou ficou sem espaço.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Pontos de leitura operacional</h3>
+                        <ul class="tag-list">
+                            <li>Nome do programa executado</li>
+                            <li>Datasets de entrada e saída</li>
+                            <li>Disposition do arquivo</li>
+                            <li>SYSIN e cartões de controle</li>
+                            <li>Procedure chamada</li>
+                            <li>Passos com RC anormal</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Exemplo resumido</h3>
+                    <pre><code>//EXEMPLO  JOB (ACCT),'OPERACAO',CLASS=A,MSGCLASS=X
+//PASSO1   EXEC PGM=IEFBR14
+//ARQOUT   DD  DSN=HLQ.ARQ.SAIDA,
+//             DISP=(NEW,CATLG,DELETE),
+//             UNIT=SYSDA,SPACE=(CYL,(1,1)),
+//             DCB=(RECFM=FB,LRECL=80,BLKSIZE=800)</code></pre>
+                </div>
+            </section>
+
+            <section class="topic" id="tn3270">
+                <h2>Utilitários, Procedures e DFSORT</h2>
+                <div class="card">
+                    <p>Utilitários e cartões de controle são fundamentais para rotinas de cópia, classificação e tratamento de arquivos. Para a operação, isso ajuda a reconhecer rapidamente quando a falha está em parâmetro de sort, controle ausente, espaço insuficiente ou arquivo de apoio incorreto.</p>
+                </div>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Pontos de atenção</h3>
+                        <ul class="tag-list">
+                            <li>Cartão SYSIN/SORTIN/SORTOUT</li>
+                            <li>Campos de ordenação</li>
+                            <li>Comprimento do registro</li>
+                            <li>Procedure com simbólicos</li>
+                            <li>Dataset temporário e permanência</li>
+                            <li>RC e mensagens do utilitário</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Erros recorrentes em sort</h3>
+                        <p>Nos user abends relacionados a sort, aparecem várias ocorrências ligadas a cartão de controle ausente, campos mal definidos, comprimento inválido e necessidade de ajuste de região ou capacidade, como <span class="code">U0005</span>, <span class="code">U0007</span>, <span class="code">U0016</span> e <span class="code">U0043</span>.</p>
+                    </div>
+                </div>
             </section>
         </main>
     </div>
 
-    <button id="scrollTop"><i class="fas fa-chevron-up"></i></button>
-
+    <button id="scrollTop" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
     <script src="script.js"></script>
 </body>
 </html>
