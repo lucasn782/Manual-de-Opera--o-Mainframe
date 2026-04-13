@@ -25,6 +25,7 @@
             <a class="nav-item" href="#infra-ips"><i class="fas fa-network-wired"></i>Infraestrutura e Coordenadas</a>
             <a class="nav-item" href="#tso-basics"><i class="fas fa-terminal"></i>Comandos e Atalhos TSO</a>
             <a class="nav-item" href="#ctms-screens"><i class="fas fa-diagram-project"></i>Telas do CTMS</a>
+            <a class="nav-item" href="#decolate"><i class="fas fa-plane-departure"></i>Decolate / Decolagem</a>
             <a class="nav-item" href="#tabelas-ctrl"><i class="fas fa-link"></i>Tabelas de Controle</a>
             <a class="nav-item" href="#grafana-dash"><i class="fas fa-chart-line"></i>Grafana Dashboards</a>
             <a class="nav-item" href="#gml-flow"><i class="fas fa-share-nodes"></i>Promoção GML</a>
@@ -127,6 +128,36 @@
                 </div>
             </section>
 
+            <section class="topic" id="decolate">
+                <h2>Decolate / Decolagem</h2>
+                <div class="card">
+                    <p>No contexto 3AM / Global Hitss, <strong>Decolate</strong> é o momento em que a malha de produção deixa a Tela 2 (Planning) e entra no Active Environment da Tela 3 (Monitoring).</p>
+                    <p>O objetivo é garantir que todos os jobs planejados para o <span class="code">ODATE</span> estejam prontos para execução, com dependências, calendário e agentes validados.</p>
+                </div>
+                <div class="grid">
+                    <div class="status-card blue">
+                        <h3>Como identificar a decolagem</h3>
+                        <ul class="tag-list">
+                            <li><strong>Cinza:</strong> job decolou corretamente e aguarda pré-requisito.</li>
+                            <li><strong>Amarelo:</strong> job foi aceito pelo engine e está em execução.</li>
+                            <li><strong>Branco:</strong> falha de decolagem de agente específico ou comunicação interrompida.</li>
+                        </ul>
+                    </div>
+                    <div class="status-card green">
+                        <h3>Ações de ajuste</h3>
+                        <ul class="tag-list">
+                            <li><span class="code">Find [Job]</span> para localizar o ponto de interrupção.</li>
+                            <li><span class="code">O</span> + <span class="code">Y</span> para <strong>Force OK</strong> quando autorizado.</li>
+                            <li><span class="code">F</span> para <strong>Free</strong> e liberar o job.</li>
+                            <li>Validar sempre o espaço em produção com <span class="code">STG LAST</span> antes de grandes decolagens.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <p>Se o disco estiver cheio e houver abends como <span class="code">B37</span> / <span class="code">D37</span>, os jobs podem até decolar mas cairão imediatamente em erro.</p>
+                </div>
+            </section>
+
             <section class="topic" id="tabelas-ctrl">
                 <h2>Tabelas de Controle (Mapas do Sistema)</h2>
                 <div class="acc-item">
@@ -225,6 +256,11 @@
                         <h3>Visão de turno</h3>
                         <p>Boa parte do trabalho do operador não é criar processamento, e sim confirmar que o processamento encadeado atravessou com segurança as janelas do dia. Isso inclui Control-M, monitorias, planilhas, dashboards e comunicação de exceções.</p>
                     </div>
+                </div>
+                <div class="card">
+                    <h3>Conexão com o fluxo de decolagem</h3>
+                    <p>O prefixo <span class="code">MP(GML)</span> prepara a aprovação da promoção GML. O status <span class="tag">P</span> indica que o sistema está liberado para a decolagem final em produção.</p>
+                    <p>Use essa etapa como parte da validação antes do release: o GML precisa estar aprovado e a malha pronta para iniciar sem bloqueios de calendário ou dependência.</p>
                 </div>
             </section>
 
