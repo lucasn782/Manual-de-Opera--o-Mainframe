@@ -25,6 +25,8 @@
             <a class="nav-item" href="#infra-ips"><i class="fas fa-network-wired"></i>Infraestrutura e Coordenadas</a>
             <a class="nav-item" href="#tso-basics"><i class="fas fa-terminal"></i>Comandos e Atalhos TSO</a>
             <a class="nav-item" href="#ctms-screens"><i class="fas fa-diagram-project"></i>Telas do CTMS</a>
+            <a class="nav-item" href="#ctms-status"><i class="fas fa-palette"></i>Status e Cores CTMS</a>
+            <a class="nav-item" href="#restart-jobs"><i class="fas fa-rotate-right"></i>Restart de Jobs</a>
             <a class="nav-item" href="#decolate"><i class="fas fa-plane-departure"></i>Decolate / Decolagem</a>
             <a class="nav-item" href="#tabelas-ctrl"><i class="fas fa-link"></i>Tabelas de Controle</a>
             <a class="nav-item" href="#grafana-dash"><i class="fas fa-chart-line"></i>Grafana Dashboards</a>
@@ -38,6 +40,7 @@
             <a class="nav-item" href="#javascript"><i class="fas fa-keyboard"></i>ISPF e Edição</a>
             <a class="nav-item" href="#css"><i class="fas fa-file-code"></i>JCL Essencial</a>
             <a class="nav-item" href="#tn3270"><i class="fas fa-gears"></i>Utilitários e DFSORT</a>
+            <a class="nav-item" href="#system-abends"><i class="fas fa-bug"></i>Dicionário de Abends</a>
         </aside>
 
         <main class="content">
@@ -105,6 +108,9 @@
                 <h2>Telas do Control-M (CTMS)</h2>
                 <div class="card">
                     <p>O Control-M é a camada de automação e monitoração de workloads batch. Na prática do operador, ele organiza tabelas, jobs, calendários, condições de dependência e filas de execução, permitindo acompanhar o que está aguardando, executando, falhando ou liberando etapas seguintes.</p>
+                    <div class="step-box">
+                        Na rotina operacional, a <span class="code">Tela 2</span> é a visão de planejamento e definições estáticas, enquanto a <span class="code">Tela 3</span> é o ambiente ativo de monitoração, intervenção e acompanhamento do processamento em andamento.
+                    </div>
                 </div>
                 <div class="grid">
                     <div class="status-card blue">
@@ -128,11 +134,64 @@
                 </div>
             </section>
 
+            <section class="topic" id="ctms-status">
+                <h2>Status e Cores no CTMS</h2>
+                <div class="card">
+                    <p>O código de cores do Control-M ajuda no diagnóstico visual imediato da malha. Antes de atuar, leia a cor em conjunto com a dependência, o horário e a mensagem do job para evitar ação indevida em um fluxo apenas aguardando liberação normal.</p>
+                </div>
+                <div class="grid">
+                    <div class="status-card blue">
+                        <h3>Dicionário de status</h3>
+                        <ul class="tag-list">
+                            <li><strong>Cinza:</strong> aguardando pré-requisito, condição ou horário.</li>
+                            <li><strong>Rosa:</strong> aguardando usuário, intervenção manual ou resposta.</li>
+                            <li><strong>Azul:</strong> aguardando recurso, disco, fita ou arquivo em uso.</li>
+                            <li><strong>Amarelo:</strong> em execução no Mainframe.</li>
+                            <li><strong>Verde:</strong> terminou OK.</li>
+                            <li><strong>Vermelho:</strong> terminou NÃO OK, com erro ou abend.</li>
+                            <li><strong>Branco:</strong> comunicação interrompida com o agente.</li>
+                        </ul>
+                    </div>
+                    <div class="status-card green">
+                        <h3>Leitura operacional rápida</h3>
+                        <p><strong>Cinza</strong> e <strong>Azul</strong> normalmente apontam espera técnica do fluxo. <strong>Rosa</strong> pede ação humana. <strong>Vermelho</strong> exige triagem do erro. <strong>Branco</strong> costuma indicar falha de comunicação e deve ser correlacionado com agente, rede ou problema de decolagem.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="topic" id="restart-jobs">
+                <h2>Procedimento de Restart de Jobs</h2>
+                <div class="card">
+                    <p>Após um abend, o restart pode ser feito pelo JCL ou diretamente pela Tela 3, dependendo do padrão do fluxo. O objetivo é reiniciar do ponto correto sem repetir etapas já concluídas nem avançar sem tratar a causa da falha.</p>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <h3>Opção 1: Restart via JCL</h3>
+                        <p>Na Sysout, procure o step abendado usando os comandos laterais <span class="code">V</span> e <span class="code">S</span> para identificar o nome exato do step e da PROC.</p>
+                        <p>No JCL, localize a variável <span class="code">%%RESTART=N</span> e altere para <span class="code">%%RESTART=S</span>.</p>
+                        <p>Abaixo de <span class="code">%%PROGRAMA=STEPNAME</span>, configure o ponto de reinício no formato <span class="code">STEP.PROC</span>.</p>
+                        <div class="info-box">Se o cartão de restart não estiver visível, use o comando <span class="code">Z</span> no CTMS para habilitar a edição do conteúdo.</div>
+                    </div>
+                    <div class="card">
+                        <h3>Opção 2: Restart pela Tela 3</h3>
+                        <ul class="tag-list">
+                            <li>Colocar o job em <span class="code">H</span> com <span class="code">Hold</span>.</li>
+                            <li>Digitar <span class="code">R</span> para <span class="code">Rerun</span>.</li>
+                            <li>No campo <span class="code">Restart</span>, usar <span class="code">?</span> e pressionar Enter.</li>
+                            <li>Marcar <span class="code">F</span> no step de início do reprocessamento.</li>
+                            <li>Marcar <span class="code">O</span> no step final, se quiser rodar apenas um trecho.</li>
+                            <li>Finalizar com <span class="code">F3</span> e confirmar com <span class="code">Y</span>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
             <section class="topic" id="decolate">
                 <h2>Decolate / Decolagem</h2>
                 <div class="card">
                     <p>No contexto 3AM / Global Hitss, <strong>Decolate</strong> é o momento em que a malha de produção deixa a Tela 2 (Planning) e entra no Active Environment da Tela 3 (Monitoring).</p>
                     <p>O objetivo é garantir que todos os jobs planejados para o <span class="code">ODATE</span> estejam prontos para execução, com dependências, calendário e agentes validados.</p>
+                    <p>É o momento crítico em que o <span class="code">ODATE</span> é ativado e os processos começam a buscar seus pré-requisitos para rodar. Quando há erro de decolagem, as causas mais comuns são falha de comunicação com agente e ausência de calendário configurado para a carga.</p>
                 </div>
                 <div class="grid">
                     <div class="status-card blue">
@@ -443,6 +502,20 @@
                         </ul>
                     </div>
                 </div>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Cartão JOB</h3>
+                        <p><span class="code">CLASS</span> define a fila de execução.</p>
+                        <p><span class="code">MSGCLASS</span> define o destino das mensagens do sistema, como <span class="code">Z</span> para visualização.</p>
+                        <p><span class="code">MSGLEVEL=(1,1)</span> exibe comandos codificados, expandidos e alocações de arquivos.</p>
+                        <p><span class="code">REGION</span> define a memória real necessária, por exemplo <span class="code">2048K</span>.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Cartões EXEC e DD</h3>
+                        <p>No <span class="code">EXEC</span>, <span class="code">PGM</span> indica o programa executável e <span class="code">COND</span> permite ignorar passos conforme o return code anterior.</p>
+                        <p>No <span class="code">DD</span>, <span class="code">DSN</span> identifica o arquivo, <span class="code">DISP</span> define seu status como <span class="code">NEW</span>, <span class="code">OLD</span>, <span class="code">SHR</span> ou <span class="code">MOD</span>, e <span class="code">UNIT</span>/<span class="code">SPACE</span> tratam de hardware e tamanho em disco.</p>
+                    </div>
+                </div>
                 <div class="card">
                     <h3>Exemplo resumido</h3>
                     <pre><code>//EXEMPLO  JOB (ACCT),'OPERACAO',CLASS=A,MSGCLASS=X
@@ -461,6 +534,13 @@
                 </div>
                 <div class="grid">
                     <div class="card">
+                        <h3>Utilitários IBM essenciais</h3>
+                        <p><span class="code">ICEGENER</span> realiza cópias rápidas de arquivos sequenciais e VSAM.</p>
+                        <p><span class="code">IDCAMS</span> é usado para criação e manutenção de catálogos, arquivos VSAM e GDGs.</p>
+                        <p><span class="code">DFSORT</span> atende ordenação, filtro e consolidação com <span class="code">INCLUDE</span>, <span class="code">OMIT</span> e <span class="code">SUM</span>.</p>
+                        <p><span class="code">IEBCOPY</span> copia e comprime bibliotecas particionadas, como PDS.</p>
+                    </div>
+                    <div class="card">
                         <h3>Pontos de atenção</h3>
                         <ul class="tag-list">
                             <li>Cartão SYSIN/SORTIN/SORTOUT</li>
@@ -474,6 +554,24 @@
                     <div class="card">
                         <h3>Erros recorrentes em sort</h3>
                         <p>Nos user abends relacionados a sort, aparecem várias ocorrências ligadas a cartão de controle ausente, campos mal definidos, comprimento inválido e necessidade de ajuste de região ou capacidade, como <span class="code">U0005</span>, <span class="code">U0007</span>, <span class="code">U0016</span> e <span class="code">U0043</span>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="topic" id="system-abends">
+                <h2>Dicionário de Abends do Sistema</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Abends essenciais</h3>
+                        <p><span class="code">S0C1</span> indica erro de operação, normalmente instrução inválida ou chamada incorreta.</p>
+                        <p><span class="code">S0C4</span> aponta proteção de memória, com acesso a área não permitida.</p>
+                        <p><span class="code">S0C7</span> sinaliza erro de dados, geralmente campo numérico com caracteres inválidos.</p>
+                        <p><span class="code">SB37</span> e <span class="code">SD37</span> indicam falta de espaço em disco para gravação.</p>
+                        <p><span class="code">S806</span> mostra que o programa ou módulo não foi encontrado na biblioteca.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Como usar essa leitura</h3>
+                        <p>Esses códigos ajudam a decidir se a ação é operacional, como liberar espaço ou ajustar restart, ou se a falha precisa de repasse para desenvolvimento, storage, catálogo ou suporte de infraestrutura.</p>
                     </div>
                 </div>
             </section>
