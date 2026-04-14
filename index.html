@@ -102,6 +102,21 @@
                         <p>Em SDSF, os filtros mais usados são <span class="code">OWNER IBMPROD</span>, <span class="code">OWNER CICUSER</span> e prefixo <span class="code">PRE [prefixo]*</span>.</p>
                     </div>
                 </div>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Comando QDS no P.3.4</h3>
+                        <p>O <span class="code">QDS</span> é usado no menu <span class="code">P.3.4</span> na frente do nome do arquivo para abrir uma consulta técnica rápida do dataset.</p>
+                        <p>Ele mostra atributos como organização, <span class="code">RECFM</span> (<span class="code">FB</span> / <span class="code">VB</span>), <span class="code">LRECL</span> e <span class="code">Extents</span>, ajudando a validar formato e crescimento do arquivo antes de uma ação operacional.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Diferença entre I, S e QDS</h3>
+                        <ul class="tag-list">
+                            <li><span class="code">I</span> mostra o registro completo do arquivo em tela cheia.</li>
+                            <li><span class="code">S</span> mostra volume e organização em linha resumida.</li>
+                            <li><span class="code">QDS</span> abre pop-up com dados de alocação, espaço e atributos técnicos.</li>
+                        </ul>
+                    </div>
+                </div>
             </section>
 
             <section class="topic" id="ctms-screens">
@@ -111,6 +126,7 @@
                     <div class="step-box">
                         Na rotina operacional, a <span class="code">Tela 2</span> é a visão de planejamento e definições estáticas, enquanto a <span class="code">Tela 3</span> é o ambiente ativo de monitoração, intervenção e acompanhamento do processamento em andamento.
                     </div>
+                    <p>Em outras palavras, a malha fica planejada na <span class="code">Tela 2</span> e ganha vida na <span class="code">Tela 3</span> após a decolagem para o ambiente ativo.</p>
                 </div>
                 <div class="grid">
                     <div class="status-card blue">
@@ -178,7 +194,7 @@
                             <li>Colocar o job em <span class="code">H</span> com <span class="code">Hold</span>.</li>
                             <li>Digitar <span class="code">R</span> para <span class="code">Rerun</span>.</li>
                             <li>No campo <span class="code">Restart</span>, usar <span class="code">?</span> e pressionar Enter.</li>
-                            <li>Marcar <span class="code">F</span> no step de início do reprocessamento.</li>
+                            <li>Na aba de steps, marcar <span class="code">F</span> no step de início do reprocessamento.</li>
                             <li>Marcar <span class="code">O</span> no step final, se quiser rodar apenas um trecho.</li>
                             <li>Finalizar com <span class="code">F3</span> e confirmar com <span class="code">Y</span>.</li>
                         </ul>
@@ -321,6 +337,16 @@
                     <p>O prefixo <span class="code">MP(GML)</span> prepara a aprovação da promoção GML. O status <span class="tag">P</span> indica que o sistema está liberado para a decolagem final em produção.</p>
                     <p>Use essa etapa como parte da validação antes do release: o GML precisa estar aprovado e a malha pronta para iniciar sem bloqueios de calendário ou dependência.</p>
                 </div>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Fluxo resumido de faturamento</h3>
+                        <p>O caminho operacional é <span class="code">19 (TSODSV)</span> -> <span class="code">GML</span> -> <span class="code">TSO SPROD</span>. Na busca, aplique o prefixo <span class="code">MP(GML)</span> para localizar a promoção correta.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Evidência no Jira</h3>
+                        <p>No job <span class="code">J-"NUMGML"</span>, marque <span class="code">S</span> e pressione Enter para abrir o conteúdo. Copie o conteúdo para os comentários da atividade e, quando houver promoção, anexe também o log correspondente no Jira.</p>
+                    </div>
+                </div>
             </section>
 
             <section class="topic" id="ops-destrave">
@@ -409,6 +435,7 @@
                     <div class="step-box">
                         Em incidentes com SLA, priorize texto objetivo: o que falhou, desde quando, qual contingência foi aplicada e quem está atuando. Evite e-mails sem horário, sem identificação do job ou sem status atual.
                     </div>
+                    <p>Os checkpoints de <span class="code">08:00</span>, <span class="code">09:30</span> e <span class="code">13:30</span> devem ser seguidos rigidamente para reportar a saúde do BIM, do faturamento e dos chamados violados.</p>
                 </div>
                 <div class="card">
                     <div class="timeline-item"><strong>08:00:</strong> combo de abertura com tasks, Grafana, SLA plan e chamados violados.</div>
@@ -417,6 +444,10 @@
                     <div class="timeline-item"><strong>13:30:</strong> e-mail da daily com status geral, IPs e total de jobs.</div>
                     <div class="timeline-item"><strong>16:00:</strong> atualização de chamados violados.</div>
                     <div class="timeline-item"><strong>19:00:</strong> passagem de turno.</div>
+                </div>
+                <div class="card">
+                    <h3>Observação de espaço antes do restart</h3>
+                    <p>Se o <span class="code">QDS</span> mostrar muitos <span class="code">Extents</span>, o job pode sofrer <span class="code">B37</span> ou <span class="code">D37</span>. Antes de reiniciar rotinas de faturamento, valide o espaço com <span class="code">STG LAST</span>.</p>
                 </div>
             </section>
 
