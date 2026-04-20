@@ -117,6 +117,11 @@
                         </ul>
                     </div>
                 </div>
+                <div class="card">
+                    <h3>Validação de arquivos antes do BILFIM</h3>
+                    <p>Antes de reiniciar rotinas de faturamento como <span class="code">BILFIM</span>, consulte o <span class="code">QDS</span> no <span class="code">P.3.4</span> para confirmar <span class="code">LRECL</span>, formato e crescimento do arquivo de saída.</p>
+                    <p>Se o dataset estiver no limite de <span class="code">Extents</span>, há risco de <span class="code">B37</span> ou <span class="code">D37</span>. Complete a análise com <span class="code">STG LAST</span> para validar o espaço disponível no volume de produção antes da nova tentativa.</p>
+                </div>
             </section>
 
             <section class="topic" id="ctms-screens">
@@ -200,6 +205,15 @@
                         </ul>
                     </div>
                 </div>
+                <div class="card">
+                    <h3>Fluxo revisado para falha no step DERJE100</h3>
+                    <ul class="tag-list">
+                        <li>Na Sysout, use <span class="code">V</span> e <span class="code">S</span> para localizar o <span class="code">STEP</span> e a <span class="code">PROC</span> abendada.</li>
+                        <li>Se o cartão de restart ainda não existir, aplique <span class="code">Z</span> para habilitar a edição do JCL.</li>
+                        <li>Troque <span class="code">%%RESTART=N</span> por <span class="code">%%RESTART=S</span> e informe <span class="code">STEP.PROC</span> logo abaixo de <span class="code">%%PROGRAMA=STEPNAME</span>.</li>
+                        <li>Na Tela 3, coloque o job em <span class="code">H</span>, execute <span class="code">R</span> e use <span class="code">?</span> para selecionar os steps com <span class="code">F</span> e <span class="code">O</span>.</li>
+                    </ul>
+                </div>
             </section>
 
             <section class="topic" id="decolate">
@@ -230,6 +244,11 @@
                 </div>
                 <div class="card">
                     <p>Se o disco estiver cheio e houver abends como <span class="code">B37</span> / <span class="code">D37</span>, os jobs podem até decolar mas cairão imediatamente em erro.</p>
+                </div>
+                <div class="card">
+                    <h3>Ajuste de ODATE em exceções operacionais</h3>
+                    <p>Quando a malha precisar ser trabalhada com outra data operacional, abra a edição do submit e revise o <span class="code">ODATE</span> antes do novo disparo.</p>
+                    <p>Se a data estiver amarrada a uma variável no JCL ou na procedure, atualize também essa variável e salve a alteração antes de seguir com a ação operacional autorizada.</p>
                 </div>
             </section>
 
@@ -265,6 +284,8 @@
                     <div class="acc-content">
                         <p>O fluxo é controlado por condições de entrada e saída. Em termos práticos, o job fica aguardando até que pré-requisitos sejam satisfeitos e, quando conclui, libera condições para os sucessores.</p>
                         <p>A leitura do encadeamento visual ajuda a descobrir se o atraso vem de predecessor, recurso, janela horária ou intervenção manual pendente.</p>
+                        <p>Quando o job estiver cinza e a causa não estiver evidente, use o comando <span class="code">Network</span> para visualizar a árvore de dependências completa.</p>
+                        <p>Na leitura do <span class="code">Network</span>, os itens com <span class="code">-</span> são antecessores que ainda precisam terminar; os itens com <span class="code">+</span> mostram os sucessores que serão liberados após a conclusão do job atual.</p>
                     </div>
                 </div>
                 <div class="grid">
@@ -310,6 +331,23 @@
                         <p>Tabelas como <span class="code">Rins</span>, <span class="code">TCO-TFI</span> e <span class="code">STI-FTC-EBC</span> funcionam como apoio de validação em fluxos específicos e devem ser consultadas conforme a trilha operacional vigente do sistema atendido.</p>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="card">
+                        <h3>Verificação do node do Grafana</h3>
+                        <p>Antes de confiar no dashboard, valide se o node do Grafana está operacional no Mainframe com <span class="code">TSO VCON [NomeDoNode]</span>.</p>
+                        <p>Se o node estiver fora, os painéis podem permanecer acessíveis, mas com dados desatualizados para a monitoração e para os reportes do turno.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Fluxo Connect para consultar PNumber</h3>
+                        <ul class="tag-list">
+                            <li>Acesse <span class="code">connect</span> e selecione a opção <span class="code">n</span>.</li>
+                            <li>Informe o seu <span class="code">userID</span> e entre em <span class="code">SP</span>.</li>
+                            <li>Localize o <span class="code">PNumber</span> do node ou processo desejado.</li>
+                            <li>Use <span class="code">SS</span> e cole o <span class="code">PNumber</span> para consultar o status detalhado do processo.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="info-box">Os comandos de <span class="code">VCON</span>, <span class="code">SP</span> e <span class="code">SS</span> são especialmente úteis nos reportes das <span class="code">08:00</span> e <span class="code">13:30</span>, quando um node fora do ar pode distorcer a leitura dos dashboards.</div>
             </section>
 
             <section class="topic" id="gml-flow">
@@ -479,6 +517,17 @@
                         <div class="step-box">
                             Fluxo resumido OPS: CTMS Tela 3 -> localizar job -> validar <span class="code">H</span> ou <span class="code">WC</span> -> aplicar <span class="code">O</span> e <span class="code">Y</span> para Force OK quando autorizado -> aplicar <span class="code">F</span> -> anexar a evidência.
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <h3>Quando abrir em PDST ou OPS</h3>
+                        <p><strong>PDST:</strong> mantenha para execuções e acompanhamentos operacionais, mas documente o abend antes de finalizar qualquer atualização.</p>
+                        <p><strong>OPS:</strong> trate como incidente técnico e concentre nele os casos com falha de processamento, destravamento, dependência anormal ou erro que exija evidência detalhada.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Evidência mínima para anexar</h3>
+                        <p>Sempre anexe o log do erro e a imagem da Tela 3 do CTMS. Se a mensagem estiver truncada, use <span class="code">F11</span> para navegar para a direita e capturar o erro completo antes de registrar no Jira.</p>
                     </div>
                 </div>
             </section>
