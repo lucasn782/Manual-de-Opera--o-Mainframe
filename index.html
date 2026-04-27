@@ -72,6 +72,22 @@
                         </ul>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="card">
+                        <h3>Consoles de operação e monitoração</h3>
+                        <p>Mantenha mapeados os acessos de <strong>Console Master</strong>, <strong>Console Alternada</strong>, <strong>Grafana 01</strong> e <strong>Grafana 02</strong> para abertura de turno, contingência e validação de monitoração. Registre os IDs dos consoles na rotina operacional e preserve as senhas apenas no cofre ou canal oficial de credenciais.</p>
+                        <div class="info-box">Por segurança, não mantenha senhas operacionais em texto puro nesta página. Consulte sempre a referência oficial do posto.</div>
+                    </div>
+                    <div class="card">
+                        <h3>Saúde de nodes e fluxo connect</h3>
+                        <ul class="tag-list">
+                            <li><span class="code">TSO VCON [NomeDoNode]</span> valida a conectividade do node do Grafana.</li>
+                            <li><span class="code">connect</span> abre o fluxo de validação entre processos.</li>
+                            <li>Na sequência, usar <span class="code">n</span>, informar o <span class="code">userID</span> e acessar <span class="code">SP</span>.</li>
+                            <li>Capture o <span class="code">PNumber</span> e execute <span class="code">SS</span> para detalhar o status do processo.</li>
+                        </ul>
+                    </div>
+                </div>
             </section>
 
             <section class="topic" id="tso-basics">
@@ -154,6 +170,15 @@
                         <p><span class="tag">Job</span> representa a unidade executável monitorada.</p>
                     </div>
                 </div>
+                <div class="card">
+                    <h3>Network e leitura de dependências</h3>
+                    <p>Use o comando <span class="code">Network</span> para entender por que um job segue parado mesmo sem erro explícito. A árvore mostra quais predecessores ainda precisam terminar e quais sucessores serão liberados depois da conclusão.</p>
+                    <ul class="tag-list">
+                        <li><strong>Sinal - :</strong> jobs antecessores que liberam o seu job.</li>
+                        <li><strong>Sinal + :</strong> jobs sucessores que dependem do seu job.</li>
+                        <li>Combine a leitura de <span class="code">Network</span> com a <span class="code">Tela 2</span> e a <span class="code">Tela 3</span> para validar planejamento e execução.</li>
+                    </ul>
+                </div>
             </section>
 
             <section class="topic" id="ctms-status">
@@ -178,6 +203,11 @@
                         <h3>Leitura operacional rápida</h3>
                         <p><strong>Cinza</strong> e <strong>Azul</strong> normalmente apontam espera técnica do fluxo. <strong>Rosa</strong> pede ação humana. <strong>Vermelho</strong> exige triagem do erro. <strong>Branco</strong> costuma indicar falha de comunicação e deve ser correlacionado com agente, rede ou problema de decolagem.</p>
                     </div>
+                </div>
+                <div class="card">
+                    <h3>RC e status na prática</h3>
+                    <p><span class="code">RC=0000</span> representa sucesso absoluto. Já <span class="code">RC=0004</span> indica warning: o programa terminou, mas com alguma condição que exige conferência, como arquivo vazio ou exceção de negócio.</p>
+                    <p>Quando o job fica em vermelho por <span class="code">CC</span> inválido ou em <span class="code">Held</span> após warning, trate o caso como validação operacional e não como rerun automático imediato.</p>
                 </div>
             </section>
 
@@ -214,6 +244,16 @@
                         <li>Troque <span class="code">%%RESTART=N</span> por <span class="code">%%RESTART=S</span> e informe <span class="code">STEP.PROC</span> logo abaixo de <span class="code">%%PROGRAMA=STEPNAME</span>.</li>
                         <li>Na Tela 3, coloque o job em <span class="code">H</span>, execute <span class="code">R</span> e use <span class="code">?</span> para selecionar os steps com <span class="code">F</span> e <span class="code">O</span>.</li>
                     </ul>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <h3>Triagem no SDSF e PRINTER</h3>
+                        <p>Na investigação de return codes, vá para a <span class="code">Sysout</span> e use <span class="code">V</span> e <span class="code">S</span> para localizar step e mensagens do programa. Nos relatórios <span class="code">PRINTER</span>, procure textos como <span class="code">FALHA DE LEITURA DO ARQUIVO ENTRADA</span> para decidir se a causa está em dado vazio, arquivo ausente ou erro lógico.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Held e restart automático</h3>
+                        <p>Alguns jobs trazem comentário como <span class="code">RESTART AUTOMATICO (2 VEZES)</span> no cabeçalho do JCL. Mesmo assim, se o job parar em <span class="code">Held</span>, considere que a automação transferiu a decisão para a operação e faça a validação humana antes de repetir a execução.</p>
+                    </div>
                 </div>
             </section>
 
@@ -309,6 +349,17 @@
                     <h3>Ajuste de ODATE em exceções operacionais</h3>
                     <p>Quando a malha precisar ser trabalhada com outra data operacional, abra a edição do submit e revise o <span class="code">ODATE</span> antes do novo disparo.</p>
                     <p>Se a data estiver amarrada a uma variável no JCL ou na procedure, atualize também essa variável e salve a alteração antes de seguir com a ação operacional autorizada.</p>
+                </div>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Controles de faturamento BIM / BILFIM</h3>
+                        <p>Antes de qualquer restart ligado ao faturamento, valide o arquivo pelo <span class="code">QDS</span> no menu <span class="code">3.4</span>, conferindo <span class="code">LRECL</span>, <span class="code">RECFM</span> e quantidade de <span class="code">Extents</span>. Isso reduz risco de <span class="code">B37</span> ou <span class="code">D37</span> durante nova tentativa.</p>
+                        <p>Se o dataset estiver em <span class="code">MIGRAT2</span>, aplique <span class="code">HRECALL</span> antes do processamento para trazer o arquivo do HSM de volta ao disco.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Esteira do BIM</h3>
+                        <p>Use <span class="code">ZCTO</span> e os dashboards do Grafana para acompanhar a esteira do BIM e identificar atrasos no faturamento. Se os jobs estiverem em amarelo, mas a monitoração parecer congelada, valide o <span class="code">PNumber</span> com <span class="code">SS</span> para confirmar se o processo continua ativo.</p>
+                    </div>
                 </div>
             </section>
 
@@ -524,6 +575,12 @@
                         <p>Deixar para a próxima equipe um estado claro do ambiente: o que normalizou, o que ficou pendente, qual janela ainda está aberta e que decisões já foram tomadas para evitar repetição ou conflito de ação.</p>
                     </div>
                 </div>
+                <div class="card">
+                    <h3>Checkpoints do turno</h3>
+                    <div class="timeline-item"><strong>08:00:</strong> status de abertura com nodes, Grafana e início da esteira.</div>
+                    <div class="timeline-item"><strong>11:00:</strong> envio das 4 planilhas com bilhetadoras, PutProc, espaço e SLA.</div>
+                    <div class="timeline-item"><strong>13:30:</strong> daily com status geral e total de jobs processados.</div>
+                </div>
             </section>
 
             <section class="topic" id="emails-sla">
@@ -546,6 +603,10 @@
                 <div class="card">
                     <h3>Observação de espaço antes do restart</h3>
                     <p>Se o <span class="code">QDS</span> mostrar muitos <span class="code">Extents</span>, o job pode sofrer <span class="code">B37</span> ou <span class="code">D37</span>. Antes de reiniciar rotinas de faturamento, valide o espaço com <span class="code">STG LAST</span>.</p>
+                </div>
+                <div class="card">
+                    <h3>Abertura e congelamento aparente</h3>
+                    <p>No reporte de abertura, confirme saúde dos nodes, recepção de dados no Grafana e andamento da esteira. Se o dashboard aparentar congelamento, mas os jobs ainda estiverem em execução, valide o processo pelo <span class="code">SS</span> com o <span class="code">PNumber</span> coletado no <span class="code">SP</span>.</p>
                 </div>
             </section>
 
@@ -589,6 +650,11 @@
                         <h3>Evidência mínima para anexar</h3>
                         <p>Sempre anexe o log do erro e a imagem da Tela 3 do CTMS. Se a mensagem estiver truncada, use <span class="code">F11</span> para navegar para a direita e capturar o erro completo antes de registrar no Jira.</p>
                     </div>
+                </div>
+                <div class="card">
+                    <h3>Fechamento e resolução</h3>
+                    <p>Em chamados <strong>PDST</strong>, use descrição objetiva para renames, transmissões e atendimentos simples. Em <strong>OPS</strong>, registre o passo executado, o grupo acionado, o erro encontrado e a evidência usada para normalização.</p>
+                    <p>Quando o log estiver largo, combine <span class="code">F10</span> e <span class="code">F11</span> para navegação lateral e capture a mensagem completa antes de concluir o atendimento ou marcar como resolvido.</p>
                 </div>
             </section>
 
