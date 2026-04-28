@@ -76,16 +76,23 @@
                     <div class="card">
                         <h3>Consoles de operação e monitoração</h3>
                         <p>Mantenha mapeados os acessos de <strong>Console Master</strong>, <strong>Console Alternada</strong>, <strong>Grafana 01</strong> e <strong>Grafana 02</strong> para abertura de turno, contingência e validação de monitoração. Registre os IDs dos consoles na rotina operacional e preserve as senhas apenas no cofre ou canal oficial de credenciais.</p>
+                        <ul class="tag-list">
+                            <li><strong>Console Master:</strong> acesso principal do turno via RDP.</li>
+                            <li><strong>Console Alternada:</strong> contingência para atuação quando o console principal estiver indisponível.</li>
+                            <li><strong>Grafana 01:</strong> apoio à monitoração e conferência dos painéis operacionais.</li>
+                            <li><strong>Grafana 02:</strong> contingência para leitura dos dashboards e validação cruzada.</li>
+                        </ul>
                         <div class="info-box">Por segurança, não mantenha senhas operacionais em texto puro nesta página. Consulte sempre a referência oficial do posto.</div>
                     </div>
                     <div class="card">
                         <h3>Saúde de nodes e fluxo connect</h3>
                         <ul class="tag-list">
-                            <li><span class="code">TSO VCON [NomeDoNode]</span> valida a conectividade do node do Grafana.</li>
-                            <li><span class="code">connect</span> abre o fluxo de validação entre processos.</li>
-                            <li>Na sequência, usar <span class="code">n</span>, informar o <span class="code">userID</span> e acessar <span class="code">SP</span>.</li>
-                            <li>Capture o <span class="code">PNumber</span> e execute <span class="code">SS</span> para detalhar o status do processo.</li>
+                            <li><span class="code">TSO VCON [NomeDoNode]</span> valida se o node do Grafana está recebendo dados no Mainframe.</li>
+                            <li><span class="code">connect</span> abre o fluxo de validação entre processos e nodes.</li>
+                            <li>Na sequência, usar <span class="code">n</span>, informar o <span class="code">userID</span> e acessar <span class="code">SP</span> para consultar outros processos.</li>
+                            <li>Capture o <span class="code">PNumber</span> desejado e execute <span class="code">SS</span> para detalhar o status do processo.</li>
                         </ul>
+                        <p>Esse roteiro é especialmente útil nos reportes das <span class="code">08:00</span> e <span class="code">13:30</span>, quando o dashboard pode parecer congelado por falha do node e não por ausência real de processamento.</p>
                     </div>
                 </div>
             </section>
@@ -178,6 +185,26 @@
                         <li><strong>Sinal + :</strong> jobs sucessores que dependem do seu job.</li>
                         <li>Combine a leitura de <span class="code">Network</span> com a <span class="code">Tela 2</span> e a <span class="code">Tela 3</span> para validar planejamento e execução.</li>
                     </ul>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <h3>Comandos úteis no SDSF</h3>
+                        <ul class="tag-list">
+                            <li><span class="code">S</span> abre o log completo do job.</li>
+                            <li><span class="code">V</span> abre a sysout para localizar steps e procedures.</li>
+                            <li><span class="code">D</span> remove o log do spool após a conferência, quando a limpeza for prevista.</li>
+                            <li><span class="code">A</span> libera uma saída retida no spool.</li>
+                            <li><span class="code">L</span> mostra apenas o log de eventos do job.</li>
+                            <li><span class="code">?</span> expande os <span class="code">DDNAMEs</span> para seleção individual.</li>
+                            <li><span class="code">ST</span> ajuda a localizar o status global quando o job não aparece na lista principal.</li>
+                            <li><span class="code">H</span> permite visualizar somente a fila de logs retidos em hold.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Filtro ABEND na Tela 3</h3>
+                        <p>Quando a malha estiver carregada, use a tela <span class="code">SHOW</span> para salvar filtros como <span class="code">ABEND</span> e isolar apenas os jobs em erro ou com retorno inesperado.</p>
+                        <p>Na leitura do filtro, os estados mais úteis são <span class="code">Ended "OK"</span>, <span class="code">Not "OK"</span>, <span class="code">Held</span>, <span class="code">Abended</span>, <span class="code">Unexpected CC</span> e <span class="code">JCL Error</span>.</p>
+                    </div>
                 </div>
             </section>
 
@@ -375,6 +402,7 @@
                     <div class="acc-header">TCOs / TFI (Terminais e Sessões) <i class="fas fa-chevron-down"></i></div>
                     <div class="acc-content">
                         <p>Mapa ligado a terminais e sessões ativas. Use o <span class="code">ZCTO</span> para identificar IDs travadas, consultar histórico e apoiar liberações.</p>
+                        <p>No faturamento, o <span class="code">ZCTO</span> também ajuda na leitura do fluxo e da volumetria dos arquivos processados ao longo do turno.</p>
                     </div>
                 </div>
                 <div class="acc-item">
@@ -419,6 +447,24 @@
                             <li>Registrar horário e justificativa</li>
                             <li>Preservar o encadeamento do fluxo</li>
                         </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <h3>Exemplo de rotina em tabela</h3>
+                        <p>Para localizar uma rotina específica no Planning, informe a <span class="code">Library</span>, a <span class="code">Table</span> e o <span class="code">Jobname</span>, confirme com Enter e abra o detalhe operacional do fluxo.</p>
+                        <p>Em rotinas de faturamento, essa navegação é usada para chegar a jobs como <span class="code">FTCJC710</span>, selecionar a definição correta e montar os parâmetros antes da nova execução.</p>
+                        <ul class="tag-list">
+                            <li>Conferir variáveis de data, como <span class="code">%%DATA1</span>.</li>
+                            <li>Conferir variáveis de ciclo, como <span class="code">%%CICLO1</span>.</li>
+                            <li>Validar se existe step de bypass, como <span class="code">FTCSBP</span>.</li>
+                            <li>Revisar o cartão <span class="code">%%RESTART</span> antes da liberação.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Rename operacional</h3>
+                        <p>Quando o atendimento for de rename, uma trilha comum é entrar no <span class="code">TSO P.3.4</span>, localizar o dataset desejado e usar <span class="code">R</span> na lateral ou <span class="code">/</span> para escolher a ação disponível.</p>
+                        <p>Esse ajuste costuma envolver datasets particionados ou sequenciais. Se o rename estiver amarrado à automação, revise também as variáveis de origem e destino na definição do job, como <span class="code">ASN OLD</span> e <span class="code">ASN NEW</span>.</p>
                     </div>
                 </div>
             </section>
@@ -650,6 +696,11 @@
                         <h3>Evidência mínima para anexar</h3>
                         <p>Sempre anexe o log do erro e a imagem da Tela 3 do CTMS. Se a mensagem estiver truncada, use <span class="code">F11</span> para navegar para a direita e capturar o erro completo antes de registrar no Jira.</p>
                     </div>
+                </div>
+                <div class="card">
+                    <h3>Solicitação de log e complementos</h3>
+                    <p>Quando o atendimento chegar sem detalhe suficiente, solicite o log completo antes de encerrar o caso. Isso é especialmente importante em demandas de rename, transmissão, print e jobs retidos por <span class="code">RC</span> ou <span class="code">Held</span>.</p>
+                    <p>O pacote ideal de evidências combina a Tela 3, o <span class="code">SYSOUT</span>/<span class="code">SDSF</span> e a mensagem expandida com <span class="code">F10</span> e <span class="code">F11</span>.</p>
                 </div>
                 <div class="card">
                     <h3>Fechamento e resolução</h3>
