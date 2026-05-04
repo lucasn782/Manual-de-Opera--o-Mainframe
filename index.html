@@ -82,7 +82,7 @@
                             <li><strong>Grafana 01:</strong> apoio à monitoração e conferência dos painéis operacionais.</li>
                             <li><strong>Grafana 02:</strong> contingência para leitura dos dashboards e validação cruzada.</li>
                         </ul>
-                        <div class="info-box">Por segurança, não mantenha senhas operacionais em texto puro nesta página. Consulte sempre a referência oficial do posto.</div>
+                        <!-- <div class="info-box">Por segurança, não mantenha senhas operacionais em texto puro nesta página. Consulte sempre a referência oficial do posto antes de conectar.</div> -->
                     </div>
                     <div class="card">
                         <h3>Saúde de nodes e fluxo connect</h3>
@@ -138,13 +138,19 @@
                             <li><span class="code">I</span> mostra o registro completo do arquivo em tela cheia.</li>
                             <li><span class="code">S</span> mostra volume e organização em linha resumida.</li>
                             <li><span class="code">QDS</span> abre pop-up com dados de alocação, espaço e atributos técnicos.</li>
+                            <li><span class="code">C</span> comprime bibliotecas <span class="code">PDS</span> para recuperar espaço interno quando o procedimento permitir.</li>
                         </ul>
                     </div>
                 </div>
                 <div class="card">
                     <h3>Validação de arquivos antes do BILFIM</h3>
-                    <p>Antes de reiniciar rotinas de faturamento como <span class="code">BILFIM</span>, consulte o <span class="code">QDS</span> no <span class="code">P.3.4</span> para confirmar <span class="code">LRECL</span>, formato e crescimento do arquivo de saída.</p>
+                    <p>Antes de reiniciar rotinas de faturamento como <span class="code">BILFIM</span>, consulte o <span class="code">QDS</span> no <span class="code">P.3.4</span> para confirmar <span class="code">LRECL</span>, <span class="code">RECFM</span>, formato e crescimento do arquivo de saída.</p>
                     <p>Se o dataset estiver no limite de <span class="code">Extents</span>, há risco de <span class="code">B37</span> ou <span class="code">D37</span>. Complete a análise com <span class="code">STG LAST</span> para validar o espaço disponível no volume de produção antes da nova tentativa.</p>
+                </div>
+                <div class="card">
+                    <h3>Conferência de conteúdo antes da transmissão</h3>
+                    <p>Antes de confirmar uma transmissão, valide se o arquivo esperado existe, se possui conteúdo e se o retorno pertence ao cliente correto. Quando aparecer <span class="code">RC=08</span> em fluxo de envio, trate primeiro como suspeita de problema de transmissão ou arquivo de entrada inválido.</p>
+                    <p>Use a consulta do arquivo no <span class="code">P.3.4</span>, confira o item de envio na fila e só avance depois de anexar a evidência do conteúdo ou da ausência dele.</p>
                 </div>
             </section>
 
@@ -195,7 +201,8 @@
                             <li><span class="code">D</span> remove o log do spool após a conferência, quando a limpeza for prevista.</li>
                             <li><span class="code">A</span> libera uma saída retida no spool.</li>
                             <li><span class="code">L</span> mostra apenas o log de eventos do job.</li>
-                            <li><span class="code">?</span> expande os <span class="code">DDNAMEs</span> para seleção individual.</li>
+                            <li><span class="code">C</span> cancela a execução do job quando houver autorização para purge.</li>
+                            <li><span class="code">?</span> expande os <span class="code">DDNAMEs</span>, como <span class="code">JESMSGLG</span>, <span class="code">SYSOUT</span> e <span class="code">PRINTER</span>, para seleção individual.</li>
                             <li><span class="code">ST</span> ajuda a localizar o status global quando o job não aparece na lista principal.</li>
                             <li><span class="code">H</span> permite visualizar somente a fila de logs retidos em hold.</li>
                         </ul>
@@ -204,6 +211,8 @@
                         <h3>Filtro ABEND na Tela 3</h3>
                         <p>Quando a malha estiver carregada, use a tela <span class="code">SHOW</span> para salvar filtros como <span class="code">ABEND</span> e isolar apenas os jobs em erro ou com retorno inesperado.</p>
                         <p>Na leitura do filtro, os estados mais úteis são <span class="code">Ended "OK"</span>, <span class="code">Not "OK"</span>, <span class="code">Held</span>, <span class="code">Abended</span>, <span class="code">Unexpected CC</span> e <span class="code">JCL Error</span>.</p>
+                        <p>Use filtros de apoio como <span class="code">Retorno</span>, <span class="code">Abends</span> e <span class="code">Default</span> para alternar entre visão de erro, visão geral e consulta por retorno.</p>
+                        <p>Na procura de causa raiz, pesquise textos como <span class="code">missing</span>, <span class="code">not found</span>, <span class="code">FALHA DE LEITURA</span> e use <span class="code">LF</span> para limpar highlight quando a tela ficar marcada demais.</p>
                     </div>
                 </div>
             </section>
@@ -262,6 +271,11 @@
                             <li>Finalizar com <span class="code">F3</span> e confirmar com <span class="code">Y</span>.</li>
                         </ul>
                     </div>
+                </div>
+                <div class="card">
+                    <h3>Rerun prático pela lista de steps</h3>
+                    <p>Quando o job estiver em erro ou <span class="code">Held</span>, abra o rerun, digite <span class="code">?</span> no campo de restart e procure o step correto antes de confirmar. Use <span class="code">F</span> para marcar o início, <span class="code">O</span> quando precisar executar somente aquele trecho, <span class="code">F3</span> para sair da seleção e <span class="code">Y</span> para confirmar.</p>
+                    <div class="info-box">Se a tela pedir confirmações adicionais após o <span class="code">Y</span>, siga o procedimento formal do fluxo. Evite repetir o mesmo step sem validar o retorno anterior no spool.</div>
                 </div>
                 <div class="card">
                     <h3>Fluxo revisado para falha no step DERJE100</h3>
@@ -455,6 +469,7 @@
                         <p>Para localizar uma rotina específica no Planning, informe a <span class="code">Library</span>, a <span class="code">Table</span> e o <span class="code">Jobname</span>, confirme com Enter e abra o detalhe operacional do fluxo.</p>
                         <p>Em rotinas de faturamento, essa navegação é usada para chegar a jobs como <span class="code">FTCJC710</span>, selecionar a definição correta e montar os parâmetros antes da nova execução.</p>
                         <ul class="tag-list">
+                            <li>Quando a rotina vier como <span class="code">FCJSP93W</span>, pesquise o <span class="code">Jobname</span> <span class="code">FTCJC710</span> na <span class="code">Tela 2</span> e selecione a definição correta com <span class="code">S</span>.</li>
                             <li>Conferir variáveis de data, como <span class="code">%%DATA1</span>.</li>
                             <li>Conferir variáveis de ciclo, como <span class="code">%%CICLO1</span>.</li>
                             <li>Validar se existe step de bypass, como <span class="code">FTCSBP</span>.</li>
@@ -465,6 +480,7 @@
                         <h3>Rename operacional</h3>
                         <p>Quando o atendimento for de rename, uma trilha comum é entrar no <span class="code">TSO P.3.4</span>, localizar o dataset desejado e usar <span class="code">R</span> na lateral ou <span class="code">/</span> para escolher a ação disponível.</p>
                         <p>Esse ajuste costuma envolver datasets particionados ou sequenciais. Se o rename estiver amarrado à automação, revise também as variáveis de origem e destino na definição do job, como <span class="code">ASN OLD</span> e <span class="code">ASN NEW</span>.</p>
+                        <p>Quando a tela pedir destino, informe o dataset antigo, escolha a opção de <span class="code">Other partitioned or sequential data set</span> quando aplicável e confira o nome novo antes de confirmar. Em fluxos automatizados, valide também o job de apoio <span class="code">RenameXX</span> ou equivalente no Control-R.</p>
                     </div>
                 </div>
             </section>
@@ -623,9 +639,9 @@
                 </div>
                 <div class="card">
                     <h3>Checkpoints do turno</h3>
-                    <div class="timeline-item"><strong>08:00:</strong> status de abertura com nodes, Grafana e início da esteira.</div>
+                    <div class="timeline-item"><strong>08:00:</strong> status de abertura com nodes, Grafana, SLA e início da malha de faturamento.</div>
                     <div class="timeline-item"><strong>11:00:</strong> envio das 4 planilhas com bilhetadoras, PutProc, espaço e SLA.</div>
-                    <div class="timeline-item"><strong>13:30:</strong> daily com status geral e total de jobs processados.</div>
+                    <div class="timeline-item"><strong>13:30:</strong> e-mail da daily com resumo de incidentes, status geral e total de jobs processados.</div>
                 </div>
             </section>
 
@@ -721,12 +737,19 @@
                         <ul class="tag-list">
                             <li>Editar com <span class="code">E</span></li>
                             <li>Browse com <span class="code">B</span></li>
-                            <li>Copiar, mover e repetir linhas</li>
+                            <li>Copiar com <span class="code">C</span>, mover com <span class="code">M</span> e repetir com <span class="code">R</span></li>
                             <li>Localizar com <span class="code">F</span></li>
-                            <li>Submit de membro JCL</li>
-                            <li>Voltar por PF keys</li>
+                            <li>Limpar destaque com <span class="code">LF</span></li>
+                            <li>Navegar lateralmente com <span class="code">F10</span> e <span class="code">F11</span></li>
+                            <li>Submeter membro JCL com <span class="code">SUB</span> ou <span class="code">SUBMIT</span></li>
+                            <li>Voltar com <span class="code">F3</span> / <span class="code">PF3</span></li>
                         </ul>
                     </div>
+                </div>
+                <div class="card">
+                    <h3>Busca rápida de erro em logs largos</h3>
+                    <p>Em sysout, reports e arquivos de retorno, procure primeiro termos diretos como <span class="code">missing</span>, <span class="code">not found</span>, <span class="code">abends</span>, <span class="code">retorno</span> e mensagens de leitura de arquivo. Se a causa estiver na lateral direita, use <span class="code">F10</span>/<span class="code">F11</span> antes de capturar evidência.</p>
+                    <p>Quando o destaque visual atrapalhar a leitura, use <span class="code">LF</span>, por exemplo <span class="code">LF TSO</span> ou <span class="code">LF CTMS</span>, para retirar o highlight da busca anterior.</p>
                 </div>
                 <div class="card">
                     <h3>Rotina típica em TSO/ISPF</h3>
