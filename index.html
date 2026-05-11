@@ -95,6 +95,16 @@
                         <p>Esse roteiro é especialmente útil nos reportes das <span class="code">08:00</span> e <span class="code">13:30</span>, quando o dashboard pode parecer congelado por falha do node e não por ausência real de processamento.</p>
                     </div>
                 </div>
+                <div class="card">
+                    <h3>Consolidação de abertura do turno</h3>
+                    <p>Na abertura, valide os consoles oficiais, a saúde dos nodes externos e a recepção de dados antes de alimentar planilhas ou reportes. O <span class="code">Console Master</span> deve ser tratado como acesso principal do turno, com credenciais consultadas apenas no canal oficial definido pela operação.</p>
+                    <ul class="tag-list">
+                        <li>Confirmar acesso ao console principal e contingência.</li>
+                        <li>Validar nodes do Grafana com <span class="code">TSO VCON</span>.</li>
+                        <li>Usar <span class="code">connect</span> -> <span class="code">n</span> -> <span class="code">userID</span> -> <span class="code">SP</span> para localizar <span class="code">PNumber</span> externo.</li>
+                        <li>Conferir pontos críticos antes das planilhas de <span class="code">08:00</span> e <span class="code">11:00</span>.</li>
+                    </ul>
+                </div>
             </section>
 
             <section class="topic" id="tso-basics">
@@ -186,6 +196,7 @@
                 <div class="card">
                     <h3>Network e leitura de dependências</h3>
                     <p>Use o comando <span class="code">Network</span> para entender por que um job segue parado mesmo sem erro explícito. A árvore mostra quais predecessores ainda precisam terminar e quais sucessores serão liberados depois da conclusão.</p>
+                    <p>Antes de forçar qualquer job manualmente, valide os antecessores marcados com <span class="code">-</span> para evitar quebra de encadeamento operacional.</p>
                     <ul class="tag-list">
                         <li><strong>Sinal - :</strong> jobs antecessores que liberam o seu job.</li>
                         <li><strong>Sinal + :</strong> jobs sucessores que dependem do seu job.</li>
@@ -355,6 +366,34 @@
                         <p>Esse passo evita rerun prematuro, repetição de warning e abertura de incidente com causa raiz incompleta.</p>
                     </div>
                 </div>
+                <div class="grid">
+                    <div class="card">
+                        <h3>DATA SET NOT SELECTED</h3>
+                        <p>Quando o abend indicar <span class="code">DATA SET NOT SELECTED</span>, como em jobs de backup <span class="code">PTSTIBK1</span> ou <span class="code">PCPBKD19</span>, confirme o dataset citado no relatório antes de qualquer nova execução.</p>
+                        <ul class="tag-list">
+                            <li>Abrir o <span class="code">P.3.4</span> e pesquisar o dataset informado.</li>
+                            <li>Se estiver migrado, digitar <span class="code">HRECALL</span> ou <span class="code">H</span> ao lado do arquivo.</li>
+                            <li>Aguardar o retorno do volume físico na coluna <span class="code">Volume</span>.</li>
+                            <li>Voltar ao job abendado e aplicar <span class="code">Rerun</span> somente depois do recall.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Restore pela Tela U</h3>
+                        <p>Para desmigração via histórico, use a opção 3 da Tela <span class="code">U</span> e execute um job por vez para evitar conflito no ambiente de restore.</p>
+                        <ul class="tag-list">
+                            <li>Aplicar <span class="code">R</span> no job desejado e confirmar com <span class="code">Y</span>.</li>
+                            <li>Informar <span class="code">BY RESTORE MISSION: RSTEQP01</span>.</li>
+                            <li>Na Tela <span class="code">=A</span>, localizar <span class="code">RSTEQP01</span> em <span class="code">WAIT PROCESS</span>.</li>
+                            <li>Usar <span class="code">B</span> para <span class="code">Bypass</span> e confirmar <span class="code">Y-Y</span>.</li>
+                            <li>Ao término, aplicar novo <span class="code">R</span> / <span class="code">Rerun</span> para deixar o job pronto para execução.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Tratativa quando o RSTEQP01 trava</h3>
+                    <p>Se o <span class="code">RSTEQP01</span> demorar demais, volte ao job na Tela <span class="code">U</span>, cancele com <span class="code">C</span>, abra a análise com <span class="code">A</span> e use <span class="code">DI A</span> para localizar o dataset problemático no spool.</p>
+                    <p>Com o DSNAME identificado, renomeie no <span class="code">P.3.4</span> adicionando <span class="code">.OLD</span> ao final. Se o nome não couber, reduza para <span class="code">.OL</span>. Em seguida, rode o job <span class="code">RSTRESET</span> com <span class="code">B</span> na Tela 3 para liberar o restore preso.</p>
+                </div>
             </section>
 
             <section class="topic" id="decolate">
@@ -363,6 +402,22 @@
                     <p>No contexto 3AM / Global Hitss, <strong>Decolate</strong> é o momento em que a malha de produção deixa a Tela 2 (Planning) e entra no Active Environment da Tela 3 (Monitoring).</p>
                     <p>O objetivo é garantir que todos os jobs planejados para o <span class="code">ODATE</span> estejam prontos para execução, com dependências, calendário e agentes validados.</p>
                     <p>É o momento crítico em que o <span class="code">ODATE</span> é ativado e os processos começam a buscar seus pré-requisitos para rodar. Quando há erro de decolagem, as causas mais comuns são falha de comunicação com agente e ausência de calendário configurado para a carga.</p>
+                </div>
+                <div class="card">
+                    <h3>Decolate de relatórios pela Tela U/R</h3>
+                    <p>Quando a solicitação pedir o decolate de um relatório específico, como <span class="code">PBFTCC12</span>, primeiro localize o JCL na Tela <span class="code">U</span> e depois configure a missão na Tela <span class="code">R</span>.</p>
+                    <div class="step-box">
+                        Tela <span class="code">U</span>: informe o <span class="code">Job Name</span>, entre com <span class="code">V</span>, use <span class="code">F JCL</span> na linha de comando e anote o JCL localizado, por exemplo <span class="code">SYS2.JOBS(FTCJC710)</span>.
+                    </div>
+                    <ul class="tag-list">
+                        <li>Tela <span class="code">=R</span> com biblioteca <span class="code">CTD.V630.REPORTS</span>.</li>
+                        <li>Pesquisar o JCL anotado, como <span class="code">FTCJC710</span>.</li>
+                        <li>Selecionar com <span class="code">S</span> a primeira linha <span class="code">EVENTUAL</span>.</li>
+                        <li>Alterar <span class="code">JOBNAME</span> para o job solicitado.</li>
+                        <li>Alterar <span class="code">JOBID</span> para <span class="code">J</span> + jobnumber.</li>
+                        <li>Usar <span class="code">F3</span>, depois <span class="code">F</span> para forçar e <span class="code">Y</span> para confirmar.</li>
+                    </ul>
+                    <p>Depois da confirmação, valide a execução na Tela <span class="code">=A</span>. Ao finalizar, volte para a Tela <span class="code">U</span>, use <span class="code">F4</span> no relatório, remova filtros se existirem e confirme mensagem de término <span class="code">ENDED "OK"</span>. Use <span class="code">MF8</span> para ir ao final da tela quando necessário.</p>
                 </div>
                 <div class="grid">
                     <div class="status-card blue">
@@ -401,6 +456,99 @@
                         <h3>Esteira do BIM</h3>
                         <p>Use <span class="code">ZCTO</span> e os dashboards do Grafana para acompanhar a esteira do BIM e identificar atrasos no faturamento. Se os jobs estiverem em amarelo, mas a monitoração parecer congelada, valide o <span class="code">PNumber</span> com <span class="code">SS</span> para confirmar se o processo continua ativo.</p>
                     </div>
+                </div>
+                <div class="card">
+                    <h3>Pré-ciclos de faturamento</h3>
+                    <p>Use a régua do faturamento para antecipar janelas críticas de execução, validação, liberação, transmissão, postagem e vencimento. A referência abaixo consolida os ciclos da planilha <span class="code">pre_ciclos_faturamento</span>.</p>
+                    <div class="table-scroll">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Ciclo</th>
+                                    <th>Scheduler</th>
+                                    <th>Starta</th>
+                                    <th>Validação</th>
+                                    <th>Liberação</th>
+                                    <th>Transmissão</th>
+                                    <th>Postagem</th>
+                                    <th>Vencimento</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>0 DDN 500s</td>
+                                    <td>31</td>
+                                    <td>1</td>
+                                    <td>3</td>
+                                    <td>3</td>
+                                    <td>4</td>
+                                    <td>5</td>
+                                    <td>15</td>
+                                </tr>
+                                <tr>
+                                    <td>1 502/802</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                    <td>6</td>
+                                    <td>6</td>
+                                    <td>7</td>
+                                    <td>10</td>
+                                    <td>20</td>
+                                </tr>
+                                <tr>
+                                    <td>2 503/803</td>
+                                    <td>7</td>
+                                    <td>8</td>
+                                    <td>10</td>
+                                    <td>11</td>
+                                    <td>11</td>
+                                    <td>14</td>
+                                    <td>24</td>
+                                </tr>
+                                <tr>
+                                    <td>3 504/804</td>
+                                    <td>11</td>
+                                    <td>12</td>
+                                    <td>14</td>
+                                    <td>15</td>
+                                    <td>17</td>
+                                    <td>21</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>4 505/805</td>
+                                    <td>17</td>
+                                    <td>18</td>
+                                    <td>20</td>
+                                    <td>21</td>
+                                    <td>22</td>
+                                    <td>26</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>5 500/800</td>
+                                    <td>21</td>
+                                    <td>22</td>
+                                    <td>24</td>
+                                    <td>25</td>
+                                    <td>26</td>
+                                    <td>1</td>
+                                    <td>10</td>
+                                </tr>
+                                <tr>
+                                    <td>6 501/801</td>
+                                    <td>26</td>
+                                    <td>27</td>
+                                    <td>30</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>5</td>
+                                    <td>15</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>Na prática, o <span class="code">Scheduler</span> abre a janela do ciclo, o <span class="code">Starta</span> inicia a esteira, e a validação/liberação costuma ocorrer poucos dias depois. O vencimento fica no mês subsequente quando o ciclo cruza a virada mensal.</p>
                 </div>
             </section>
 
@@ -520,7 +668,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="info-box">Os comandos de <span class="code">VCON</span>, <span class="code">SP</span> e <span class="code">SS</span> são especialmente úteis nos reportes das <span class="code">08:00</span> e <span class="code">13:30</span>, quando um node fora do ar pode distorcer a leitura dos dashboards.</div>
+                <div class="info-box">Os comandos de <span class="code">VCON</span>, <span class="code">SP</span> e <span class="code">SS</span> são especialmente úteis nos reportes das <span class="code">08:00</span>, nas planilhas das <span class="code">11:00</span> e no resumo das <span class="code">13:30</span>, quando um node fora do ar pode distorcer a leitura dos dashboards.</div>
             </section>
 
             <section class="topic" id="gml-flow">
@@ -606,18 +754,28 @@
                 <div class="card">
                     <p>As quatro planilhas diárias funcionam como instrumento de passagem de turno, rastreio de pendências e comprovação de acompanhamento operacional. Elas servem como memória do dia e ajudam a cruzar horário, ação tomada, impacto e repasse.</p>
                 </div>
+                <div class="card">
+                    <h3>Mapa atualizado HITSS</h3>
+                    <p>Acesse pelo Teams em <span class="code">Operação/Produção MF - Geral</span>, entre em <span class="code">Compartilhado</span> e siga para <span class="code">Mesa de Controle</span> -> <span class="code">Relatórios de Entrega</span>. Dentro dessa pasta ficam as quatro rotinas do dia.</p>
+                    <div class="timeline-item"><strong>01- Bilhetadores:</strong> até 11h, usar o e-mail <span class="code">TERMINO DO PROCESSO DIARIO DA BILHETAGEM</span> ou o job <span class="code">BILFIM</span>.</div>
+                    <div class="timeline-item"><strong>02- SLA Email:</strong> até 11h, trabalhar com <span class="code">ODATE D-1</span>, logs IBM/CICSUSER e filtros de retorno.</div>
+                    <div class="timeline-item"><strong>03- PUTPROC:</strong> até 11h, coletar estatística em <span class="code">TSO ZCTO</span> -> opção <span class="code">4E</span>.</div>
+                    <div class="timeline-item"><strong>04- Espaço em Produção:</strong> até 11h, registrar Mainframe e AS400 para evitar impacto no faturamento.</div>
+                </div>
                 <div class="acc-item">
-                    <div class="acc-header">Plan 01 e Plan 02: Bilhetadoras e PutProc <i class="fas fa-chevron-down"></i></div>
+                    <div class="acc-header">Plan 01 e Plan 02: Bilhetadores e SLA Email <i class="fas fa-chevron-down"></i></div>
                     <div class="acc-content">
-                        <p><strong>Plan 01:</strong> conferir o último e-mail recebido e validar se a referência do turno bate com o processamento esperado.</p>
-                        <p><strong>Plan 02:</strong> usar <span class="code">ZCTO -> 4E -> Histórico</span> e coletar o total no modo de visualização para registro da rotina.</p>
+                        <p><strong>Plan 01 - Bilhetadores:</strong> abrir o ano e mês corrente, preencher <span class="code">Horário Término</span> com a hora enviada no e-mail de término da bilhetagem. Se o e-mail não chegar, coletar a informação na Tela 3 pelo job <span class="code">BILFIM</span>.</p>
+                        <p><strong>Plan 02 - SLA Email:</strong> criar aba com o dia do <span class="code">ODATE</span>, usar o dia anterior como referência e coletar os totais no TSO com <span class="code">SD</span>, <span class="code">DA OJOB</span>, <span class="code">PRE</span>, <span class="code">OWNER IBMPROD</span> e <span class="code">I</span>. Repetir para <span class="code">OWNER CICUSER</span>.</p>
+                        <p>No CTMS Tela 3, validar filtros <span class="code">RETORNO</span>, tabelas <span class="code">RIN</span>, <span class="code">TCO</span>, <span class="code">STI</span> e <span class="code">ESTEIRA DA MANHA</span>. Se houver <span class="code">NOT OK</span>, anexar print; no domingo não há Retorno nem Diária FCD.</p>
+                        <p>Para <span class="code">Jobs Schedule</span>, usar <span class="code">V G</span> na Tela 3 e registrar os totais de <span class="code">WAIT SCHEDULE</span> e <span class="code">END NOT OK</span>. Se houver <span class="code">Not OK</span>, copiar os prefixos no filtro <span class="code">ABEND2</span>. A régua do faturamento deve seguir o ciclo informado no e-mail do plantão anterior.</p>
                     </div>
                 </div>
                 <div class="acc-item">
-                    <div class="acc-header">Plan 03 e Plan 04: Espaço e SLA <i class="fas fa-chevron-down"></i></div>
+                    <div class="acc-header">Plan 03 e Plan 04: PUTPROC e Espaço em Produção <i class="fas fa-chevron-down"></i></div>
                     <div class="acc-content">
-                        <p><strong>Plan 03:</strong> conferir o e-mail do AS400 de SP/Rio e validar o mainframe com <span class="code">STG LAST</span>.</p>
-                        <p><strong>Plan 04:</strong> trabalhar com <span class="code">ODATE (D-1)</span> e conferir a fila pelo comando <span class="code">I</span>.</p>
+                        <p><strong>Plan 03 - PUTPROC:</strong> no TSO, digitar <span class="code">TSO ZCTO</span>, entrar na opção <span class="code">4E</span> e selecionar com <span class="code">V</span> a estatística do dia anterior no padrão <span class="code">D260415.STATIS</span>. Copiar o total marcado para a planilha do mês corrente.</p>
+                        <p><strong>Plan 04 - Espaço em Produção:</strong> preencher Mainframe e AS400. No Mainframe, usar <span class="code">TSO STGLAST</span> e coletar os espaços de <span class="code">ZPROD2</span> e <span class="code">ZPROD3</span>. No AS400, usar os e-mails <span class="code">Alocação de Espaço em Disco</span> do ICMSRJ e ICMSSP; se não chegarem, consultar <span class="code">WRKSYSSTS</span> e registrar <span class="code">% system ASP used</span>.</p>
                     </div>
                 </div>
                 <div class="grid">
@@ -717,6 +875,19 @@
                     <h3>Solicitação de log e complementos</h3>
                     <p>Quando o atendimento chegar sem detalhe suficiente, solicite o log completo antes de encerrar o caso. Isso é especialmente importante em demandas de rename, transmissão, print e jobs retidos por <span class="code">RC</span> ou <span class="code">Held</span>.</p>
                     <p>O pacote ideal de evidências combina a Tela 3, o <span class="code">SYSOUT</span>/<span class="code">SDSF</span> e a mensagem expandida com <span class="code">F10</span> e <span class="code">F11</span>.</p>
+                </div>
+                <div class="card">
+                    <h3>Log Connect:Direct sob demanda</h3>
+                    <p>Para enviar log de transmissão do Mainframe, edite a lista de arquivos no dataset <span class="code">PCP.PSFD.LISTA.SOLICITA.CDMF</span> e execute o job <span class="code">LISTAMF_CD</span>.</p>
+                    <ul class="tag-list">
+                        <li>Acessar <span class="code">ZPROD3</span> e entrar em <span class="code">P.3.4</span>.</li>
+                        <li>Localizar o dataset e abrir com <span class="code">E</span>.</li>
+                        <li>Criar uma linha para cada arquivo transmitido.</li>
+                        <li>Inserir os nomes exatamente no padrão solicitado.</li>
+                        <li>Salvar com <span class="code">SAVE</span>.</li>
+                        <li>No <span class="code">UXMFPRD1</span>, localizar e executar <span class="code">LISTAMF_CD</span>.</li>
+                    </ul>
+                    <p>Ao concluir, o envio automático sai pelo remetente <span class="code">Connect Direct</span> para a equipe e para o solicitante com o status da transmissão.</p>
                 </div>
                 <div class="card">
                     <h3>Fechamento e resolução</h3>

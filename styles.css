@@ -71,6 +71,47 @@ pre code {
     font-family: Consolas, Monaco, 'Courier New', monospace;
 }
 
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    margin: 1rem 0;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+}
+
+.data-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    background: white;
+    font-size: 0.9rem;
+}
+
+.data-table th,
+.data-table td {
+    border: 1px solid #cbd5e1;
+    padding: 0.65rem 0.75rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.data-table th {
+    background: #f8fafc;
+    color: var(--primary);
+    font-weight: 800;
+}
+
+.data-table th:first-child,
+.data-table td:first-child {
+    text-align: left;
+    font-weight: 800;
+}
+
+.data-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
 .timeline-item { border-left: 3px solid var(--secondary); padding-left: 15px; margin-bottom: 1rem; position: relative; }
 .tag-list { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
 .tag-list li { background: #f1f5f9; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; border: 1px solid #e2e8f0; }
