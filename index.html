@@ -105,6 +105,10 @@
                         <li>Conferir pontos críticos antes das planilhas de <span class="code">08:00</span> e <span class="code">11:00</span>.</li>
                     </ul>
                 </div>
+                <div class="card">
+                    <h3>Reforço de monitoração</h3>
+                    <p>Mesmo quando o console estiver acessível, trate a validação do Grafana como uma checagem separada: node ativo, processo em andamento e recepção de dados coerente. Isso evita reportar parada de faturamento quando o problema real está apenas no dashboard.</p>
+                </div>
             </section>
 
             <section class="topic" id="tso-basics">
@@ -161,6 +165,17 @@
                     <h3>Conferência de conteúdo antes da transmissão</h3>
                     <p>Antes de confirmar uma transmissão, valide se o arquivo esperado existe, se possui conteúdo e se o retorno pertence ao cliente correto. Quando aparecer <span class="code">RC=08</span> em fluxo de envio, trate primeiro como suspeita de problema de transmissão ou arquivo de entrada inválido.</p>
                     <p>Use a consulta do arquivo no <span class="code">P.3.4</span>, confira o item de envio na fila e só avance depois de anexar a evidência do conteúdo ou da ausência dele.</p>
+                </div>
+                <div class="card">
+                    <h3>Pesquisa avançada com ISPF Option 3.14</h3>
+                    <p>O utilitário <span class="code">P.3.14</span> atua como uma busca em massa nas bibliotecas do Mainframe. Ele é o recurso certo quando você ainda não sabe em qual membro, JCL ou PDS uma referência está definida.</p>
+                    <ul class="tag-list">
+                        <li>Diferente do <span class="code">FIND</span>, pesquisa múltiplos datasets ou PDS simultaneamente.</li>
+                        <li>Ajuda a localizar um <span class="code">DSN</span> específico em centenas de JCLs.</li>
+                        <li>Permite identificar programas, rotinas e parâmetros compartilhados.</li>
+                        <li>Use <span class="code">Search String</span>, ajuste <span class="code">Options</span> e marque <span class="code">Any Case</span> quando precisar ignorar maiúsculas e minúsculas.</li>
+                        <li>Leia o <span class="code">Listing Dataset</span> gerado para saber membro e linha exata de cada ocorrência.</li>
+                    </ul>
                 </div>
             </section>
 
@@ -365,6 +380,16 @@
                         <p>Se o <span class="code">PCPBKD19</span> parar com <span class="code">RC=0004</span> e o relatório acusar arquivo vazio, confirme primeiro se o recall do arquivo de entrada foi concluído ou se a carga na origem realmente ocorreu.</p>
                         <p>Esse passo evita rerun prematuro, repetição de warning e abertura de incidente com causa raiz incompleta.</p>
                     </div>
+                </div>
+                <div class="card">
+                    <h3>Restore e desmigração por missão</h3>
+                    <p>Quando o job depender de dataset migrado ou cair em cenário de <span class="code">Not Selected</span>, confirme o status no <span class="code">P.3.4</span>. Se o volume estiver em <span class="code">MIGRAT2</span>, faça <span class="code">HRECALL</span> ou siga a missão de restore quando o procedimento exigir.</p>
+                    <ul class="tag-list">
+                        <li>Na Tela <span class="code">U</span>, aplicar <span class="code">R</span> no job e confirmar com <span class="code">Y</span>.</li>
+                        <li>Acompanhar a missão <span class="code">RSTEQP01</span> na Tela <span class="code">=A</span>.</li>
+                        <li>Quando previsto, usar <span class="code">B</span> de <span class="code">Bypass</span> no job <span class="code">RSTEQP01</span>.</li>
+                        <li>Se travar, cancelar com <span class="code">C</span>, renomear o dataset para <span class="code">.OLD</span> e submeter <span class="code">RSTRESET</span>.</li>
+                    </ul>
                 </div>
                 <div class="grid">
                     <div class="card">
@@ -757,6 +782,7 @@
                 <div class="card">
                     <h3>Mapa atualizado HITSS</h3>
                     <p>Acesse pelo Teams em <span class="code">Operação/Produção MF - Geral</span>, entre em <span class="code">Compartilhado</span> e siga para <span class="code">Mesa de Controle</span> -> <span class="code">Relatórios de Entrega</span>. Dentro dessa pasta ficam as quatro rotinas do dia.</p>
+                    <br>
                     <div class="timeline-item"><strong>01- Bilhetadores:</strong> até 11h, usar o e-mail <span class="code">TERMINO DO PROCESSO DIARIO DA BILHETAGEM</span> ou o job <span class="code">BILFIM</span>.</div>
                     <div class="timeline-item"><strong>02- SLA Email:</strong> até 11h, trabalhar com <span class="code">ODATE D-1</span>, logs IBM/CICSUSER e filtros de retorno.</div>
                     <div class="timeline-item"><strong>03- PUTPROC:</strong> até 11h, coletar estatística em <span class="code">TSO ZCTO</span> -> opção <span class="code">4E</span>.</div>
@@ -800,6 +826,14 @@
                     <div class="timeline-item"><strong>08:00:</strong> status de abertura com nodes, Grafana, SLA e início da malha de faturamento.</div>
                     <div class="timeline-item"><strong>11:00:</strong> envio das 4 planilhas com bilhetadoras, PutProc, espaço e SLA.</div>
                     <div class="timeline-item"><strong>13:30:</strong> e-mail da daily com resumo de incidentes, status geral e total de jobs processados.</div>
+                </div>
+                <div class="card">
+                    <h3>Origem dos dados das planilhas</h3>
+                    <br>
+                    <p><strong>01 - Bilhetadores:</strong> usar o job <span class="code">BILFIM</span> no CTMS ou o e-mail de término.</p>
+                    <p><strong>02 - SLA Email:</strong> coletar com <span class="code">SD</span> e <span class="code">DA OJOB</span> no TSO para os logs IBM.</p>
+                    <p><strong>03 - PUTPROC:</strong> consultar <span class="code">TSO ZCTO</span> na opção <span class="code">4E</span>.</p>
+                    <p><strong>04 - Espaço Prod:</strong> verificar volumes DASD para evitar interrupção do faturamento.</p>
                 </div>
             </section>
 
@@ -894,6 +928,11 @@
                     <p>Em chamados <strong>PDST</strong>, use descrição objetiva para renames, transmissões e atendimentos simples. Em <strong>OPS</strong>, registre o passo executado, o grupo acionado, o erro encontrado e a evidência usada para normalização.</p>
                     <p>Quando o log estiver largo, combine <span class="code">F10</span> e <span class="code">F11</span> para navegação lateral e capture a mensagem completa antes de concluir o atendimento ou marcar como resolvido.</p>
                 </div>
+                <div class="card">
+                    <h3>Logs sob demanda do Connect Direct</h3>
+                    <p>Quando a investigação exigir trilha de transmissão, inclua os datasets em <span class="code">PCP.PSFD.LISTA.SOLICITA.CDMF</span> e execute o job <span class="code">LISTAMF_CD</span> para gerar a listagem técnica.</p>
+                    <p>Para evidências de Jira, mantenha a captura lateral do SDSF com <span class="code">F10</span>/<span class="code">F11</span>, porque muitos detalhes do erro aparecem fora da largura inicial da tela.</p>
+                </div>
             </section>
 
             <section class="topic" id="javascript">
@@ -930,6 +969,11 @@
 4. Submeter o JCL quando aplicável
 5. Acompanhar o resultado em SDSF
 6. Registrar evidências e retorno operacional</code></pre>
+                </div>
+                <div class="card">
+                    <h3>Quando usar FIND e quando usar 3.14</h3>
+                    <p>Use <span class="code">FIND</span> quando você já estiver no membro certo e só precisar localizar uma string, step, DD ou mensagem. Use <span class="code">P.3.14</span> quando ainda não souber em qual biblioteca ou JCL a referência está distribuída.</p>
+                    <p>Em incidentes, o <span class="code">3.14</span> é a melhor ferramenta para mapear impacto em toda a malha antes da execução de uma alteração, rerun ou ajuste de parâmetro.</p>
                 </div>
             </section>
 
