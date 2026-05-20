@@ -109,6 +109,10 @@
                     <h3>Reforço de monitoração</h3>
                     <p>Mesmo quando o console estiver acessível, trate a validação do Grafana como uma checagem separada: node ativo, processo em andamento e recepção de dados coerente. Isso evita reportar parada de faturamento quando o problema real está apenas no dashboard.</p>
                 </div>
+                <div class="card">
+                    <h3>Ambiente de apoio e jobs únicos</h3>
+                    <p>Para demandas operacionais fora da malha padrão, mantenha como referência a library <span class="code">CONTROLM.APOIO</span> e a table <span class="code">JOBUNICO</span>. Esse conjunto costuma ser usado em ajustes controlados, execuções unitárias e validações que não entram no fluxo recorrente do faturamento.</p>
+                </div>
             </section>
 
             <section class="topic" id="tso-basics">
@@ -239,6 +243,21 @@
                         <p>Na leitura do filtro, os estados mais úteis são <span class="code">Ended "OK"</span>, <span class="code">Not "OK"</span>, <span class="code">Held</span>, <span class="code">Abended</span>, <span class="code">Unexpected CC</span> e <span class="code">JCL Error</span>.</p>
                         <p>Use filtros de apoio como <span class="code">Retorno</span>, <span class="code">Abends</span> e <span class="code">Default</span> para alternar entre visão de erro, visão geral e consulta por retorno.</p>
                         <p>Na procura de causa raiz, pesquise textos como <span class="code">missing</span>, <span class="code">not found</span>, <span class="code">FALHA DE LEITURA</span> e use <span class="code">LF</span> para limpar highlight quando a tela ficar marcada demais.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <h3>Engenharia de erros no Control-M</h3>
+                        <p>Quando aparecer o erro <span class="code">CTM770E</span> com a mensagem <span class="code">PLEASE FILL IN LIBRARY NAME</span>, valide primeiro o campo <span class="code">MEMLIB</span>. Esse retorno normalmente indica definição ou alteração de job sem a biblioteca preenchida corretamente.</p>
+                        <p>Em rotinas da <span class="code">IIF</span>, por exemplo, a correção costuma passar por informar a biblioteca certa da procedure, como <span class="code">PRD.IIF.PROCLIB</span>, antes de salvar ou submeter novamente.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Comandos rápidos em JOBUNICO</h3>
+                        <ul class="tag-list">
+                            <li><span class="code">EDIT</span> abre o JCL diretamente para manutenção.</li>
+                            <li><span class="code">DOC</span> consulta a documentação padrão no dataset <span class="code">CTM.V630.DOC</span>.</li>
+                            <li><span class="code">PLAN</span> projeta impactos e dependências na malha ativa antes da liberação.</li>
+                        </ul>
                     </div>
                 </div>
             </section>
@@ -731,6 +750,22 @@
                         <p>No job <span class="code">J-"NUMGML"</span>, marque <span class="code">S</span> e pressione Enter para abrir o conteúdo. Copie o conteúdo para os comentários da atividade e, quando houver promoção, anexe também o log correspondente no Jira.</p>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="card">
+                        <h3>Sistema SCF</h3>
+                        <p>Em transmissões do <span class="code">SCF</span>, como o job <span class="code">SCFJTCTB</span>, valide o dataset de entrada no <span class="code">3.4</span> e confirme se a <span class="code">DD</span> do JCL aponta exatamente para o arquivo do ciclo correto antes da submissão.</p>
+                        <p>Depois do submit no SDSF, acompanhe o <span class="code">MAXCC</span> esperado e confirme no log a mensagem de transferência concluída antes de atualizar o chamado e as flags do processo.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Interface IIF</h3>
+                        <p>Nas rotinas da <span class="code">IIF</span>, o encadeamento mais sensível passa por <span class="code">IIFJPEXT</span>, <span class="code">IIFTLVLR</span> e <span class="code">DERJE100</span>. Respeite sempre a ordem de sucesso do fluxo antes de avançar para o próximo job.</p>
+                        <p>Para extração e separação de contas, valide variáveis como <span class="code">%%CODSEL</span>, <span class="code">%%ANOMES</span> e o <span class="code">ODTE</span> herdado, além de tabela, owner e MEMLIB usados na tela do Control-M.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Matriz crítica de pré-ciclos</h3>
+                    <p>Os pré-ciclos <span class="code">0</span> a <span class="code">6</span> devem ser tratados como régua operacional do faturamento: scheduler, start, validação/liberação, transmissão, postagem e vencimento mudam conforme o ciclo e impactam diretamente o momento correto de execução das rotinas do <span class="code">BIM</span>, da <span class="code">IIF</span> e das transmissões associadas.</p>
+                </div>
             </section>
 
             <section class="topic" id="ops-destrave">
@@ -862,6 +897,11 @@
                     <h3>Abertura e congelamento aparente</h3>
                     <p>No reporte de abertura, confirme saúde dos nodes, recepção de dados no Grafana e andamento da esteira. Se o dashboard aparentar congelamento, mas os jobs ainda estiverem em execução, valide o processo pelo <span class="code">SS</span> com o <span class="code">PNumber</span> coletado no <span class="code">SP</span>.</p>
                 </div>
+                <div class="card">
+                    <h3>Comunicação formal de encerramento</h3>
+                    <p>Quando a rotina batch solicitada for concluída com sucesso absoluto, envie a comunicação formal de encerramento com ambiente, job, horário, status final e referência do chamado. Mantenha como referência operacional o destinatário padrão informado pela equipe e use o resumo das <span class="code">08:00</span> e <span class="code">13:30</span> como checkpoints fixos do turno.</p>
+                    <p>Em tickets de execução ligados a <span class="code">IIF</span> ou <span class="code">SCF</span>, o e-mail deve deixar claro que a rotina processou com sucesso e que a evidência técnica correspondente já foi anexada ao fluxo.</p>
+                </div>
             </section>
 
             <section class="topic" id="jira-fluxo">
@@ -932,6 +972,11 @@
                     <h3>Logs sob demanda do Connect Direct</h3>
                     <p>Quando a investigação exigir trilha de transmissão, inclua os datasets em <span class="code">PCP.PSFD.LISTA.SOLICITA.CDMF</span> e execute o job <span class="code">LISTAMF_CD</span> para gerar a listagem técnica.</p>
                     <p>Para evidências de Jira, mantenha a captura lateral do SDSF com <span class="code">F10</span>/<span class="code">F11</span>, porque muitos detalhes do erro aparecem fora da largura inicial da tela.</p>
+                </div>
+                <div class="card">
+                    <h3>Filas e assinatura institucional</h3>
+                    <p>Use a fila <strong>PDST</strong> para execuções programadas, restores, renames e transmissões. Reserve a fila <strong>OPS</strong> para abends, erros técnicos e incidentes que exigem leitura detalhada de spool e anexos de evidência.</p>
+                    <p>Quando o padrão do turno exigir formalização institucional, mantenha a assinatura operacional padronizada no fechamento das comunicações e atualizações de atendimento.</p>
                 </div>
             </section>
 
@@ -1019,6 +1064,10 @@
 //             DISP=(NEW,CATLG,DELETE),
 //             UNIT=SYSDA,SPACE=(CYL,(1,1)),
 //             DCB=(RECFM=FB,LRECL=80,BLKSIZE=800)</code></pre>
+                </div>
+                <div class="card">
+                    <h3>Validação com JVER</h3>
+                    <p>Antes de salvar ou submeter alterações mais sensíveis em JCL, use o comando <span class="code">JVER</span> na linha <span class="code">COMMAND ===&gt;</span> para validar sintaxe e resolução de variáveis. Isso ajuda a detectar erro estrutural antes que o job avance para fila com definição incompleta.</p>
                 </div>
             </section>
 
