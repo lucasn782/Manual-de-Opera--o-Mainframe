@@ -1033,55 +1033,61 @@
 
             <section class="topic" id="gml-flow">
                 <h2>Fluxo de Promoção GML</h2>
-                <div class="row">
-                    <div class="card">
-                        <h3>Promoção GML — Gerência de Mudança (Desenvolvimento para Produção)</h3>
-                        <div class="step-box">
-                            <ol style="padding: 0 20px;">
-                                <li><strong>Validação Inicial:</strong> Certificar-se de que a GML está com o status
-                                    <em>"Pronta para Implementação"</em>. Sempre checar a aba de <em>"Atividades"</em>
-                                    para validar observações extras. Se constar <em>"Pode ser antes do horário
-                                    definido"</em>, a execução pode ser antecipada.</li>
-                                <li><strong>Navegação (Tela 19):</strong> Acessar através do atalho do SLM (<span
-                                        class="code">*JJ 19</span>) e executar o comando <span
-                                        class="code">TSO SPROD</span>.</li>
-                                <li><strong>Identificação do Prefixo:</strong> Digitar a inicial do projeto ou
-                                    componente no filtro (Ex: <span class="code">RCL</span>, <span
-                                        class="code">RCLJU</span> ou o nome completo). Identificar o Job e validar se
-                                    consta como <em>"Aguardando Implementação"</em>.</li>
-                                <li><strong>Promoção:</strong> Executar o comando de promoção da GML, confirmar o
-                                    envio do Job (<span class="code">JOB01</span>), validar a abertura/fechamento da
-                                    fatura e copiar a tela de sucesso como evidência.</li>
-                                <li><strong>Atualização via GBP:</strong> Seguir o caminho <span
-                                        class="code">DC</span> ➔ <span class="code">SIG</span> ➔ <span
-                                        class="code">3</span>. Colocar <span class="code">X</span> no giro para
-                                    avançar. Submeter a mudança informando o número do GBP no ambiente/comando (Ex:
-                                    <span class="code">RCL UPD03</span> ou <span class="code">RCL PE03</span>) e teclar
-                                    <span class="code">F12</span>.</li>
-                                <li><strong>Execução de Jobs Únicos:</strong> Se houver solicitação via fila <span
-                                        class="code">PDST</span>, as promoções normais devem ser finalizadas primeiro
-                                    (geralmente via SCCLM), executando o Job Único na sequência.</li>
-                                <li><strong>Encerramento:</strong> Alterar o status para <em>"Implementando"</em>,
-                                    anexar os prints de sucesso no log provando o término, usar o texto padrão
-                                    <em>"Evidências disponíveis no comentário da GML"</em> e atualizar o status final
-                                    para <em>"Concluído com Sucesso"</em>.</li>
-                            </ol>
+                <div class="card">
+                    <h3>Promoção GML — Gerência de Mudança (Desenvolvimento para Produção)</h3>
+                    <div class="step-flow">
+                        <div class="step-flow-item">
+                            <div class="step-flow-number">1</div>
+                            <div class="step-flow-title">Validação Inicial</div>
+                            <div class="step-flow-desc">Certificar-se de que a GML está com o status <em>"Pronta para Implementação"</em>. Sempre checar a aba de <em>"Atividades"</em> para validar observações extras. Se constar <em>"Pode ser antes do horário definido"</em>, a execução pode ser antecipada.</div>
+                        </div>
+                        <div class="step-flow-item">
+                            <div class="step-flow-number">2</div>
+                            <div class="step-flow-title">Navegação (Tela 19)</div>
+                            <div class="step-flow-desc">Acessar através do atalho do SLM (<span class="code">*JJ 19</span>) e executar o comando <span class="code">TSO SPROD</span>.</div>
+                        </div>
+                        <div class="step-flow-item">
+                            <div class="step-flow-number">3</div>
+                            <div class="step-flow-title">Identificação do Prefixo</div>
+                            <div class="step-flow-desc">Digitar a inicial do projeto ou componente no filtro (Ex: <span class="code">RCL</span>, <span class="code">RCLJU</span> ou o nome completo). Identificar o Job e validar se consta como <em>"Aguardando Implementação"</em>.</div>
+                        </div>
+                        <div class="step-flow-item">
+                            <div class="step-flow-number">4</div>
+                            <div class="step-flow-title">Promoção</div>
+                            <div class="step-flow-desc">Executar o comando de promoção da GML, confirmar o envio do Job (<span class="code">JOB01</span>), validar a abertura/fechamento da fatura e copiar a tela de sucesso como evidência.</div>
+                        </div>
+                        <div class="step-flow-item">
+                            <div class="step-flow-number">5</div>
+                            <div class="step-flow-title">Atualização via GBP</div>
+                            <div class="step-flow-desc">Seguir o caminho <span class="code">DC</span> ➔ <span class="code">SIG</span> ➔ <span class="code">3</span>. Colocar <span class="code">X</span> no giro para avançar. Submeter a mudança informando o número do GBP no ambiente/comando (Ex: <span class="code">RCL UPD03</span> ou <span class="code">RCL PE03</span>) e teclar <span class="code">F12</span>.</div>
+                        </div>
+                        <div class="step-flow-item">
+                            <div class="step-flow-number">6</div>
+                            <div class="step-flow-title">Execução de Jobs Únicos</div>
+                            <div class="step-flow-desc">Se houver solicitação via fila <span class="code">PDST</span>, as promoções normais devem ser finalizadas primeiro (geralmente via SCCLM), executando o Job Único na sequência.</div>
+                        </div>
+                        <div class="step-flow-item">
+                            <div class="step-flow-number">7</div>
+                            <div class="step-flow-title">Encerramento</div>
+                            <div class="step-flow-desc">Alterar o status para <em>"Implementando"</em>, anexar os prints de sucesso no log provando o término, usar o texto padrão <em>"Evidências disponíveis no comentário da GML"</em> e atualizar o status final para <em>"Concluído com Sucesso"</em>.</div>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="card">
                         <h3>Visão de turno</h3>
                         <p>Boa parte do trabalho do operador não é criar processamento, e sim confirmar que o
                             processamento encadeado atravessou com segurança as janelas do dia. Isso inclui Control-M,
                             monitorias, planilhas, dashboards e comunicação de exceções.</p>
                     </div>
-                </div>
-                <div class="card">
-                    <h3>Conexão com o fluxo de decolagem</h3>
-                    <p>O prefixo <span class="code">MP(GML)</span> prepara a aprovação da promoção GML. O status <span
-                            class="tag">P</span> indica que o sistema está liberado para a decolagem final em produção.
-                    </p>
-                    <p>Use essa etapa como parte da validação antes do release: o GML precisa estar aprovado e a malha
-                        pronta para iniciar sem bloqueios de calendário ou dependência.</p>
+                    <div class="card">
+                        <h3>Conexão com o fluxo de decolagem</h3>
+                        <p>O prefixo <span class="code">MP(GML)</span> prepara a aprovação da promoção GML. O status <span
+                                class="tag">P</span> indica que o sistema está liberado para a decolagem final em produção.
+                        </p>
+                        <p>Use essa etapa como parte da validação antes do release: o GML precisa estar aprovado e a malha
+                            pronta para iniciar sem bloqueios de calendário ou dependência.</p>
+                    </div>
                 </div>
                 <div class="grid">
                     <div class="card">
