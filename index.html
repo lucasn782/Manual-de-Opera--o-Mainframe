@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
     <header class="navbar">
         <div>
@@ -26,7 +28,8 @@
             <a class="nav-item" href="#tso-basics"><i class="fas fa-terminal"></i>Comandos e Atalhos TSO</a>
             <a class="nav-item" href="#ctms-screens"><i class="fas fa-diagram-project"></i>Telas do CTMS</a>
             <a class="nav-item" href="#ctms-status"><i class="fas fa-palette"></i>Status e Cores CTMS</a>
-            <a class="nav-item" href="#restart-jobs"><i class="fas fa-rotate-right"></i>Restart de Jobs</a>
+            <a class="nav-item" href="#restart-jobs"><i class="fas fa-rotate-right"></i>Diagnóstico e Restart de
+                Jobs</a>
             <a class="nav-item" href="#pcpbkd19"><i class="fas fa-magnifying-glass-chart"></i>Diagnóstico PCPBKD19</a>
             <a class="nav-item" href="#decolate"><i class="fas fa-plane-departure"></i>Decolate / Decolagem</a>
             <a class="nav-item" href="#tabelas-ctrl"><i class="fas fa-link"></i>Tabelas de Controle</a>
@@ -36,6 +39,7 @@
             <a class="nav-item" href="#planilhas"><i class="fas fa-table"></i>As 4 Planilhas</a>
             <a class="nav-item" href="#emails-sla"><i class="fas fa-envelope"></i>Cronograma de E-mails</a>
             <a class="nav-item" href="#jira-fluxo"><i class="fas fa-ticket"></i>Gestão Jira</a>
+            <a class="nav-item" href="#auditoria-coe12"><i class="fas fa-shield-halved"></i>Auditoria Mensal (COE12)</a>
 
             <div class="nav-group">Referência Técnica</div>
             <a class="nav-item" href="#javascript"><i class="fas fa-keyboard"></i>ISPF e Edição</a>
@@ -48,17 +52,27 @@
             <section class="topic" id="infra-ips">
                 <h2>Infraestrutura e Coordenadas</h2>
                 <div class="card">
-                    <p>Este guia reúne os principais conteúdos de operação para dar ao operador uma sequência prática: acessar o ambiente, localizar o processamento, interpretar sinais de falha, acionar os atalhos corretos e registrar evidências.</p>
+                    <p>Este guia reúne os principais conteúdos de operação para dar ao operador uma sequência prática:
+                        acessar o ambiente, localizar o processamento, interpretar sinais de falha, acionar os atalhos
+                        corretos e registrar evidências.</p>
                     <div class="step-box">
-                        O fluxo mais comum do turno é: acessar o host, abrir a fila de monitoração, identificar atraso ou falha, consultar spool e dependências, aplicar a ação operacional permitida, validar o retorno e registrar evidências em planilha, e-mail ou Jira.
+                        O fluxo mais comum do turno é: acessar o host, abrir a fila de monitoração, identificar atraso
+                        ou falha, consultar spool e dependências, aplicar a ação operacional permitida, validar o
+                        retorno e registrar evidências em planilha, e-mail ou Jira.
                     </div>
                 </div>
                 <div class="grid">
                     <div class="status-card blue">
                         <h3>Ambientes de referência</h3>
-                        <p><span class="badge">PRD3</span> <span class="code">10.4.23.30</span> associado ao IBM 630, faturamento, SLA e EBPP.</p>
-                        <p><span class="badge">PRD2</span> <span class="code">10.0.197.20</span> associado ao IBM 800, bilhetagem e carga de CDRs.</p>
-                        <p>Sempre confirme os acessos oficiais vigentes do seu posto antes de qualquer conexão ou atuação operacional.</p>
+                        <p><span class="badge">PRD3</span> <span class="code">10.4.23.30</span>: Faturamento, SLA e EBPP
+                            (Faturamento Digital). Onde reside o BILFIM.</p>
+                        <p><span class="badge">PRD2</span> <span class="code">10.0.197.20</span>: Bilhetagem e Carga de
+                            CDRs (Job PCPBKD19).</p>
+                        <p><span class="badge">Emulador TN3270</span> Treino no IP <span
+                                class="code">177.139.188.25</span> (Porta <span class="code">3270</span>) | Logon: <span
+                                class="code">L SEUALUNO</span>.</p>
+                        <p>Sempre confirme os acessos oficiais vigentes do seu posto antes de qualquer conexão ou
+                            atuação operacional.</p>
                     </div>
                     <div class="status-card green">
                         <h3>Primeiras verificações de qualquer incidente</h3>
@@ -75,43 +89,69 @@
                 <div class="row">
                     <div class="card">
                         <h3>Consoles de operação e monitoração</h3>
-                        <p>Mantenha mapeados os acessos de <strong>Console Master</strong>, <strong>Console Alternada</strong>, <strong>Grafana 01</strong> e <strong>Grafana 02</strong> para abertura de turno, contingência e validação de monitoração. Registre os IDs dos consoles na rotina operacional e preserve as senhas apenas no cofre ou canal oficial de credenciais.</p>
+                        <p>Mantenha mapeados os acessos de <strong>Console Master</strong>, <strong>Console
+                                Alternada</strong>, <strong>Grafana 01</strong> e <strong>Grafana 02</strong> para
+                            abertura de turno, contingência e validação de monitoração. Registre os IDs dos consoles na
+                            rotina operacional e preserve as senhas apenas no cofre ou canal oficial de credenciais.</p>
                         <ul class="tag-list">
-                            <li><strong>Console Master:</strong> acesso principal do turno via RDP.</li>
-                            <li><strong>Console Alternada:</strong> contingência para atuação quando o console principal estiver indisponível.</li>
-                            <li><strong>Grafana 01:</strong> apoio à monitoração e conferência dos painéis operacionais.</li>
-                            <li><strong>Grafana 02:</strong> contingência para leitura dos dashboards e validação cruzada.</li>
+                            <li><strong>Console Master:</strong> ID <span class="code">725 237 438 28</span> | Senha:
+                                <span class="code">6010</span> (Acesso principal do turno via RDP)</li>
+                            <li><strong>Console Alternada:</strong> ID <span class="code">410 184 611 49</span> | Senha:
+                                <span class="code">5946</span> (Contingência para atuação quando o console principal
+                                estiver indisponível)</li>
+                            <li><strong>Grafana 01:</strong> ID <span class="code">801 092 355 06</span> | Senha: <span
+                                    class="code">4700</span> (Apoio à monitoração e conferência dos painéis)</li>
+                            <li><strong>Grafana 02:</strong> ID <span class="code">149 506 192 04</span> | Senha: <span
+                                    class="code">5491</span> (Contingência para leitura dos dashboards e validação
+                                cruzada)</li>
                         </ul>
-                        <!-- <div class="info-box">Por segurança, não mantenha senhas operacionais em texto puro nesta página. Consulte sempre a referência oficial do posto antes de conectar.</div> -->
                     </div>
                     <div class="card">
                         <h3>Saúde de nodes e fluxo connect</h3>
                         <ul class="tag-list">
-                            <li><span class="code">TSO VCON [NomeDoNode]</span> valida se o node do Grafana está recebendo dados no Mainframe.</li>
-                            <li><span class="code">connect</span> abre o fluxo de validação entre processos e nodes.</li>
-                            <li>Na sequência, usar <span class="code">n</span>, informar o <span class="code">userID</span> e acessar <span class="code">SP</span> para consultar outros processos.</li>
-                            <li>Capture o <span class="code">PNumber</span> desejado e execute <span class="code">SS</span> para detalhar o status do processo.</li>
+                            <li><span class="code">TSO VCON [NomeDoNode]</span> valida se o node do Grafana está
+                                recebendo dados no Mainframe (Verifica se o dashboard recebe dados).</li>
+                            <li><span class="code">connect</span> abre o fluxo de validação entre processos e nodes:
+                                <span class="code">connect</span> ➔ opção <span class="code">n</span> ➔ seu <span
+                                    class="code">userID</span> ➔ opção <span class="code">SP</span> (Status Process).
+                            </li>
+                            <li><span class="code">SS [PNumber]</span>: Consultar Process Number. Use o comando <span
+                                    class="code">SS</span> seguido do <strong>PNumber</strong> capturado para detalhar o
+                                status do processo.</li>
                         </ul>
-                        <p>Esse roteiro é especialmente útil nos reportes das <span class="code">08:00</span> e <span class="code">13:30</span>, quando o dashboard pode parecer congelado por falha do node e não por ausência real de processamento.</p>
+                        <p>Esse roteiro é especialmente útil nos reportes das <span class="code">08:00</span> e <span
+                                class="code">13:30</span>, quando o dashboard pode parecer congelado por falha do node e
+                            não por ausência real de processamento.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3>Consolidação de abertura do turno</h3>
-                    <p>Na abertura, valide os consoles oficiais, a saúde dos nodes externos e a recepção de dados antes de alimentar planilhas ou reportes. O <span class="code">Console Master</span> deve ser tratado como acesso principal do turno, com credenciais consultadas apenas no canal oficial definido pela operação.</p>
+                    <p>Na abertura, valide os consoles oficiais, a saúde dos nodes externos e a recepção de dados antes
+                        de alimentar planilhas ou reportes. O <span class="code">Console Master</span> deve ser tratado
+                        como acesso principal do turno, com credenciais consultadas apenas no canal oficial definido
+                        pela operação.</p>
                     <ul class="tag-list">
                         <li>Confirmar acesso ao console principal e contingência.</li>
                         <li>Validar nodes do Grafana com <span class="code">TSO VCON</span>.</li>
-                        <li>Usar <span class="code">connect</span> -> <span class="code">n</span> -> <span class="code">userID</span> -> <span class="code">SP</span> para localizar <span class="code">PNumber</span> externo.</li>
-                        <li>Conferir pontos críticos antes das planilhas de <span class="code">08:00</span> e <span class="code">11:00</span>.</li>
+                        <li>Usar <span class="code">connect</span> -> <span class="code">n</span> -> <span
+                                class="code">userID</span> -> <span class="code">SP</span> para localizar <span
+                                class="code">PNumber</span> externo.</li>
+                        <li>Conferir pontos críticos antes das planilhas de <span class="code">08:00</span> e <span
+                                class="code">11:00</span>.</li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3>Reforço de monitoração</h3>
-                    <p>Mesmo quando o console estiver acessível, trate a validação do Grafana como uma checagem separada: node ativo, processo em andamento e recepção de dados coerente. Isso evita reportar parada de faturamento quando o problema real está apenas no dashboard.</p>
+                    <p>Mesmo quando o console estiver acessível, trate a validação do Grafana como uma checagem
+                        separada: node ativo, processo em andamento e recepção de dados coerente. Isso evita reportar
+                        parada de faturamento quando o problema real está apenas no dashboard.</p>
                 </div>
                 <div class="card">
                     <h3>Ambiente de apoio e jobs únicos</h3>
-                    <p>Para demandas operacionais fora da malha padrão, mantenha como referência a library <span class="code">CONTROLM.APOIO</span> e a table <span class="code">JOBUNICO</span>. Esse conjunto costuma ser usado em ajustes controlados, execuções unitárias e validações que não entram no fluxo recorrente do faturamento.</p>
+                    <p>Para demandas operacionais fora da malha padrão, mantenha como referência a library <span
+                            class="code">CONTROLM.APOIO</span> e a table <span class="code">JOBUNICO</span>. Esse
+                        conjunto costuma ser usado em ajustes controlados, execuções unitárias e validações que não
+                        entram no fluxo recorrente do faturamento.</p>
                 </div>
             </section>
 
@@ -120,20 +160,29 @@
                 <div class="row">
                     <div class="card">
                         <h3>Acesso inicial via TN3270</h3>
-                        <p>O acesso pelo emulador 3270 é uma das portas de entrada para navegação no host, autenticação e uso dos painéis operacionais.</p>
+                        <p>O acesso pelo emulador 3270 é uma das portas de entrada para navegação no host, autenticação
+                            e uso dos painéis operacionais.</p>
                         <div class="acc-item">
                             <div class="acc-header">Passo a passo de acesso <i class="fas fa-chevron-down"></i></div>
                             <div class="acc-content">
-                                <p>Criar a pasta <span class="code">TN3270</span>, extrair o pacote do emulador, criar atalho para <span class="code">TN3270.EXE</span> e abrir a aplicação.</p>
-                                <p>Configurar a conexão com IP <span class="code">177.139.188.25</span>, porta <span class="code">3270</span> e terminal <span class="code">3279</span>. Depois de conectar, pressionar Enter, aguardar a tela e usar <span class="code">ESC</span> quando indicado.</p>
-                                <p>Em seguida, usar o comando <span class="code">L SEUALUNO</span>, autenticar com senha e navegar com o atalho <span class="code">P.3.4</span> até o dataset particionado com membros de COBOL e JCL.</p>
+                                <p>Criar a pasta <span class="code">TN3270</span>, extrair o pacote do emulador, criar
+                                    atalho para <span class="code">TN3270.EXE</span> e abrir a aplicação.</p>
+                                <p>Configurar a conexão com IP <span class="code">177.139.188.25</span>, porta <span
+                                        class="code">3270</span> e terminal <span class="code">3279</span>. Depois de
+                                    conectar, pressionar Enter, aguardar a tela e usar <span class="code">ESC</span>
+                                    quando indicado.</p>
+                                <p>Em seguida, usar o comando <span class="code">L SEUALUNO</span>, autenticar com senha
+                                    e navegar com o atalho <span class="code">P.3.4</span> até o dataset particionado
+                                    com membros de COBOL e JCL.</p>
                             </div>
                         </div>
-                        <div class="info-box">Valide sempre as credenciais, endereços e parâmetros de conexão vigentes no seu ambiente antes de utilizar o acesso operacional.</div>
+                        <div class="info-box">Valide sempre as credenciais, endereços e parâmetros de conexão vigentes
+                            no seu ambiente antes de utilizar o acesso operacional.</div>
                     </div>
                     <div class="card">
                         <h3>Atalhos operacionais em TSO</h3>
-                        <p>Use o prefixo <span class="badge">*J</span> para saltar entre ambientes e chegar mais rápido aos acessos mais recorrentes do turno.</p>
+                        <p>Use o prefixo <span class="badge">*J</span> para saltar entre ambientes e chegar mais rápido
+                            aos acessos mais recorrentes do turno.</p>
                         <ul class="tag-list">
                             <li><span class="code">7</span> TSO principal</li>
                             <li><span class="code">10</span> CTMS</li>
@@ -141,44 +190,68 @@
                             <li><span class="code">20</span> TSO EBPP</li>
                             <li><span class="code">24</span> CICS DSV</li>
                         </ul>
-                        <p>Em SDSF, os filtros mais usados são <span class="code">OWNER IBMPROD</span>, <span class="code">OWNER CICUSER</span> e prefixo <span class="code">PRE [prefixo]*</span>.</p>
+                        <p>Em SDSF, os filtros mais usados são <span class="code">OWNER IBMPROD</span>, <span
+                                class="code">OWNER CICUSER</span> e prefixo <span class="code">PRE [prefixo]*</span>.
+                        </p>
                     </div>
                 </div>
                 <div class="grid">
                     <div class="card">
                         <h3>Comando QDS no P.3.4</h3>
-                        <p>O <span class="code">QDS</span> é usado no menu <span class="code">P.3.4</span> na frente do nome do arquivo para abrir uma consulta técnica rápida do dataset.</p>
-                        <p>Ele mostra atributos como organização, <span class="code">RECFM</span> (<span class="code">FB</span> / <span class="code">VB</span>), <span class="code">LRECL</span> e <span class="code">Extents</span>, ajudando a validar formato e crescimento do arquivo antes de uma ação operacional.</p>
+                        <p>O <span class="code">QDS</span> é usado no menu <span class="code">P.3.4</span> na frente do
+                            nome do arquivo para abrir uma consulta técnica rápida do dataset.</p>
+                        <p>Ele mostra atributos como organização, <span class="code">RECFM</span> (<span
+                                class="code">FB</span> / <span class="code">VB</span>), <span class="code">LRECL</span>
+                            e <span class="code">Extents</span>, ajudando a validar formato e crescimento do arquivo
+                            antes de uma ação operacional.</p>
                     </div>
                     <div class="card">
                         <h3>Diferença entre I, S e QDS</h3>
                         <ul class="tag-list">
                             <li><span class="code">I</span> mostra o registro completo do arquivo em tela cheia.</li>
                             <li><span class="code">S</span> mostra volume e organização em linha resumida.</li>
-                            <li><span class="code">QDS</span> abre pop-up com dados de alocação, espaço e atributos técnicos.</li>
-                            <li><span class="code">C</span> comprime bibliotecas <span class="code">PDS</span> para recuperar espaço interno quando o procedimento permitir.</li>
+                            <li><span class="code">QDS</span> abre pop-up com dados de alocação, espaço e atributos
+                                técnicos.</li>
+                            <li><span class="code">C</span> comprime bibliotecas <span class="code">PDS</span> para
+                                recuperar espaço interno quando o procedimento permitir.</li>
                         </ul>
                     </div>
                 </div>
                 <div class="card">
                     <h3>Validação de arquivos antes do BILFIM</h3>
-                    <p>Antes de reiniciar rotinas de faturamento como <span class="code">BILFIM</span>, consulte o <span class="code">QDS</span> no <span class="code">P.3.4</span> para confirmar <span class="code">LRECL</span>, <span class="code">RECFM</span>, formato e crescimento do arquivo de saída.</p>
-                    <p>Se o dataset estiver no limite de <span class="code">Extents</span>, há risco de <span class="code">B37</span> ou <span class="code">D37</span>. Complete a análise com <span class="code">STG LAST</span> para validar o espaço disponível no volume de produção antes da nova tentativa.</p>
+                    <p>Antes de reiniciar rotinas de faturamento como <span class="code">BILFIM</span>, consulte o <span
+                            class="code">QDS</span> no <span class="code">P.3.4</span> para confirmar <span
+                            class="code">LRECL</span>, <span class="code">RECFM</span>, formato e crescimento do arquivo
+                        de saída.</p>
+                    <p>Se o dataset estiver no limite de <span class="code">Extents</span>, há risco de <span
+                            class="code">B37</span> ou <span class="code">D37</span>. Complete a análise com <span
+                            class="code">STG LAST</span> para validar o espaço disponível no volume de produção antes da
+                        nova tentativa.</p>
                 </div>
                 <div class="card">
                     <h3>Conferência de conteúdo antes da transmissão</h3>
-                    <p>Antes de confirmar uma transmissão, valide se o arquivo esperado existe, se possui conteúdo e se o retorno pertence ao cliente correto. Quando aparecer <span class="code">RC=08</span> em fluxo de envio, trate primeiro como suspeita de problema de transmissão ou arquivo de entrada inválido.</p>
-                    <p>Use a consulta do arquivo no <span class="code">P.3.4</span>, confira o item de envio na fila e só avance depois de anexar a evidência do conteúdo ou da ausência dele.</p>
+                    <p>Antes de confirmar uma transmissão, valide se o arquivo esperado existe, se possui conteúdo e se
+                        o retorno pertence ao cliente correto. Quando aparecer <span class="code">RC=08</span> em fluxo
+                        de envio, trate primeiro como suspeita de problema de transmissão ou arquivo de entrada
+                        inválido.</p>
+                    <p>Use a consulta do arquivo no <span class="code">P.3.4</span>, confira o item de envio na fila e
+                        só avance depois de anexar a evidência do conteúdo ou da ausência dele.</p>
                 </div>
                 <div class="card">
                     <h3>Pesquisa avançada com ISPF Option 3.14</h3>
-                    <p>O utilitário <span class="code">P.3.14</span> atua como uma busca em massa nas bibliotecas do Mainframe. Ele é o recurso certo quando você ainda não sabe em qual membro, JCL ou PDS uma referência está definida.</p>
+                    <p>O utilitário <span class="code">P.3.14</span> atua como uma busca em massa nas bibliotecas do
+                        Mainframe. Ele é o recurso certo quando você ainda não sabe em qual membro, JCL ou PDS uma
+                        referência está definida.</p>
                     <ul class="tag-list">
-                        <li>Diferente do <span class="code">FIND</span>, pesquisa múltiplos datasets ou PDS simultaneamente.</li>
+                        <li>Diferente do <span class="code">FIND</span>, pesquisa múltiplos datasets ou PDS
+                            simultaneamente.</li>
                         <li>Ajuda a localizar um <span class="code">DSN</span> específico em centenas de JCLs.</li>
                         <li>Permite identificar programas, rotinas e parâmetros compartilhados.</li>
-                        <li>Use <span class="code">Search String</span>, ajuste <span class="code">Options</span> e marque <span class="code">Any Case</span> quando precisar ignorar maiúsculas e minúsculas.</li>
-                        <li>Leia o <span class="code">Listing Dataset</span> gerado para saber membro e linha exata de cada ocorrência.</li>
+                        <li>Use <span class="code">Search String</span>, ajuste <span class="code">Options</span> e
+                            marque <span class="code">Any Case</span> quando precisar ignorar maiúsculas e minúsculas.
+                        </li>
+                        <li>Leia o <span class="code">Listing Dataset</span> gerado para saber membro e linha exata de
+                            cada ocorrência.</li>
                     </ul>
                 </div>
             </section>
@@ -186,24 +259,35 @@
             <section class="topic" id="ctms-screens">
                 <h2>Telas do Control-M (CTMS)</h2>
                 <div class="card">
-                    <p>O Control-M é a camada de automação e monitoração de workloads batch. Na prática do operador, ele organiza tabelas, jobs, calendários, condições de dependência e filas de execução, permitindo acompanhar o que está aguardando, executando, falhando ou liberando etapas seguintes.</p>
+                    <p>O Control-M é a camada de automação e monitoração de workloads batch. Na prática do operador, ele
+                        organiza tabelas, jobs, calendários, condições de dependência e filas de execução, permitindo
+                        acompanhar o que está aguardando, executando, falhando ou liberando etapas seguintes.</p>
                     <div class="step-box">
-                        Na rotina operacional, a <span class="code">Tela 2</span> é a visão de planejamento e definições estáticas, enquanto a <span class="code">Tela 3</span> é o ambiente ativo de monitoração, intervenção e acompanhamento do processamento em andamento.
+                        Na rotina operacional, a <span class="code">Tela 2</span> é a visão de planejamento e definições
+                        estáticas, enquanto a <span class="code">Tela 3</span> é o ambiente ativo de monitoração,
+                        intervenção e acompanhamento do processamento em andamento.
                     </div>
-                    <p>Em outras palavras, a malha fica planejada na <span class="code">Tela 2</span> e ganha vida na <span class="code">Tela 3</span> após a decolagem para o ambiente ativo.</p>
+                    <p>Em outras palavras, a malha fica planejada na <span class="code">Tela 2</span> e ganha vida na
+                        <span class="code">Tela 3</span> após a decolagem para o ambiente ativo.</p>
                 </div>
                 <div class="grid">
                     <div class="status-card blue">
                         <h3>Tela 3: Monitoring</h3>
-                        <p>Visão de monitoração em tempo real. É onde o operador localiza jobs em <span class="code">H</span>, <span class="code">WC</span>, execução, erro ou aguardando dependência.</p>
+                        <p>Visão de monitoração em tempo real. É onde o operador localiza jobs em <span
+                                class="code">H</span>, <span class="code">WC</span>, execução, erro ou aguardando
+                            dependência.</p>
                     </div>
                     <div class="status-card green">
                         <h3>Tela 2: Planning</h3>
-                        <p>Visão de planejamento. Serve para conferir a malha agendada, as tabelas do fluxo, definições de calendarização e o que deveria ter sido ordenado.</p>
+                        <p>Visão de planejamento. Serve para conferir a malha agendada, as tabelas do fluxo, definições
+                            de calendarização e o que deveria ter sido ordenado.</p>
                     </div>
                     <div class="status-card blue">
                         <h3>Arquitetura resumida</h3>
-                        <p><span class="code">Control-M</span> automatiza a carga batch. A arquitetura também inclui <span class="code">Control-O</span> para eventos, <span class="code">Control-R</span> para restart e a separação entre <span class="code">Server</span>, <span class="code">Scheduler</span> e <span class="code">Agent</span>.</p>
+                        <p><span class="code">Control-M</span> automatiza a carga batch. A arquitetura também inclui
+                            <span class="code">Control-O</span> para eventos, <span class="code">Control-R</span> para
+                            restart e a separação entre <span class="code">Server</span>, <span
+                                class="code">Scheduler</span> e <span class="code">Agent</span>.</p>
                     </div>
                     <div class="status-card green">
                         <h3>Elementos do desenho</h3>
@@ -211,15 +295,26 @@
                         <p><span class="tag">Table</span> organiza o conjunto de jobs.</p>
                         <p><span class="tag">Job</span> representa a unidade executável monitorada.</p>
                     </div>
+                    <div class="status-card blue">
+                        <h3>Tela U: User Reports</h3>
+                        <p>Atalho para consultas de relatórios e documentação técnica. <strong>Navegação:</strong> Opção
+                            <span class="code">2</span> ➔ <span class="code">job/lote</span> ➔ comando <span
+                                class="code">V</span> ➔ linha de comando <span class="code">find "JCL"</span> para
+                            encontrar a biblioteca de amarração de um processo.</p>
+                    </div>
                 </div>
                 <div class="card">
                     <h3>Network e leitura de dependências</h3>
-                    <p>Use o comando <span class="code">Network</span> para entender por que um job segue parado mesmo sem erro explícito. A árvore mostra quais predecessores ainda precisam terminar e quais sucessores serão liberados depois da conclusão.</p>
-                    <p>Antes de forçar qualquer job manualmente, valide os antecessores marcados com <span class="code">-</span> para evitar quebra de encadeamento operacional.</p>
+                    <p>Use o comando <span class="code">Network</span> para entender por que um job segue parado mesmo
+                        sem erro explícito. A árvore mostra quais predecessores ainda precisam terminar e quais
+                        sucessores serão liberados depois da conclusão.</p>
+                    <p>Antes de forçar qualquer job manualmente, valide os antecessores marcados com <span
+                            class="code">-</span> para evitar quebra de encadeamento operacional.</p>
                     <ul class="tag-list">
                         <li><strong>Sinal - :</strong> jobs antecessores que liberam o seu job.</li>
                         <li><strong>Sinal + :</strong> jobs sucessores que dependem do seu job.</li>
-                        <li>Combine a leitura de <span class="code">Network</span> com a <span class="code">Tela 2</span> e a <span class="code">Tela 3</span> para validar planejamento e execução.</li>
+                        <li>Combine a leitura de <span class="code">Network</span> com a <span class="code">Tela
+                                2</span> e a <span class="code">Tela 3</span> para validar planejamento e execução.</li>
                     </ul>
                 </div>
                 <div class="row">
@@ -228,35 +323,60 @@
                         <ul class="tag-list">
                             <li><span class="code">S</span> abre o log completo do job.</li>
                             <li><span class="code">V</span> abre a sysout para localizar steps e procedures.</li>
-                            <li><span class="code">D</span> remove o log do spool após a conferência, quando a limpeza for prevista.</li>
+                            <li><span class="code">D</span> remove o log do spool após a conferência, quando a limpeza
+                                for prevista.</li>
                             <li><span class="code">A</span> libera uma saída retida no spool.</li>
                             <li><span class="code">L</span> mostra apenas o log de eventos do job.</li>
-                            <li><span class="code">C</span> cancela a execução do job quando houver autorização para purge.</li>
-                            <li><span class="code">?</span> expande os <span class="code">DDNAMEs</span>, como <span class="code">JESMSGLG</span>, <span class="code">SYSOUT</span> e <span class="code">PRINTER</span>, para seleção individual.</li>
-                            <li><span class="code">ST</span> ajuda a localizar o status global quando o job não aparece na lista principal.</li>
-                            <li><span class="code">H</span> permite visualizar somente a fila de logs retidos em hold.</li>
+                            <li><span class="code">C</span> cancela a execução do job quando houver autorização para
+                                purge.</li>
+                            <li><span class="code">?</span> expande os <span class="code">DDNAMEs</span>, como <span
+                                    class="code">JESMSGLG</span>, <span class="code">SYSOUT</span> e <span
+                                    class="code">PRINTER</span>, para seleção individual.</li>
+                            <li><span class="code">ST</span> ajuda a localizar o status global quando o job não aparece
+                                na lista principal.</li>
+                            <li><span class="code">H</span> permite visualizar somente a fila de logs retidos em hold.
+                            </li>
                         </ul>
                     </div>
                     <div class="card">
                         <h3>Filtro ABEND na Tela 3</h3>
-                        <p>Quando a malha estiver carregada, use a tela <span class="code">SHOW</span> para salvar filtros como <span class="code">ABEND</span> e isolar apenas os jobs em erro ou com retorno inesperado.</p>
-                        <p>Na leitura do filtro, os estados mais úteis são <span class="code">Ended "OK"</span>, <span class="code">Not "OK"</span>, <span class="code">Held</span>, <span class="code">Abended</span>, <span class="code">Unexpected CC</span> e <span class="code">JCL Error</span>.</p>
-                        <p>Use filtros de apoio como <span class="code">Retorno</span>, <span class="code">Abends</span> e <span class="code">Default</span> para alternar entre visão de erro, visão geral e consulta por retorno.</p>
-                        <p>Na procura de causa raiz, pesquise textos como <span class="code">missing</span>, <span class="code">not found</span>, <span class="code">FALHA DE LEITURA</span> e use <span class="code">LF</span> para limpar highlight quando a tela ficar marcada demais.</p>
+                        <p>Quando a malha estiver carregada, use a tela <span class="code">SHOW</span> para salvar
+                            filtros como <span class="code">ABEND</span> e isolar apenas os jobs em erro ou com retorno
+                            inesperado.</p>
+                        <p><strong>Filtros Úteis:</strong> Utilize os filtros de exibição <span
+                                class="code">ABEND2</span> e <span class="code">ALL</span> para mapear rapidamente
+                            desvios na malha ativa.</p>
+                        <p>Na leitura do filtro, os estados mais úteis são <span class="code">Ended "OK"</span>, <span
+                                class="code">Not "OK"</span>, <span class="code">Held</span>, <span
+                                class="code">Abended</span>, <span class="code">Unexpected CC</span> e <span
+                                class="code">JCL Error</span>.</p>
+                        <p>Use filtros de apoio como <span class="code">Retorno</span>, <span class="code">Abends</span>
+                            e <span class="code">Default</span> para alternar entre visão de erro, visão geral e
+                            consulta por retorno.</p>
+                        <p>Na procura de causa raiz, pesquise textos como <span class="code">missing</span>, <span
+                                class="code">not found</span>, <span class="code">FALHA DE LEITURA</span> e use <span
+                                class="code">LF</span> para limpar highlight quando a tela ficar marcada demais.</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="card">
                         <h3>Engenharia de erros no Control-M</h3>
-                        <p>Quando aparecer o erro <span class="code">CTM770E</span> com a mensagem <span class="code">PLEASE FILL IN LIBRARY NAME</span>, valide primeiro o campo <span class="code">MEMLIB</span>. Esse retorno normalmente indica definição ou alteração de job sem a biblioteca preenchida corretamente.</p>
-                        <p>Em rotinas da <span class="code">IIF</span>, por exemplo, a correção costuma passar por informar a biblioteca certa da procedure, como <span class="code">PRD.IIF.PROCLIB</span>, antes de salvar ou submeter novamente.</p>
+                        <p>Quando aparecer o erro <span class="code">CTM770E</span> com a mensagem <span
+                                class="code">PLEASE FILL IN LIBRARY NAME</span>, valide primeiro o campo <span
+                                class="code">MEMLIB</span>. Esse retorno normalmente indica definição ou alteração de
+                            job sem a biblioteca preenchida corretamente.</p>
+                        <p>Em rotinas da <span class="code">IIF</span>, por exemplo, a correção costuma passar por
+                            informar a biblioteca certa da procedure, como <span class="code">PRD.IIF.PROCLIB</span>,
+                            antes de salvar ou submeter novamente.</p>
                     </div>
                     <div class="card">
                         <h3>Comandos rápidos em JOBUNICO</h3>
                         <ul class="tag-list">
                             <li><span class="code">EDIT</span> abre o JCL diretamente para manutenção.</li>
-                            <li><span class="code">DOC</span> consulta a documentação padrão no dataset <span class="code">CTM.V630.DOC</span>.</li>
-                            <li><span class="code">PLAN</span> projeta impactos e dependências na malha ativa antes da liberação.</li>
+                            <li><span class="code">DOC</span> consulta a documentação padrão no dataset <span
+                                    class="code">CTM.V630.DOC</span>.</li>
+                            <li><span class="code">PLAN</span> projeta impactos e dependências na malha ativa antes da
+                                liberação.</li>
                         </ul>
                     </div>
                 </div>
@@ -265,80 +385,157 @@
             <section class="topic" id="ctms-status">
                 <h2>Status e Cores no CTMS</h2>
                 <div class="card">
-                    <p>O código de cores do Control-M ajuda no diagnóstico visual imediato da malha. Antes de atuar, leia a cor em conjunto com a dependência, o horário e a mensagem do job para evitar ação indevida em um fluxo apenas aguardando liberação normal.</p>
+                    <p>O código de cores do Control-M ajuda no diagnóstico visual imediato da malha. Antes de atuar,
+                        leia a cor em conjunto com a dependência, o horário e a mensagem do job para evitar ação
+                        indevida em um fluxo apenas aguardando liberação normal.</p>
                 </div>
                 <div class="grid">
                     <div class="status-card blue">
                         <h3>Dicionário de status</h3>
                         <ul class="tag-list">
-                            <li><strong>Cinza:</strong> aguardando pré-requisito, condição ou horário.</li>
-                            <li><strong>Rosa:</strong> aguardando usuário, intervenção manual ou resposta.</li>
-                            <li><strong>Azul:</strong> aguardando recurso, disco, fita ou arquivo em uso.</li>
-                            <li><strong>Amarelo:</strong> em execução no Mainframe.</li>
-                            <li><strong>Verde:</strong> terminou OK.</li>
-                            <li><strong>Vermelho:</strong> terminou NÃO OK, com erro ou abend.</li>
-                            <li><strong>Branco:</strong> comunicação interrompida com o agente.</li>
+                            <li><strong>Amarelo:</strong> Em execução no Mainframe.</li>
+                            <li><strong>Verde:</strong> Terminou com Sucesso (OK).</li>
+                            <li><strong>Vermelho:</strong> Erro Crítico (Abend ou Condition Code inválido).</li>
+                            <li><strong>Azul:</strong> Aguardando recurso (Disco/Fita) ou arquivo ocupado.</li>
+                            <li><strong>Rosa:</strong> Aguardando resposta de console ou ação do usuário.</li>
+                            <li><strong>Cinza:</strong> Aguardando pré-requisitos (antecessores ou horário).</li>
+                            <li><strong>Branco:</strong> Falha de comunicação com o Agente.</li>
                         </ul>
                     </div>
                     <div class="status-card green">
                         <h3>Leitura operacional rápida</h3>
-                        <p><strong>Cinza</strong> e <strong>Azul</strong> normalmente apontam espera técnica do fluxo. <strong>Rosa</strong> pede ação humana. <strong>Vermelho</strong> exige triagem do erro. <strong>Branco</strong> costuma indicar falha de comunicação e deve ser correlacionado com agente, rede ou problema de decolagem.</p>
+                        <p><strong>Cinza</strong> e <strong>Azul</strong> normalmente apontam espera técnica do fluxo.
+                            <strong>Rosa</strong> pede ação humana. <strong>Vermelho</strong> exige triagem do erro.
+                            <strong>Branco</strong> costuma indicar falha de comunicação e deve ser correlacionado com
+                            agente, rede ou problema de decolagem.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3>RC e status na prática</h3>
-                    <p><span class="code">RC=0000</span> representa sucesso absoluto. Já <span class="code">RC=0004</span> indica warning: o programa terminou, mas com alguma condição que exige conferência, como arquivo vazio ou exceção de negócio.</p>
-                    <p>Quando o job fica em vermelho por <span class="code">CC</span> inválido ou em <span class="code">Held</span> após warning, trate o caso como validação operacional e não como rerun automático imediato.</p>
+                    <p><span class="code">RC=0000</span> representa sucesso absoluto. Já <span
+                            class="code">RC=0004</span> indica warning: o programa terminou, mas com alguma condição que
+                        exige conferência, como arquivo vazio ou exceção de negócio.</p>
+                    <p>Quando o job fica em vermelho por <span class="code">CC</span> inválido ou em <span
+                            class="code">Held</span> após warning, trate o caso como validação operacional e não como
+                        rerun automático imediato.</p>
                 </div>
             </section>
 
             <section class="topic" id="restart-jobs">
-                <h2>Procedimento de Restart de Jobs</h2>
+                <h2>Diagnóstico, Comportamento de Fila e Restart</h2>
                 <div class="card">
-                    <p>Após um abend, o restart pode ser feito pelo JCL ou diretamente pela Tela 3, dependendo do padrão do fluxo. O objetivo é reiniciar do ponto correto sem repetir etapas já concluídas nem avançar sem tratar a causa da falha.</p>
+                    <p>Após um abend, o restart pode ser feito pelo JCL ou diretamente pela Tela 3, dependendo do padrão
+                        do fluxo. O objetivo é reiniciar do ponto correto sem repetir etapas já concluídas nem avançar
+                        sem tratar a causa da falha.</p>
+                </div>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Análise Inicial de Falhas e Abends</h3>
+                        <ol style="padding-left: 20px; margin-bottom: 1rem;">
+                            <li><strong>Identificação:</strong> Acesse o console e localize o step do Job que falhou.
+                            </li>
+                            <li><strong>Coleta do Erro:</strong> Utilize o comando <span class="code">H</span>
+                                (Hold/History) sobre o Job. Vá até o final do log gerado para identificar o código
+                                específico do erro (<strong>Abend</strong>) que determina a causa raiz (ex: falta de
+                                espaço, erro de sintaxe).</li>
+                            <li><strong>Localização:</strong> Busque o step exato que contenha a <strong>PROC</strong>
+                                ou o programa associado que disparou a falha.</li>
+                            <li><strong>Condition Codes (CC):</strong> <span class="code">RC=0000</span> é sucesso.
+                                <span class="code">RC=0004</span> é um Warning (Aviso).
+                                <br><em>Exemplo PCPBKD19:</em> Encerra em "Held" com <span class="code">RC=0004</span>
+                                quando o arquivo de entrada está vazio (<span class="code">FALHA DE LEITURA DO ARQUIVO
+                                    ENTRADA OU ARQUIVO VAZIO</span>). A automação retém o Job por segurança.
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="card">
+                        <h3>Fila e Execução Parcial</h3>
+                        <p><strong>Cancelamentos e Execução Parcial:</strong> Em caso de cancelamentos repentinos no
+                            console z/OS, verifique imediatamente o cartão de controle (<span class="code">SYSIN</span>)
+                            e as definições de arquivos DD na JCL. O Job pode ter executado passos anteriores com
+                            sucesso antes de cair, gerando datasets temporários. Certifique-se de limpar esses resíduos
+                            para garantir que o restart não duplique ou corrompa dados no faturamento.</p>
+                        <p><strong>Comportamento da Fila e Retenção:</strong> Após ser liberado ou sofrer um restart, o
+                            Job pode ficar travado na fila em vez de executar imediatamente. Isso ocorre por retenção de
+                            recursos (outro Job concorrente utilizando o mesmo dataset), falta de condições de
+                            dependência ou restrição de horário.</p>
+                        <p><strong>Ação:</strong> Digite uma interrogação (<span class="code">?</span>) sobre o Job no
+                            console para checar a causa exata da retenção e identificar qual recurso está bloqueando a
+                            malha.</p>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="card">
-                        <h3>Opção 1: Restart via JCL</h3>
-                        <p>Na Sysout, procure o step abendado usando os comandos laterais <span class="code">V</span> e <span class="code">S</span> para identificar o nome exato do step e da PROC.</p>
-                        <p>No JCL, localize a variável <span class="code">%%RESTART=N</span> e altere para <span class="code">%%RESTART=S</span>.</p>
-                        <p>Abaixo de <span class="code">%%PROGRAMA=STEPNAME</span>, configure o ponto de reinício no formato <span class="code">STEP.PROC</span>.</p>
-                        <div class="info-box">Se o cartão de restart não estiver visível, use o comando <span class="code">Z</span> no CTMS para habilitar a edição do conteúdo.</div>
+                        <h3>Método A: Restart Sem Cartão (Direto no Job / Tela 3)</h3>
+                        <ol style="padding-left: 20px;">
+                            <li>Com o Job em Hold (H), execute o comando de Restart inserindo uma interrogação (<span
+                                    class="code">?</span>) para abrir a lista de steps.</li>
+                            <li>Identifique o step travado. Utilize o comando <span class="code">F</span> (From) sobre
+                                ele para definir o novo ponto de partida.</li>
+                            <li>Use <span class="code">O</span> (Only) se desejar que ele execute apenas aquele trecho e
+                                pare.</li>
+                            <li>Pressione <span class="code">F3</span> para retornar, <span class="code">Y</span> (Yes)
+                                para confirmar e <span class="code">F3</span> novamente para sair.</li>
+                        </ol>
                     </div>
                     <div class="card">
-                        <h3>Opção 2: Restart pela Tela 3</h3>
-                        <ul class="tag-list">
-                            <li>Colocar o job em <span class="code">H</span> com <span class="code">Hold</span>.</li>
-                            <li>Digitar <span class="code">R</span> para <span class="code">Rerun</span>.</li>
-                            <li>No campo <span class="code">Restart</span>, usar <span class="code">?</span> e pressionar Enter.</li>
-                            <li>Na aba de steps, marcar <span class="code">F</span> no step de início do reprocessamento.</li>
-                            <li>Marcar <span class="code">O</span> no step final, se quiser rodar apenas um trecho.</li>
-                            <li>Finalizar com <span class="code">F3</span> e confirmar com <span class="code">Y</span>.</li>
-                        </ul>
+                        <h3>Método B: Restart Via Cartão (Mais Seguro / No JCL)</h3>
+                        <p><em>Nota: Este método é mais seguro por deixar o ambiente configurado corretamente, evitando
+                                erros manuais de digitação.</em></p>
+                        <ol style="padding-left: 20px;">
+                            <li>Identifique e copie os parâmetros do step e da PROC necessários através dos comandos
+                                <span class="code">V</span> e <span class="code">S</span> na Sysout.</li>
+                            <li>Acesse o JCL do Job (comando <span class="code">Z</span> para habilitar edição).</li>
+                            <li>Onde estiver indicado <span class="code">%%RESTART=N</span> (ou <span
+                                    class="code">RESTART=YES</span>), mude para <span class="code">S</span> (ou <span
+                                    class="code">YES</span>) e inclua logo abaixo a indicação do ponto de reinício no
+                                formato: <span class="code">STEP.PROC</span>.</li>
+                            <li>Salve as alterações (<span class="code">SAVE</span>), execute o Job (<span
+                                    class="code">RERUN</span>) e libere-o na fila.</li>
+                        </ol>
                     </div>
                 </div>
                 <div class="card">
                     <h3>Rerun prático pela lista de steps</h3>
-                    <p>Quando o job estiver em erro ou <span class="code">Held</span>, abra o rerun, digite <span class="code">?</span> no campo de restart e procure o step correto antes de confirmar. Use <span class="code">F</span> para marcar o início, <span class="code">O</span> quando precisar executar somente aquele trecho, <span class="code">F3</span> para sair da seleção e <span class="code">Y</span> para confirmar.</p>
-                    <div class="info-box">Se a tela pedir confirmações adicionais após o <span class="code">Y</span>, siga o procedimento formal do fluxo. Evite repetir o mesmo step sem validar o retorno anterior no spool.</div>
+                    <p>Quando o job estiver em erro ou <span class="code">Held</span>, abra o rerun, digite <span
+                            class="code">?</span> no campo de restart e procure o step correto antes de confirmar. Use
+                        <span class="code">F</span> para marcar o início, <span class="code">O</span> quando precisar
+                        executar somente aquele trecho, <span class="code">F3</span> para sair da seleção e <span
+                            class="code">Y</span> para confirmar.</p>
+                    <div class="info-box">Se a tela pedir confirmações adicionais após o <span class="code">Y</span>,
+                        siga o procedimento formal do fluxo. Evite repetir o mesmo step sem validar o retorno anterior
+                        no spool.</div>
                 </div>
                 <div class="card">
                     <h3>Fluxo revisado para falha no step DERJE100</h3>
                     <ul class="tag-list">
-                        <li>Na Sysout, use <span class="code">V</span> e <span class="code">S</span> para localizar o <span class="code">STEP</span> e a <span class="code">PROC</span> abendada.</li>
-                        <li>Se o cartão de restart ainda não existir, aplique <span class="code">Z</span> para habilitar a edição do JCL.</li>
-                        <li>Troque <span class="code">%%RESTART=N</span> por <span class="code">%%RESTART=S</span> e informe <span class="code">STEP.PROC</span> logo abaixo de <span class="code">%%PROGRAMA=STEPNAME</span>.</li>
-                        <li>Na Tela 3, coloque o job em <span class="code">H</span>, execute <span class="code">R</span> e use <span class="code">?</span> para selecionar os steps com <span class="code">F</span> e <span class="code">O</span>.</li>
+                        <li>Na Sysout, use <span class="code">V</span> e <span class="code">S</span> para localizar o
+                            <span class="code">STEP</span> e a <span class="code">PROC</span> abendada.</li>
+                        <li>Se o cartão de restart ainda não existir, aplique <span class="code">Z</span> para habilitar
+                            a edição do JCL.</li>
+                        <li>Troque <span class="code">%%RESTART=N</span> por <span class="code">%%RESTART=S</span> e
+                            informe <span class="code">STEP.PROC</span> logo abaixo de <span
+                                class="code">%%PROGRAMA=STEPNAME</span>.</li>
+                        <li>Na Tela 3, coloque o job em <span class="code">H</span>, execute <span class="code">R</span>
+                            e use <span class="code">?</span> para selecionar os steps com <span class="code">F</span> e
+                            <span class="code">O</span>.</li>
                     </ul>
                 </div>
                 <div class="row">
                     <div class="card">
                         <h3>Triagem no SDSF e PRINTER</h3>
-                        <p>Na investigação de return codes, vá para a <span class="code">Sysout</span> e use <span class="code">V</span> e <span class="code">S</span> para localizar step e mensagens do programa. Nos relatórios <span class="code">PRINTER</span>, procure textos como <span class="code">FALHA DE LEITURA DO ARQUIVO ENTRADA</span> para decidir se a causa está em dado vazio, arquivo ausente ou erro lógico.</p>
+                        <p>Na investigação de return codes, vá para a <span class="code">Sysout</span> e use <span
+                                class="code">V</span> e <span class="code">S</span> para localizar step e mensagens do
+                            programa. Nos relatórios <span class="code">PRINTER</span>, procure textos como <span
+                                class="code">FALHA DE LEITURA DO ARQUIVO ENTRADA</span> para decidir se a causa está em
+                            dado vazio, arquivo ausente ou erro lógico.</p>
                     </div>
                     <div class="card">
                         <h3>Held e restart automático</h3>
-                        <p>Alguns jobs trazem comentário como <span class="code">RESTART AUTOMATICO (2 VEZES)</span> no cabeçalho do JCL. Mesmo assim, se o job parar em <span class="code">Held</span>, considere que a automação transferiu a decisão para a operação e faça a validação humana antes de repetir a execução.</p>
+                        <p>Alguns jobs trazem comentário como <span class="code">RESTART AUTOMATICO (2 VEZES)</span> no
+                            cabeçalho do JCL. Mesmo assim, se o job parar em <span class="code">Held</span>, considere
+                            que a automação transferiu a decisão para a operação e faça a validação humana antes de
+                            repetir a execução.</p>
                     </div>
                 </div>
             </section>
@@ -346,25 +543,34 @@
             <section class="topic" id="pcpbkd19">
                 <h2>Diagnóstico Avançado de Jobs (PCPBKD19)</h2>
                 <div class="card">
-                    <p>Quando o <span class="code">PCPBKD19</span> parar com <span class="code">Due to CC</span>, isso indica que o job não sofreu abend fatal, mas retornou um código incompatível com a continuidade automática da malha. Nesses casos, a decisão operacional depende da leitura conjunta do status no Control-M, do spool no SDSF e da disponibilidade real do arquivo de entrada.</p>
+                    <p>Quando o <span class="code">PCPBKD19</span> parar com <span class="code">Due to CC</span>, isso
+                        indica que o job não sofreu abend fatal, mas retornou um código incompatível com a continuidade
+                        automática da malha. Nesses casos, a decisão operacional depende da leitura conjunta do status
+                        no Control-M, do spool no SDSF e da disponibilidade real do arquivo de entrada.</p>
                     <div class="step-box">
-                        Se o relatório trouxer a mensagem <span class="code">01- FALHA DE LEITURA DO ARQUIVO ENTRADA OU ARQUIVO VAZIO</span> com <span class="code">RC=0004</span>, trate como warning com validação obrigatória. O programa encerra assim para impedir faturamento zerado ou inválido.
+                        Se o relatório trouxer a mensagem <span class="code">01- FALHA DE LEITURA DO ARQUIVO ENTRADA OU
+                            ARQUIVO VAZIO</span> com <span class="code">RC=0004</span>, trate como warning com validação
+                        obrigatória. O programa encerra assim para impedir faturamento zerado ou inválido.
                     </div>
                 </div>
                 <div class="grid">
                     <div class="status-card blue">
                         <h3>Interpretação no Control-M</h3>
                         <ul class="tag-list">
-                            <li><strong>Due to CC:</strong> o retorno do job foi aceito pelo sistema operacional, mas rejeitado pela automação.</li>
+                            <li><strong>Due to CC:</strong> o retorno do job foi aceito pelo sistema operacional, mas
+                                rejeitado pela automação.</li>
                             <li><strong>RC=0004:</strong> aviso operacional que exige conferência antes de rerun.</li>
-                            <li><strong>Tag Note OPS-XXXXX:</strong> identificador do ticket gerado pelo monitoramento da malha.</li>
-                            <li><strong>Comando r:</strong> atalho no ambiente IOA/Control-M para acionar rerun ou restart.</li>
+                            <li><strong>Tag Note OPS-XXXXX:</strong> identificador do ticket gerado pelo monitoramento
+                                da malha.</li>
+                            <li><strong>Comando r:</strong> atalho no ambiente IOA/Control-M para acionar rerun ou
+                                restart.</li>
                         </ul>
                     </div>
                     <div class="status-card green">
                         <h3>Análise do spool no SDSF</h3>
                         <ul class="tag-list">
-                            <li>Consulte <span class="code">SYSOUT</span> e <span class="code">PRINTER</span> para localizar falhas de lógica ou ausência de dados.</li>
+                            <li>Consulte <span class="code">SYSOUT</span> e <span class="code">PRINTER</span> para
+                                localizar falhas de lógica ou ausência de dados.</li>
                             <li>Use <span class="code">F8</span> para rolar até o trecho do return code.</li>
                             <li>Use <span class="code">F11</span> para enxergar mensagens truncadas à direita.</li>
                             <li>Confirme se a causa raiz foi arquivo vazio antes de qualquer nova execução.</li>
@@ -374,8 +580,13 @@
                 <div class="row">
                     <div class="card">
                         <h3>Regras no cabeçalho do JCL</h3>
-                        <p>Após o cartão <span class="code">JOB</span>, verifique sempre os comentários de arquitetura. Quando houver orientação como <span class="code">ESTE JOB POSSUI RESTART AUTOMATICO (2 VEZES)</span>, significa que a malha tentará nova execução sozinha em falhas sistêmicas antes de acionar a operação.</p>
-                        <p>Esse comportamento normalmente não é aplicado a <span class="code">RC=0004</span>, porque warning baixo costuma ser tratado como evento dependente de validação humana, principalmente quando há suspeita de atraso na origem ou arquivo não carregado.</p>
+                        <p>Após o cartão <span class="code">JOB</span>, verifique sempre os comentários de arquitetura.
+                            Quando houver orientação como <span class="code">ESTE JOB POSSUI RESTART AUTOMATICO (2
+                                VEZES)</span>, significa que a malha tentará nova execução sozinha em falhas sistêmicas
+                            antes de acionar a operação.</p>
+                        <p>Esse comportamento normalmente não é aplicado a <span class="code">RC=0004</span>, porque
+                            warning baixo costuma ser tratado como evento dependente de validação humana, principalmente
+                            quando há suspeita de atraso na origem ou arquivo não carregado.</p>
                     </div>
                     <div class="card">
                         <h3>Checklist antes de acionar rerun</h3>
@@ -384,84 +595,124 @@
                             <li>Confirmar no spool que o erro é realmente arquivo vazio.</li>
                             <li>Checar se o dataset de entrada está disponível em disco.</li>
                             <li>Validar se existe recall pendente no HSM.</li>
-                            <li>Só depois disso usar <span class="code">r</span>, <span class="code">Rerun</span> ou restart formal.</li>
+                            <li>Só depois disso usar <span class="code">r</span>, <span class="code">Rerun</span> ou
+                                restart formal.</li>
                         </ul>
                     </div>
                 </div>
                 <div class="grid">
                     <div class="card">
                         <h3>Arquivos MIGRAT2 e HRECALL</h3>
-                        <p>No <span class="code">ISPF 3.4</span>, o status <span class="code">MIGRAT2</span> indica que o dataset foi migrado pelo HSM para fita ou outra camada secundária, liberando espaço em disco. Enquanto estiver nesse estado, o arquivo não pode ser consumido por jobs.</p>
-                        <p>Digite <span class="code">HRECALL</span> ou <span class="code">H</span> ao lado do dataset para solicitar o retorno ao disco. Atualize a tela com Enter ou <span class="code">F5</span> até o status migrado desaparecer e ser substituído por um volume real, como <span class="code">PRD123</span>.</p>
+                        <p>No <span class="code">ISPF 3.4</span>, o status <span class="code">MIGRAT2</span> indica que
+                            o dataset foi migrado pelo HSM para fita ou outra camada secundária, liberando espaço em
+                            disco. Enquanto estiver nesse estado, o arquivo não pode ser consumido por jobs.</p>
+                        <p>Digite <span class="code">HRECALL</span> ou <span class="code">H</span> ao lado do dataset
+                            para solicitar o retorno ao disco. Atualize a tela com Enter ou <span class="code">F5</span>
+                            até o status migrado desaparecer e ser substituído por um volume real, como <span
+                                class="code">PRD123</span>.</p>
                     </div>
                     <div class="card">
                         <h3>Dica operacional do caso</h3>
-                        <p>Se o <span class="code">PCPBKD19</span> parar com <span class="code">RC=0004</span> e o relatório acusar arquivo vazio, confirme primeiro se o recall do arquivo de entrada foi concluído ou se a carga na origem realmente ocorreu.</p>
-                        <p>Esse passo evita rerun prematuro, repetição de warning e abertura de incidente com causa raiz incompleta.</p>
+                        <p>Se o <span class="code">PCPBKD19</span> parar com <span class="code">RC=0004</span> e o
+                            relatório acusar arquivo vazio, confirme primeiro se o recall do arquivo de entrada foi
+                            concluído ou se a carga na origem realmente ocorreu.</p>
+                        <p>Esse passo evita rerun prematuro, repetição de warning e abertura de incidente com causa raiz
+                            incompleta.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3>Restore e desmigração por missão</h3>
-                    <p>Quando o job depender de dataset migrado ou cair em cenário de <span class="code">Not Selected</span>, confirme o status no <span class="code">P.3.4</span>. Se o volume estiver em <span class="code">MIGRAT2</span>, faça <span class="code">HRECALL</span> ou siga a missão de restore quando o procedimento exigir.</p>
+                    <p>Quando o job depender de dataset migrado ou cair em cenário de <span class="code">Not
+                            Selected</span>, confirme o status no <span class="code">P.3.4</span>. Se o volume estiver
+                        em <span class="code">MIGRAT2</span>, faça <span class="code">HRECALL</span> ou siga a missão de
+                        restore quando o procedimento exigir.</p>
                     <ul class="tag-list">
-                        <li>Na Tela <span class="code">U</span>, aplicar <span class="code">R</span> no job e confirmar com <span class="code">Y</span>.</li>
-                        <li>Acompanhar a missão <span class="code">RSTEQP01</span> na Tela <span class="code">=A</span>.</li>
-                        <li>Quando previsto, usar <span class="code">B</span> de <span class="code">Bypass</span> no job <span class="code">RSTEQP01</span>.</li>
-                        <li>Se travar, cancelar com <span class="code">C</span>, renomear o dataset para <span class="code">.OLD</span> e submeter <span class="code">RSTRESET</span>.</li>
+                        <li>Na Tela <span class="code">U</span>, aplicar <span class="code">R</span> no job e confirmar
+                            com <span class="code">Y</span>.</li>
+                        <li>Acompanhar a missão <span class="code">RSTEQP01</span> na Tela <span class="code">=A</span>.
+                        </li>
+                        <li>Quando previsto, usar <span class="code">B</span> de <span class="code">Bypass</span> no job
+                            <span class="code">RSTEQP01</span>.</li>
+                        <li>Se travar, cancelar com <span class="code">C</span>, renomear o dataset para <span
+                                class="code">.OLD</span> e submeter <span class="code">RSTRESET</span>.</li>
                     </ul>
                 </div>
                 <div class="grid">
                     <div class="card">
                         <h3>DATA SET NOT SELECTED</h3>
-                        <p>Quando o abend indicar <span class="code">DATA SET NOT SELECTED</span>, como em jobs de backup <span class="code">PTSTIBK1</span> ou <span class="code">PCPBKD19</span>, confirme o dataset citado no relatório antes de qualquer nova execução.</p>
+                        <p>Quando o abend indicar <span class="code">DATA SET NOT SELECTED</span>, como em jobs de
+                            backup <span class="code">PTSTIBK1</span> ou <span class="code">PCPBKD19</span>, confirme o
+                            dataset citado no relatório antes de qualquer nova execução.</p>
                         <ul class="tag-list">
                             <li>Abrir o <span class="code">P.3.4</span> e pesquisar o dataset informado.</li>
-                            <li>Se estiver migrado, digitar <span class="code">HRECALL</span> ou <span class="code">H</span> ao lado do arquivo.</li>
+                            <li>Se estiver migrado, digitar <span class="code">HRECALL</span> ou <span
+                                    class="code">H</span> ao lado do arquivo.</li>
                             <li>Aguardar o retorno do volume físico na coluna <span class="code">Volume</span>.</li>
-                            <li>Voltar ao job abendado e aplicar <span class="code">Rerun</span> somente depois do recall.</li>
+                            <li>Voltar ao job abendado e aplicar <span class="code">Rerun</span> somente depois do
+                                recall.</li>
                         </ul>
                     </div>
                     <div class="card">
                         <h3>Restore pela Tela U</h3>
-                        <p>Para desmigração via histórico, use a opção 3 da Tela <span class="code">U</span> e execute um job por vez para evitar conflito no ambiente de restore.</p>
+                        <p>Para desmigração via histórico, use a opção 3 da Tela <span class="code">U</span> e execute
+                            um job por vez para evitar conflito no ambiente de restore.</p>
                         <ul class="tag-list">
-                            <li>Aplicar <span class="code">R</span> no job desejado e confirmar com <span class="code">Y</span>.</li>
+                            <li>Aplicar <span class="code">R</span> no job desejado e confirmar com <span
+                                    class="code">Y</span>.</li>
                             <li>Informar <span class="code">BY RESTORE MISSION: RSTEQP01</span>.</li>
-                            <li>Na Tela <span class="code">=A</span>, localizar <span class="code">RSTEQP01</span> em <span class="code">WAIT PROCESS</span>.</li>
-                            <li>Usar <span class="code">B</span> para <span class="code">Bypass</span> e confirmar <span class="code">Y-Y</span>.</li>
-                            <li>Ao término, aplicar novo <span class="code">R</span> / <span class="code">Rerun</span> para deixar o job pronto para execução.</li>
+                            <li>Na Tela <span class="code">=A</span>, localizar <span class="code">RSTEQP01</span> em
+                                <span class="code">WAIT PROCESS</span>.</li>
+                            <li>Usar <span class="code">B</span> para <span class="code">Bypass</span> e confirmar <span
+                                    class="code">Y-Y</span>.</li>
+                            <li>Ao término, aplicar novo <span class="code">R</span> / <span class="code">Rerun</span>
+                                para deixar o job pronto para execução.</li>
                         </ul>
                     </div>
                 </div>
                 <div class="card">
                     <h3>Tratativa quando o RSTEQP01 trava</h3>
-                    <p>Se o <span class="code">RSTEQP01</span> demorar demais, volte ao job na Tela <span class="code">U</span>, cancele com <span class="code">C</span>, abra a análise com <span class="code">A</span> e use <span class="code">DI A</span> para localizar o dataset problemático no spool.</p>
-                    <p>Com o DSNAME identificado, renomeie no <span class="code">P.3.4</span> adicionando <span class="code">.OLD</span> ao final. Se o nome não couber, reduza para <span class="code">.OL</span>. Em seguida, rode o job <span class="code">RSTRESET</span> com <span class="code">B</span> na Tela 3 para liberar o restore preso.</p>
+                    <p>Se o <span class="code">RSTEQP01</span> demorar demais, volte ao job na Tela <span
+                            class="code">U</span>, cancele com <span class="code">C</span>, abra a análise com <span
+                            class="code">A</span> e use <span class="code">DI A</span> para localizar o dataset
+                        problemático no spool.</p>
+                    <p>Com o DSNAME identificado, renomeie no <span class="code">P.3.4</span> adicionando <span
+                            class="code">.OLD</span> ao final. Se o nome não couber, reduza para <span
+                            class="code">.OL</span>. Em seguida, rode o job <span class="code">RSTRESET</span> com <span
+                            class="code">B</span> na Tela 3 para liberar o restore preso.</p>
                 </div>
             </section>
 
             <section class="topic" id="decolate">
                 <h2>Decolate / Decolagem</h2>
                 <div class="card">
-                    <p>No contexto 3AM / Global Hitss, <strong>Decolate</strong> é o momento em que a malha de produção deixa a Tela 2 (Planning) e entra no Active Environment da Tela 3 (Monitoring).</p>
-                    <p>O objetivo é garantir que todos os jobs planejados para o <span class="code">ODATE</span> estejam prontos para execução, com dependências, calendário e agentes validados.</p>
-                    <p>É o momento crítico em que o <span class="code">ODATE</span> é ativado e os processos começam a buscar seus pré-requisitos para rodar. Quando há erro de decolagem, as causas mais comuns são falha de comunicação com agente e ausência de calendário configurado para a carga.</p>
+                    <p>No contexto 3AM / Global Hitss, <strong>Decolate</strong> é o momento em que a malha de produção
+                        deixa a Tela 2 (Planning) e entra no Active Environment da Tela 3 (Monitoring).</p>
+                    <p>O objetivo é garantir que todos os jobs planejados para o <span class="code">ODATE</span> estejam
+                        prontos para execução, com dependências, calendário e agentes validados.</p>
+                    <p>É o momento crítico em que o <span class="code">ODATE</span> é ativado e os processos começam a
+                        buscar seus pré-requisitos para rodar. Quando há erro de decolagem, as causas mais comuns são
+                        falha de comunicação com agente e ausência de calendário configurado para a carga.</p>
                 </div>
                 <div class="card">
-                    <h3>Decolate de relatórios pela Tela U/R</h3>
-                    <p>Quando a solicitação pedir o decolate de um relatório específico, como <span class="code">PBFTCC12</span>, primeiro localize o JCL na Tela <span class="code">U</span> e depois configure a missão na Tela <span class="code">R</span>.</p>
-                    <div class="step-box">
-                        Tela <span class="code">U</span>: informe o <span class="code">Job Name</span>, entre com <span class="code">V</span>, use <span class="code">F JCL</span> na linha de comando e anote o JCL localizado, por exemplo <span class="code">SYS2.JOBS(FTCJC710)</span>.
-                    </div>
-                    <ul class="tag-list">
-                        <li>Tela <span class="code">=R</span> com biblioteca <span class="code">CTD.V630.REPORTS</span>.</li>
-                        <li>Pesquisar o JCL anotado, como <span class="code">FTCJC710</span>.</li>
-                        <li>Selecionar com <span class="code">S</span> a primeira linha <span class="code">EVENTUAL</span>.</li>
-                        <li>Alterar <span class="code">JOBNAME</span> para o job solicitado.</li>
-                        <li>Alterar <span class="code">JOBID</span> para <span class="code">J</span> + jobnumber.</li>
-                        <li>Usar <span class="code">F3</span>, depois <span class="code">F</span> para forçar e <span class="code">Y</span> para confirmar.</li>
-                    </ul>
-                    <p>Depois da confirmação, valide a execução na Tela <span class="code">=A</span>. Ao finalizar, volte para a Tela <span class="code">U</span>, use <span class="code">F4</span> no relatório, remova filtros se existirem e confirme mensagem de término <span class="code">ENDED "OK"</span>. Use <span class="code">MF8</span> para ir ao final da tela quando necessário.</p>
+                    <h3>Procedimento de Decolate de Relatórios (Tela U/R)</h3>
+                    <ol style="padding-left: 20px;">
+                        <li><strong>Localizar JCL (Tela U):</strong> Informe o <span class="code">Job Name</span> ➔
+                            Entre com <span class="code">V</span> ➔ Linha de comando: <span class="code">F JCL</span>.
+                            Anote a biblioteca encontrada (Ex: <span class="code">SYS2.JOBS(FTCJC710)</span>).</li>
+                        <li><strong>Configurar Missão (Tela R):</strong> Campo <span class="code">LIB ===&gt;
+                                CTD.V630.REPORTS</span>. Procure pelo JCL solicitado (Ex: <span
+                                class="code">FTCJC710</span>). Na lista, selecione com <span class="code">S</span> a
+                            primeira linha com descrição <strong>EVENTUAL</strong>.</li>
+                        <li><strong>Customização:</strong> Na tela aberta, altere o campo <span
+                                class="code">JOBNAME</span> para o Job solicitado (Ex: <span
+                                class="code">PBFTCC12</span>) e o campo <span class="code">JOBID</span> para a tag
+                            correspondente (<span class="code">J</span> + Jobnumber).</li>
+                        <li><strong>Submissão:</strong> Pressione <span class="code">F3</span> ➔ Digite <span
+                                class="code">F</span> (Para forçar) ➔ Confirme com <span class="code">Y</span>.</li>
+                    </ol>
+                    <p style="margin-top: 1rem;"><strong>Validação:</strong> Validar a execução na Tela <span
+                            class="code">=A</span> e checar o fim "OK" na Tela U usando <span class="code">F4</span> e
+                        <span class="code">MF8</span> (para ir ao final do relatório).</p>
                 </div>
                 <div class="grid">
                     <div class="status-card blue">
@@ -469,41 +720,58 @@
                         <ul class="tag-list">
                             <li><strong>Cinza:</strong> job decolou corretamente e aguarda pré-requisito.</li>
                             <li><strong>Amarelo:</strong> job foi aceito pelo engine e está em execução.</li>
-                            <li><strong>Branco:</strong> falha de decolagem de agente específico ou comunicação interrompida.</li>
+                            <li><strong>Branco:</strong> falha de decolagem de agente específico ou comunicação
+                                interrompida.</li>
                         </ul>
                     </div>
                     <div class="status-card green">
                         <h3>Ações de ajuste</h3>
                         <ul class="tag-list">
                             <li><span class="code">Find [Job]</span> para localizar o ponto de interrupção.</li>
-                            <li><span class="code">O</span> + <span class="code">Y</span> para <strong>Force OK</strong> quando autorizado.</li>
+                            <li><span class="code">O</span> + <span class="code">Y</span> para <strong>Force OK</strong>
+                                quando autorizado.</li>
                             <li><span class="code">F</span> para <strong>Free</strong> e liberar o job.</li>
-                            <li>Validar sempre o espaço em produção com <span class="code">STG LAST</span> antes de grandes decolagens.</li>
+                            <li>Validar sempre o espaço em produção com <span class="code">STG LAST</span> antes de
+                                grandes decolagens.</li>
                         </ul>
                     </div>
                 </div>
                 <div class="card">
-                    <p>Se o disco estiver cheio e houver abends como <span class="code">B37</span> / <span class="code">D37</span>, os jobs podem até decolar mas cairão imediatamente em erro.</p>
+                    <p>Se o disco estiver cheio e houver abends como <span class="code">B37</span> / <span
+                            class="code">D37</span>, os jobs podem até decolar mas cairão imediatamente em erro.</p>
                 </div>
                 <div class="card">
                     <h3>Ajuste de ODATE em exceções operacionais</h3>
-                    <p>Quando a malha precisar ser trabalhada com outra data operacional, abra a edição do submit e revise o <span class="code">ODATE</span> antes do novo disparo.</p>
-                    <p>Se a data estiver amarrada a uma variável no JCL ou na procedure, atualize também essa variável e salve a alteração antes de seguir com a ação operacional autorizada.</p>
+                    <p>Quando a malha precisar ser trabalhada com outra data operacional, abra a edição do submit e
+                        revise o <span class="code">ODATE</span> antes do novo disparo.</p>
+                    <p>Se a data estiver amarrada a uma variável no JCL ou na procedure, atualize também essa variável e
+                        salve a alteração antes de seguir com a ação operacional autorizada.</p>
                 </div>
                 <div class="grid">
                     <div class="card">
                         <h3>Controles de faturamento BIM / BILFIM</h3>
-                        <p>Antes de qualquer restart ligado ao faturamento, valide o arquivo pelo <span class="code">QDS</span> no menu <span class="code">3.4</span>, conferindo <span class="code">LRECL</span>, <span class="code">RECFM</span> e quantidade de <span class="code">Extents</span>. Isso reduz risco de <span class="code">B37</span> ou <span class="code">D37</span> durante nova tentativa.</p>
-                        <p>Se o dataset estiver em <span class="code">MIGRAT2</span>, aplique <span class="code">HRECALL</span> antes do processamento para trazer o arquivo do HSM de volta ao disco.</p>
+                        <p>Antes de qualquer restart ligado ao faturamento, valide o arquivo pelo <span
+                                class="code">QDS</span> no menu <span class="code">3.4</span>, conferindo <span
+                                class="code">LRECL</span>, <span class="code">RECFM</span> e quantidade de <span
+                                class="code">Extents</span>. Isso reduz risco de <span class="code">B37</span> ou <span
+                                class="code">D37</span> durante nova tentativa.</p>
+                        <p>Se o dataset estiver em <span class="code">MIGRAT2</span>, aplique <span
+                                class="code">HRECALL</span> antes do processamento para trazer o arquivo do HSM de volta
+                            ao disco.</p>
                     </div>
                     <div class="card">
                         <h3>Esteira do BIM</h3>
-                        <p>Use <span class="code">ZCTO</span> e os dashboards do Grafana para acompanhar a esteira do BIM e identificar atrasos no faturamento. Se os jobs estiverem em amarelo, mas a monitoração parecer congelada, valide o <span class="code">PNumber</span> com <span class="code">SS</span> para confirmar se o processo continua ativo.</p>
+                        <p>Use <span class="code">ZCTO</span> e os dashboards do Grafana para acompanhar a esteira do
+                            BIM e identificar atrasos no faturamento. Se os jobs estiverem em amarelo, mas a monitoração
+                            parecer congelada, valide o <span class="code">PNumber</span> com <span
+                                class="code">SS</span> para confirmar se o processo continua ativo.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3>Pré-ciclos de faturamento</h3>
-                    <p>Use a régua do faturamento para antecipar janelas críticas de execução, validação, liberação, transmissão, postagem e vencimento. A referência abaixo consolida os ciclos da planilha <span class="code">pre_ciclos_faturamento</span>.</p>
+                    <p>Use a régua do faturamento para antecipar janelas críticas de execução, validação, liberação,
+                        transmissão, postagem e vencimento. A referência abaixo consolida os ciclos da planilha <span
+                            class="code">pre_ciclos_faturamento</span>.</p>
                     <div class="table-scroll">
                         <table class="data-table">
                             <thead>
@@ -592,7 +860,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <p>Na prática, o <span class="code">Scheduler</span> abre a janela do ciclo, o <span class="code">Starta</span> inicia a esteira, e a validação/liberação costuma ocorrer poucos dias depois. O vencimento fica no mês subsequente quando o ciclo cruza a virada mensal.</p>
+                    <p>Na prática, o <span class="code">Scheduler</span> abre a janela do ciclo, o <span
+                            class="code">Starta</span> inicia a esteira, e a validação/liberação costuma ocorrer poucos
+                        dias depois. O vencimento fica no mês subsequente quando o ciclo cruza a virada mensal.</p>
                 </div>
             </section>
 
@@ -601,47 +871,66 @@
                 <div class="acc-item">
                     <div class="acc-header">Rins (Rede e Interconexão) <i class="fas fa-chevron-down"></i></div>
                     <div class="acc-content">
-                        <p>Monitora as rotas de dados externos. Rin inativo deve ser tratado como sinal de falha ou interrupção na recepção de bilhetes.</p>
+                        <p>Monitora as rotas de dados externos. Rin inativo deve ser tratado como sinal de falha ou
+                            interrupção na recepção de bilhetes.</p>
                     </div>
                 </div>
                 <div class="acc-item">
                     <div class="acc-header">TCOs / TFI (Terminais e Sessões) <i class="fas fa-chevron-down"></i></div>
                     <div class="acc-content">
-                        <p>Mapa ligado a terminais e sessões ativas. Use o <span class="code">ZCTO</span> para identificar IDs travadas, consultar histórico e apoiar liberações.</p>
-                        <p>No faturamento, o <span class="code">ZCTO</span> também ajuda na leitura do fluxo e da volumetria dos arquivos processados ao longo do turno.</p>
+                        <p>Mapa ligado a terminais e sessões ativas. Use o <span class="code">ZCTO</span> para
+                            identificar IDs travadas, consultar histórico e apoiar liberações.</p>
+                        <p>No faturamento, o <span class="code">ZCTO</span> também ajuda na leitura do fluxo e da
+                            volumetria dos arquivos processados ao longo do turno.</p>
                     </div>
                 </div>
                 <div class="acc-item">
                     <div class="acc-header">STI / FTC / EBC <i class="fas fa-chevron-down"></i></div>
                     <div class="acc-content">
-                        <p><span class="code">STI</span> apoia a leitura da saúde de serviços, <span class="code">FTC</span> a transferência de arquivos e <span class="code">EBC</span> o faturamento digital. Elas funcionam como mapas de apoio para localizar gargalos por domínio.</p>
+                        <p><span class="code">STI</span> apoia a leitura da saúde de serviços, <span
+                                class="code">FTC</span> a transferência de arquivos e <span class="code">EBC</span> o
+                            faturamento digital. Elas funcionam como mapas de apoio para localizar gargalos por domínio.
+                        </p>
                     </div>
                 </div>
                 <div class="acc-item">
-                    <div class="acc-header">Calendários e datas de processamento <i class="fas fa-chevron-down"></i></div>
+                    <div class="acc-header">Calendários e datas de processamento <i class="fas fa-chevron-down"></i>
+                    </div>
                     <div class="acc-content">
-                        <p>O job não depende apenas do horário. O Control-M valida calendário anual, dia útil, periodicidade, último dia útil e outras regras antes de ordenar ou liberar a execução.</p>
-                        <p>Também aparecem os conceitos de <span class="code">RDATE</span> e data operacional do processamento. Se um job não entrou, a primeira checagem é confirmar se o calendário realmente o contempla naquele dia.</p>
+                        <p>O job não depende apenas do horário. O Control-M valida calendário anual, dia útil,
+                            periodicidade, último dia útil e outras regras antes de ordenar ou liberar a execução.</p>
+                        <p>Também aparecem os conceitos de <span class="code">RDATE</span> e data operacional do
+                            processamento. Se um job não entrou, a primeira checagem é confirmar se o calendário
+                            realmente o contempla naquele dia.</p>
                     </div>
                 </div>
                 <div class="acc-item">
                     <div class="acc-header">Dependências e sinais operacionais <i class="fas fa-chevron-down"></i></div>
                     <div class="acc-content">
-                        <p>O fluxo é controlado por condições de entrada e saída. Em termos práticos, o job fica aguardando até que pré-requisitos sejam satisfeitos e, quando conclui, libera condições para os sucessores.</p>
-                        <p>A leitura do encadeamento visual ajuda a descobrir se o atraso vem de predecessor, recurso, janela horária ou intervenção manual pendente.</p>
-                        <p>Quando o job estiver cinza e a causa não estiver evidente, use o comando <span class="code">Network</span> para visualizar a árvore de dependências completa.</p>
-                        <p>Na leitura do <span class="code">Network</span>, os itens com <span class="code">-</span> são antecessores que ainda precisam terminar; os itens com <span class="code">+</span> mostram os sucessores que serão liberados após a conclusão do job atual.</p>
+                        <p>O fluxo é controlado por condições de entrada e saída. Em termos práticos, o job fica
+                            aguardando até que pré-requisitos sejam satisfeitos e, quando conclui, libera condições para
+                            os sucessores.</p>
+                        <p>A leitura do encadeamento visual ajuda a descobrir se o atraso vem de predecessor, recurso,
+                            janela horária ou intervenção manual pendente.</p>
+                        <p>Quando o job estiver cinza e a causa não estiver evidente, use o comando <span
+                                class="code">Network</span> para visualizar a árvore de dependências completa.</p>
+                        <p>Na leitura do <span class="code">Network</span>, os itens com <span class="code">-</span> são
+                            antecessores que ainda precisam terminar; os itens com <span class="code">+</span> mostram
+                            os sucessores que serão liberados após a conclusão do job atual.</p>
                     </div>
                 </div>
                 <div class="grid">
                     <div class="card">
                         <h3>Comandos operacionais recorrentes</h3>
                         <p><span class="code">Order</span> coloca o job na fila de execução considerando as regras.</p>
-                        <p><span class="code">Force</span> ordena sem checagem normal de calendário quando há decisão operacional autorizada.</p>
+                        <p><span class="code">Force</span> ordena sem checagem normal de calendário quando há decisão
+                            operacional autorizada.</p>
                         <p><span class="code">Hold</span> coloca o job em espera manual.</p>
                         <p><span class="code">Free</span> libera job ou condição presa.</p>
-                        <p><span class="code">Delete</span> remove da monitoração quando a ação for prevista no procedimento.</p>
-                        <p><span class="code">Force OK</span> sinaliza conclusão lógica quando a falha pode ser ignorada por decisão operacional formalizada.</p>
+                        <p><span class="code">Delete</span> remove da monitoração quando a ação for prevista no
+                            procedimento.</p>
+                        <p><span class="code">Force OK</span> sinaliza conclusão lógica quando a falha pode ser ignorada
+                            por decisão operacional formalizada.</p>
                     </div>
                     <div class="card">
                         <h3>Boas práticas antes de agir</h3>
@@ -658,10 +947,18 @@
                 <div class="row">
                     <div class="card">
                         <h3>Exemplo de rotina em tabela</h3>
-                        <p>Para localizar uma rotina específica no Planning, informe a <span class="code">Library</span>, a <span class="code">Table</span> e o <span class="code">Jobname</span>, confirme com Enter e abra o detalhe operacional do fluxo.</p>
-                        <p>Em rotinas de faturamento, essa navegação é usada para chegar a jobs como <span class="code">FTCJC710</span>, selecionar a definição correta e montar os parâmetros antes da nova execução.</p>
+                        <p>Para localizar uma rotina específica no Planning, informe a <span
+                                class="code">Library</span>, a <span class="code">Table</span> e o <span
+                                class="code">Jobname</span>, confirme com Enter e abra o detalhe operacional do fluxo.
+                        </p>
+                        <p>Em rotinas de faturamento, essa navegação é usada para chegar a jobs como <span
+                                class="code">FTCJC710</span>, selecionar a definição correta e montar os parâmetros
+                            antes da nova execução.</p>
                         <ul class="tag-list">
-                            <li>Quando a rotina vier como <span class="code">FCJSP93W</span>, pesquise o <span class="code">Jobname</span> <span class="code">FTCJC710</span> na <span class="code">Tela 2</span> e selecione a definição correta com <span class="code">S</span>.</li>
+                            <li>Quando a rotina vier como <span class="code">FCJSP93W</span>, pesquise o <span
+                                    class="code">Jobname</span> <span class="code">FTCJC710</span> na <span
+                                    class="code">Tela 2</span> e selecione a definição correta com <span
+                                    class="code">S</span>.</li>
                             <li>Conferir variáveis de data, como <span class="code">%%DATA1</span>.</li>
                             <li>Conferir variáveis de ciclo, como <span class="code">%%CICLO1</span>.</li>
                             <li>Validar se existe step de bypass, como <span class="code">FTCSBP</span>.</li>
@@ -670,9 +967,16 @@
                     </div>
                     <div class="card">
                         <h3>Rename operacional</h3>
-                        <p>Quando o atendimento for de rename, uma trilha comum é entrar no <span class="code">TSO P.3.4</span>, localizar o dataset desejado e usar <span class="code">R</span> na lateral ou <span class="code">/</span> para escolher a ação disponível.</p>
-                        <p>Esse ajuste costuma envolver datasets particionados ou sequenciais. Se o rename estiver amarrado à automação, revise também as variáveis de origem e destino na definição do job, como <span class="code">ASN OLD</span> e <span class="code">ASN NEW</span>.</p>
-                        <p>Quando a tela pedir destino, informe o dataset antigo, escolha a opção de <span class="code">Other partitioned or sequential data set</span> quando aplicável e confira o nome novo antes de confirmar. Em fluxos automatizados, valide também o job de apoio <span class="code">RenameXX</span> ou equivalente no Control-R.</p>
+                        <p>Quando o atendimento for de rename, uma trilha comum é entrar no <span class="code">TSO
+                                P.3.4</span>, localizar o dataset desejado e usar <span class="code">R</span> na lateral
+                            ou <span class="code">/</span> para escolher a ação disponível.</p>
+                        <p>Esse ajuste costuma envolver datasets particionados ou sequenciais. Se o rename estiver
+                            amarrado à automação, revise também as variáveis de origem e destino na definição do job,
+                            como <span class="code">ASN OLD</span> e <span class="code">ASN NEW</span>.</p>
+                        <p>Quando a tela pedir destino, informe o dataset antigo, escolha a opção de <span
+                                class="code">Other partitioned or sequential data set</span> quando aplicável e confira
+                            o nome novo antes de confirmar. Em fluxos automatizados, valide também o job de apoio <span
+                                class="code">RenameXX</span> ou equivalente no Control-R.</p>
                     </div>
                 </div>
             </section>
@@ -693,26 +997,37 @@
                     </div>
                     <div class="card">
                         <h3>Referências operacionais</h3>
-                        <p>Tabelas como <span class="code">Rins</span>, <span class="code">TCO-TFI</span> e <span class="code">STI-FTC-EBC</span> funcionam como apoio de validação em fluxos específicos e devem ser consultadas conforme a trilha operacional vigente do sistema atendido.</p>
+                        <p>Tabelas como <span class="code">Rins</span>, <span class="code">TCO-TFI</span> e <span
+                                class="code">STI-FTC-EBC</span> funcionam como apoio de validação em fluxos específicos
+                            e devem ser consultadas conforme a trilha operacional vigente do sistema atendido.</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="card">
                         <h3>Verificação do node do Grafana</h3>
-                        <p>Antes de confiar no dashboard, valide se o node do Grafana está operacional no Mainframe com <span class="code">TSO VCON [NomeDoNode]</span>.</p>
-                        <p>Se o node estiver fora, os painéis podem permanecer acessíveis, mas com dados desatualizados para a monitoração e para os reportes do turno.</p>
+                        <p>Antes de confiar no dashboard, valide se o node do Grafana está operacional no Mainframe com
+                            <span class="code">TSO VCON [NomeDoNode]</span>.</p>
+                        <p>Se o node estiver fora, os painéis podem permanecer acessíveis, mas com dados desatualizados
+                            para a monitoração e para os reportes do turno.</p>
                     </div>
                     <div class="card">
                         <h3>Fluxo Connect para consultar PNumber</h3>
                         <ul class="tag-list">
-                            <li>Acesse <span class="code">connect</span> e selecione a opção <span class="code">n</span>.</li>
-                            <li>Informe o seu <span class="code">userID</span> e entre em <span class="code">SP</span>.</li>
+                            <li>Acesse <span class="code">connect</span> e selecione a opção <span
+                                    class="code">n</span>.</li>
+                            <li>Informe o seu <span class="code">userID</span> e entre em <span class="code">SP</span>.
+                            </li>
                             <li>Localize o <span class="code">PNumber</span> do node ou processo desejado.</li>
-                            <li>Use <span class="code">SS</span> e cole o <span class="code">PNumber</span> para consultar o status detalhado do processo.</li>
+                            <li>Use <span class="code">SS</span> e cole o <span class="code">PNumber</span> para
+                                consultar o status detalhado do processo.</li>
                         </ul>
                     </div>
                 </div>
-                <div class="info-box">Os comandos de <span class="code">VCON</span>, <span class="code">SP</span> e <span class="code">SS</span> são especialmente úteis nos reportes das <span class="code">08:00</span>, nas planilhas das <span class="code">11:00</span> e no resumo das <span class="code">13:30</span>, quando um node fora do ar pode distorcer a leitura dos dashboards.</div>
+                <div class="info-box">Os comandos de <span class="code">VCON</span>, <span class="code">SP</span> e
+                    <span class="code">SS</span> são especialmente úteis nos reportes das <span
+                        class="code">08:00</span>, nas planilhas das <span class="code">11:00</span> e no resumo das
+                    <span class="code">13:30</span>, quando um node fora do ar pode distorcer a leitura dos dashboards.
+                </div>
             </section>
 
             <section class="topic" id="gml-flow">
@@ -722,72 +1037,150 @@
                         <h3>Promoção GML</h3>
                         <div class="step-box">
                             <ol style="padding: 0 20px;">
-                                <li>Acessar <span class="badge">19 TSODSV</span> e entrar na opção <span class="code">GML</span>.</li>
-                                <li>Ir para <span class="badge">TSO SPROD</span> e usar o prefixo <span class="code">MP(GML)</span> para aprovação.</li>
-                                <li>No job <span class="code">NUMGML</span>, marcar com <span class="tag">S</span> e confirmar.</li>
+                                <li>Acessar <span class="badge">19 TSODSV</span> e entrar na opção <span
+                                        class="code">GML</span>.</li>
+                                <li>Ir para <span class="badge">TSO SPROD</span> e usar o prefixo <span
+                                        class="code">MP(GML)</span> para aprovação.</li>
+                                <li>No job <span class="code">NUMGML</span>, marcar com <span class="tag">S</span> e
+                                    confirmar.</li>
                                 <li>Copiar a evidência da tela e registrar no Jira em comentários e atividade.</li>
-                                <li>Promover somente quando o status estiver em <span class="tag">P</span>, indicando liberação.</li>
+                                <li>Promover somente quando o status estiver em <span class="tag">P</span>, indicando
+                                    liberação.</li>
                             </ol>
                         </div>
                     </div>
                     <div class="card">
                         <h3>Visão de turno</h3>
-                        <p>Boa parte do trabalho do operador não é criar processamento, e sim confirmar que o processamento encadeado atravessou com segurança as janelas do dia. Isso inclui Control-M, monitorias, planilhas, dashboards e comunicação de exceções.</p>
+                        <p>Boa parte do trabalho do operador não é criar processamento, e sim confirmar que o
+                            processamento encadeado atravessou com segurança as janelas do dia. Isso inclui Control-M,
+                            monitorias, planilhas, dashboards e comunicação de exceções.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3>Conexão com o fluxo de decolagem</h3>
-                    <p>O prefixo <span class="code">MP(GML)</span> prepara a aprovação da promoção GML. O status <span class="tag">P</span> indica que o sistema está liberado para a decolagem final em produção.</p>
-                    <p>Use essa etapa como parte da validação antes do release: o GML precisa estar aprovado e a malha pronta para iniciar sem bloqueios de calendário ou dependência.</p>
+                    <p>O prefixo <span class="code">MP(GML)</span> prepara a aprovação da promoção GML. O status <span
+                            class="tag">P</span> indica que o sistema está liberado para a decolagem final em produção.
+                    </p>
+                    <p>Use essa etapa como parte da validação antes do release: o GML precisa estar aprovado e a malha
+                        pronta para iniciar sem bloqueios de calendário ou dependência.</p>
                 </div>
                 <div class="grid">
                     <div class="card">
                         <h3>Fluxo resumido de faturamento</h3>
-                        <p>O caminho operacional é <span class="code">19 (TSODSV)</span> -> <span class="code">GML</span> -> <span class="code">TSO SPROD</span>. Na busca, aplique o prefixo <span class="code">MP(GML)</span> para localizar a promoção correta.</p>
+                        <p>O caminho operacional é <span class="code">19 (TSODSV)</span> -> <span
+                                class="code">GML</span> -> <span class="code">TSO SPROD</span>. Na busca, aplique o
+                            prefixo <span class="code">MP(GML)</span> para localizar a promoção correta.</p>
                     </div>
                     <div class="card">
                         <h3>Evidência no Jira</h3>
-                        <p>No job <span class="code">J-"NUMGML"</span>, marque <span class="code">S</span> e pressione Enter para abrir o conteúdo. Copie o conteúdo para os comentários da atividade e, quando houver promoção, anexe também o log correspondente no Jira.</p>
+                        <p>No job <span class="code">J-"NUMGML"</span>, marque <span class="code">S</span> e pressione
+                            Enter para abrir o conteúdo. Copie o conteúdo para os comentários da atividade e, quando
+                            houver promoção, anexe também o log correspondente no Jira.</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="card">
-                        <h3>Sistema SCF</h3>
-                        <p>Em transmissões do <span class="code">SCF</span>, como o job <span class="code">SCFJTCTB</span>, valide o dataset de entrada no <span class="code">3.4</span> e confirme se a <span class="code">DD</span> do JCL aponta exatamente para o arquivo do ciclo correto antes da submissão.</p>
-                        <p>Depois do submit no SDSF, acompanhe o <span class="code">MAXCC</span> esperado e confirme no log a mensagem de transferência concluída antes de atualizar o chamado e as flags do processo.</p>
+                        <h3>Sistema SCF (Sistema de Comunicação de Filiais)</h3>
+                        <p><strong>Transmissão para a CTBC (Ex: PDST-24943797):</strong></p>
+                        <ul style="padding-left: 20px; margin-bottom: 1rem;">
+                            <li><strong>Job Alvo:</strong> <span class="code">SCFJTCTB</span></li>
+                            <li><strong>Dataset de Entrada:</strong> <span
+                                    class="code">SCF.PSFD.E001143.S01.D260511.H005907.NC</span></li>
+                            <li><strong>Roteiro de Tratativa:</strong> Validar o dataset via comando 3.4. Confirmar se a
+                                DD de entrada da JCL aponta exatamente para o arquivo do ciclo de movimento (<span
+                                    class="code">D260511</span>). Submeter o Job no SDSF (esperado MAXCC 0000 or 0004).
+                                Confirmar "Transferência Concluída" no log e atualizar as flags no SmarTI.</li>
+                        </ul>
                     </div>
                     <div class="card">
-                        <h3>Interface IIF</h3>
-                        <p>Nas rotinas da <span class="code">IIF</span>, o encadeamento mais sensível passa por <span class="code">IIFJPEXT</span>, <span class="code">IIFTLVLR</span> e <span class="code">DERJE100</span>. Respeite sempre a ordem de sucesso do fluxo antes de avançar para o próximo job.</p>
-                        <p>Para extração e separação de contas, valide variáveis como <span class="code">%%CODSEL</span>, <span class="code">%%ANOMES</span> e o <span class="code">ODTE</span> herdado, além de tabela, owner e MEMLIB usados na tela do Control-M.</p>
+                        <h3>Interface IIF — Separação de Contas (GML-133978)</h3>
+                        <p><strong>Fluxo de Negócio e Janela Técnica:</strong></p>
+                        <ul style="padding-left: 20px;">
+                            <li><strong>Objetivo:</strong> Retirar contas específicas do faturamento regular do Ciclo 3
+                                e direcioná-las para um novo Centro de Saída (CS) para investigação do usuário.</li>
+                            <li><strong>Job Central:</strong> <span class="code">IIFJICT3</span> (Executa o processo de
+                                balance line nos arquivos de movimento).</li>
+                            <li><strong>Parâmetros de Janela (Maio/2026):</strong> Início em 14/05/2026 às 16:00 | Prazo
+                                Máximo em 15/05/2026 às 18:00 | Janela de Rollback até 15/05/2026 às 19:00.</li>
+                            <li><strong>Criticidade:</strong> Nível 1 (Sem impacto nos ambientes online/batch).</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="card">
+                    <h3>Interface IIF — Execução de Rotinas por Chamado (PDST-2494519 & PDST-2495586)</h3>
+                    <p>Processamento em cadeia para segregação e valorização de movimentações do Ciclo 3:</p>
+                    <ol style="padding-left: 20px;">
+                        <li><strong>Job IIFJPEXT (Extração):</strong> Destino Centro de Saída alvo (ex: CS 2605620).
+                            Requer parametrização das variáveis <span class="code">%%CODSEL</span> (Código do CS) e
+                            <span class="code">%%ANOMES</span> (Ano/Mês, ex: 2605). Tabela: <span
+                                class="code">SISTEIIF</span>, MEMLIB: <span class="code">SYS2.JOBS</span>, Owner: <span
+                                class="code">IBMPROD</span>. Dataset Origem Exemplo: <span
+                                class="code">EXT.PSFD.IFF.MOV.FCD.P2605620</span>.</li>
+                        <li><strong>Job IIFTLVLR (Valorização):</strong> Executar para o CS 2605503 (Ciclo 3) somente
+                            após o sucesso do <span class="code">IIFJPEXT</span>. Parâmetro <span
+                                class="code">ODTE</span> pode herdar o Operating Date anterior. Tabela: <span
+                                class="code">SISTEIIF</span>, Owner: <span class="code">Z664522</span>.</li>
+                        <li><strong>Job DERJE100 (Geração de Arquivo DER):</strong> Executar para o CS 2605503 (Ciclo 3)
+                            após a conclusão (MAXCC 0000/0004) do Job <span class="code">IIFTLVLR</span>.</li>
+                    </ol>
+                </div>
+                <div class="card">
                     <h3>Matriz crítica de pré-ciclos</h3>
-                    <p>Os pré-ciclos <span class="code">0</span> a <span class="code">6</span> devem ser tratados como régua operacional do faturamento: scheduler, start, validação/liberação, transmissão, postagem e vencimento mudam conforme o ciclo e impactam diretamente o momento correto de execução das rotinas do <span class="code">BIM</span>, da <span class="code">IIF</span> e das transmissões associadas.</p>
+                    <p>Os pré-ciclos <span class="code">0</span> a <span class="code">6</span> devem ser tratados como
+                        régua operacional do faturamento: scheduler, start, validação/liberação, transmissão, postagem e
+                        vencimento mudam conforme o ciclo e impactam diretamente o momento correto de execução das
+                        rotinas do <span class="code">BIM</span>, da <span class="code">IIF</span> e das transmissões
+                        associadas.</p>
                 </div>
             </section>
 
             <section class="topic" id="ops-destrave">
                 <h2>Procedimento OPS (Destravar Job)</h2>
                 <div class="card">
-                    <p>Esta seção funciona como referência de triagem operacional. O objetivo não é decorar todos os códigos, e sim localizar rapidamente o tipo de erro e fazer as primeiras verificações corretas antes do repasse ou da ação de contorno.</p>
+                    <p>Esta seção funciona como referência de triagem operacional. O objetivo não é decorar todos os
+                        códigos, e sim localizar rapidamente o tipo de erro e fazer as primeiras verificações corretas
+                        antes do repasse ou da ação de contorno.</p>
                 </div>
                 <div class="acc-item">
                     <div class="acc-header">Procedimento OPS de destravar job <i class="fas fa-chevron-down"></i></div>
                     <div class="acc-content">
-                        <p>O destravamento passa por localizar o job no CTMS, verificar se está em <span class="code">H</span> ou <span class="code">WC</span>, avaliar a justificativa operacional e usar a sequência indicada pelo procedimento: opção <span class="code">O</span>, confirmação <span class="code">Y</span> para <span class="code">Force OK</span> quando autorizado, seguida de <span class="code">F</span> para <span class="code">Free</span>. A evidência da ação deve ser anexada ao controle do turno.</p>
+                        <p>O destravamento passa por localizar o job no CTMS, verificar se está em <span
+                                class="code">H</span> ou <span class="code">WC</span>, avaliar a justificativa
+                            operacional e usar a sequência indicada pelo procedimento: opção <span
+                                class="code">O</span>, confirmação <span class="code">Y</span> para <span
+                                class="code">Force OK</span> quando autorizado, seguida de <span class="code">F</span>
+                            para <span class="code">Free</span>. A evidência da ação deve ser anexada ao controle do
+                            turno.</p>
                     </div>
                 </div>
                 <div class="acc-item">
                     <div class="acc-header">Leitura rápida de abends e códigos <i class="fas fa-chevron-down"></i></div>
                     <div class="acc-content">
-                        <p><span class="badge">File Status</span> exemplos recorrentes: <span class="code">05</span> arquivo ausente, <span class="code">22</span> chave duplicada, <span class="code">39</span> conflito de atributo, <span class="code">41</span> arquivo já aberto, <span class="code">44</span> tamanho inconsistente.</p>
-                        <p><span class="badge">VSAM</span> exemplos comuns: <span class="code">92</span> erro lógico, <span class="code">95</span> catalogação ou definição inconsistente, <span class="code">96</span> DD ausente, <span class="code">97</span> arquivo em uso por outra aplicação.</p>
-                        <p><span class="badge">CICS</span> retornos vistos com frequência: <span class="code">NOTFND</span>, <span class="code">DUPKEY</span>, <span class="code">IOERR</span>, <span class="code">MAPFAIL</span>, <span class="code">INVREQ</span>.</p>
-                        <p><span class="badge">DB2</span> atalhos úteis: <span class="code">+100</span> sem linha encontrada, <span class="code">-805</span> package/plano não localizado, <span class="code">-904</span> recurso indisponível, <span class="code">-911</span> rollback por timeout ou deadlock.</p>
-                        <p><span class="badge">System Abend</span> práticos para lembrar: <span class="code">S0C1</span> chamada inválida ou módulo ausente, <span class="code">S0C4</span> acesso indevido à memória, <span class="code">S0C7</span> dado numérico inválido, <span class="code">S878</span> falta de armazenamento, <span class="code">SB37</span>, <span class="code">SD37</span> e <span class="code">SE37</span> falta de espaço.</p>
-                        <p><span class="badge">User Abend</span> exemplos recorrentes: <span class="code">U0004</span>, <span class="code">U0007</span>, <span class="code">U0016</span>, <span class="code">U0039</span>, <span class="code">U3505</span>, <span class="code">U3710</span>.</p>
+                        <p><span class="badge">File Status</span> exemplos recorrentes: <span class="code">05</span>
+                            arquivo ausente, <span class="code">22</span> chave duplicada, <span class="code">39</span>
+                            conflito de atributo, <span class="code">41</span> arquivo já aberto, <span
+                                class="code">44</span> tamanho inconsistente.</p>
+                        <p><span class="badge">VSAM</span> exemplos comuns: <span class="code">92</span> erro lógico,
+                            <span class="code">95</span> catalogação ou definição inconsistente, <span
+                                class="code">96</span> DD ausente, <span class="code">97</span> arquivo em uso por outra
+                            aplicação.</p>
+                        <p><span class="badge">CICS</span> retornos vistos com frequência: <span
+                                class="code">NOTFND</span>, <span class="code">DUPKEY</span>, <span
+                                class="code">IOERR</span>, <span class="code">MAPFAIL</span>, <span
+                                class="code">INVREQ</span>.</p>
+                        <p><span class="badge">DB2</span> atalhos úteis: <span class="code">+100</span> sem linha
+                            encontrada, <span class="code">-805</span> package/plano não localizado, <span
+                                class="code">-904</span> recurso indisponível, <span class="code">-911</span> rollback
+                            por timeout ou deadlock.</p>
+                        <p><span class="badge">System Abend</span> práticos para lembrar: <span class="code">S0C1</span>
+                            chamada inválida ou módulo ausente, <span class="code">S0C4</span> acesso indevido à
+                            memória, <span class="code">S0C7</span> dado numérico inválido, <span
+                                class="code">S878</span> falta de armazenamento, <span class="code">SB37</span>, <span
+                                class="code">SD37</span> e <span class="code">SE37</span> falta de espaço.</p>
+                        <p><span class="badge">User Abend</span> exemplos recorrentes: <span class="code">U0004</span>,
+                            <span class="code">U0007</span>, <span class="code">U0016</span>, <span
+                                class="code">U0039</span>, <span class="code">U3505</span>, <span
+                                class="code">U3710</span>.</p>
                     </div>
                 </div>
                 <div class="grid">
@@ -804,7 +1197,9 @@
                     </div>
                     <div class="status-card green">
                         <h3>Quando escalar</h3>
-                        <p>Escalone quando houver risco de perda de encadeamento, falha de base, erro de programa, falta de espaço, deadlock persistente, arquivo indisponível, ou quando a ação exigir decisão de negócio ou sustentação.</p>
+                        <p>Escalone quando houver risco de perda de encadeamento, falha de base, erro de programa, falta
+                            de espaço, deadlock persistente, arquivo indisponível, ou quando a ação exigir decisão de
+                            negócio ou sustentação.</p>
                     </div>
                 </div>
             </section>
@@ -812,31 +1207,65 @@
             <section class="topic" id="planilhas">
                 <h2>As 4 Planilhas Diárias (Até 11h)</h2>
                 <div class="card">
-                    <p>As quatro planilhas diárias funcionam como instrumento de passagem de turno, rastreio de pendências e comprovação de acompanhamento operacional. Elas servem como memória do dia e ajudam a cruzar horário, ação tomada, impacto e repasse.</p>
+                    <p>As quatro planilhas diárias funcionam como instrumento de passagem de turno, rastreio de
+                        pendências e comprovação de acompanhamento operacional. Elas servem como memória do dia e ajudam
+                        a cruzar horário, ação tomada, impacto e repasse.</p>
                 </div>
                 <div class="card">
                     <h3>Mapa atualizado HITSS</h3>
-                    <p>Acesse pelo Teams em <span class="code">Operação/Produção MF - Geral</span>, entre em <span class="code">Compartilhado</span> e siga para <span class="code">Mesa de Controle</span> -> <span class="code">Relatórios de Entrega</span>. Dentro dessa pasta ficam as quatro rotinas do dia.</p>
+                    <p>Acesse pelo Teams em <span class="code">Operação/Produção MF - Geral</span>, entre em <span
+                            class="code">Compartilhado</span> e siga para <span class="code">Mesa de Controle</span> ->
+                        <span class="code">Relatórios de Entrega</span>. Dentro dessa pasta ficam as quatro rotinas do
+                        dia.</p>
                     <br>
-                    <div class="timeline-item"><strong>01- Bilhetadores:</strong> até 11h, usar o e-mail <span class="code">TERMINO DO PROCESSO DIARIO DA BILHETAGEM</span> ou o job <span class="code">BILFIM</span>.</div>
-                    <div class="timeline-item"><strong>02- SLA Email:</strong> até 11h, trabalhar com <span class="code">ODATE D-1</span>, logs IBM/CICSUSER e filtros de retorno.</div>
-                    <div class="timeline-item"><strong>03- PUTPROC:</strong> até 11h, coletar estatística em <span class="code">TSO ZCTO</span> -> opção <span class="code">4E</span>.</div>
-                    <div class="timeline-item"><strong>04- Espaço em Produção:</strong> até 11h, registrar Mainframe e AS400 para evitar impacto no faturamento.</div>
+                    <div class="timeline-item"><strong>01- Bilhetadores:</strong> até 11h, usar o e-mail <span
+                            class="code">TERMINO DO PROCESSO DIARIO DA BILHETAGEM</span> ou o job <span
+                            class="code">BILFIM</span>.</div>
+                    <div class="timeline-item"><strong>02- SLA Email:</strong> até 11h, trabalhar com <span
+                            class="code">ODATE D-1</span>, logs IBM/CICSUSER e filtros de retorno.</div>
+                    <div class="timeline-item"><strong>03- PUTPROC:</strong> até 11h, coletar estatística em <span
+                            class="code">TSO ZCTO</span> -> opção <span class="code">4E</span>.</div>
+                    <div class="timeline-item"><strong>04- Espaço em Produção:</strong> até 11h, registrar Mainframe e
+                        AS400 para evitar impacto no faturamento.</div>
                 </div>
                 <div class="acc-item">
-                    <div class="acc-header">Plan 01 e Plan 02: Bilhetadores e SLA Email <i class="fas fa-chevron-down"></i></div>
+                    <div class="acc-header">Plan 01 e Plan 02: Bilhetadores e SLA Email <i
+                            class="fas fa-chevron-down"></i></div>
                     <div class="acc-content">
-                        <p><strong>Plan 01 - Bilhetadores:</strong> abrir o ano e mês corrente, preencher <span class="code">Horário Término</span> com a hora enviada no e-mail de término da bilhetagem. Se o e-mail não chegar, coletar a informação na Tela 3 pelo job <span class="code">BILFIM</span>.</p>
-                        <p><strong>Plan 02 - SLA Email:</strong> criar aba com o dia do <span class="code">ODATE</span>, usar o dia anterior como referência e coletar os totais no TSO com <span class="code">SD</span>, <span class="code">DA OJOB</span>, <span class="code">PRE</span>, <span class="code">OWNER IBMPROD</span> e <span class="code">I</span>. Repetir para <span class="code">OWNER CICUSER</span>.</p>
-                        <p>No CTMS Tela 3, validar filtros <span class="code">RETORNO</span>, tabelas <span class="code">RIN</span>, <span class="code">TCO</span>, <span class="code">STI</span> e <span class="code">ESTEIRA DA MANHA</span>. Se houver <span class="code">NOT OK</span>, anexar print; no domingo não há Retorno nem Diária FCD.</p>
-                        <p>Para <span class="code">Jobs Schedule</span>, usar <span class="code">V G</span> na Tela 3 e registrar os totais de <span class="code">WAIT SCHEDULE</span> e <span class="code">END NOT OK</span>. Se houver <span class="code">Not OK</span>, copiar os prefixos no filtro <span class="code">ABEND2</span>. A régua do faturamento deve seguir o ciclo informado no e-mail do plantão anterior.</p>
+                        <p><strong>Plan 01 - Bilhetadores:</strong> abrir o ano e mês corrente, preencher <span
+                                class="code">Horário Término</span> com a hora enviada no e-mail de término da
+                            bilhetagem. Se o e-mail não chegar, coletar a informação na Tela 3 pelo job <span
+                                class="code">BILFIM</span>.</p>
+                        <p><strong>Plan 02 - SLA Email:</strong> criar aba com o dia do <span class="code">ODATE</span>,
+                            usar o dia anterior como referência e coletar os totais no TSO com <span
+                                class="code">SD</span>, <span class="code">DA OJOB</span>, <span
+                                class="code">PRE</span>, <span class="code">OWNER IBMPROD</span> e <span
+                                class="code">I</span>. Repetir para <span class="code">OWNER CICUSER</span>.</p>
+                        <p>No CTMS Tela 3, validar filtros <span class="code">RETORNO</span>, tabelas <span
+                                class="code">RIN</span>, <span class="code">TCO</span>, <span class="code">STI</span> e
+                            <span class="code">ESTEIRA DA MANHA</span>. Se houver <span class="code">NOT OK</span>,
+                            anexar print; no domingo não há Retorno nem Diária FCD.</p>
+                        <p>Para <span class="code">Jobs Schedule</span>, usar <span class="code">V G</span> na Tela 3 e
+                            registrar os totais de <span class="code">WAIT SCHEDULE</span> e <span class="code">END NOT
+                                OK</span>. Se houver <span class="code">Not OK</span>, copiar os prefixos no filtro
+                            <span class="code">ABEND2</span>. A régua do faturamento deve seguir o ciclo informado no
+                            e-mail do plantão anterior.</p>
                     </div>
                 </div>
                 <div class="acc-item">
-                    <div class="acc-header">Plan 03 e Plan 04: PUTPROC e Espaço em Produção <i class="fas fa-chevron-down"></i></div>
+                    <div class="acc-header">Plan 03 e Plan 04: PUTPROC e Espaço em Produção <i
+                            class="fas fa-chevron-down"></i></div>
                     <div class="acc-content">
-                        <p><strong>Plan 03 - PUTPROC:</strong> no TSO, digitar <span class="code">TSO ZCTO</span>, entrar na opção <span class="code">4E</span> e selecionar com <span class="code">V</span> a estatística do dia anterior no padrão <span class="code">D260415.STATIS</span>. Copiar o total marcado para a planilha do mês corrente.</p>
-                        <p><strong>Plan 04 - Espaço em Produção:</strong> preencher Mainframe e AS400. No Mainframe, usar <span class="code">TSO STGLAST</span> e coletar os espaços de <span class="code">ZPROD2</span> e <span class="code">ZPROD3</span>. No AS400, usar os e-mails <span class="code">Alocação de Espaço em Disco</span> do ICMSRJ e ICMSSP; se não chegarem, consultar <span class="code">WRKSYSSTS</span> e registrar <span class="code">% system ASP used</span>.</p>
+                        <p><strong>Plan 03 - PUTPROC:</strong> no TSO, digitar <span class="code">TSO ZCTO</span>,
+                            entrar na opção <span class="code">4E</span> e selecionar com <span class="code">V</span> a
+                            estatística do dia anterior no padrão <span class="code">D260415.STATIS</span>. Copiar o
+                            total marcado para a planilha do mês corrente.</p>
+                        <p><strong>Plan 04 - Espaço em Produção:</strong> preencher Mainframe e AS400. No Mainframe,
+                            usar <span class="code">TSO STGLAST</span> e coletar os espaços de <span
+                                class="code">ZPROD2</span> e <span class="code">ZPROD3</span>. No AS400, usar os e-mails
+                            <span class="code">Alocação de Espaço em Disco</span> do ICMSRJ e ICMSSP; se não chegarem,
+                            consultar <span class="code">WRKSYSSTS</span> e registrar <span class="code">% system ASP
+                                used</span>.</p>
                     </div>
                 </div>
                 <div class="grid">
@@ -853,54 +1282,92 @@
                     </div>
                     <div class="card">
                         <h3>Objetivo da passagem de turno</h3>
-                        <p>Deixar para a próxima equipe um estado claro do ambiente: o que normalizou, o que ficou pendente, qual janela ainda está aberta e que decisões já foram tomadas para evitar repetição ou conflito de ação.</p>
+                        <p>Deixar para a próxima equipe um estado claro do ambiente: o que normalizou, o que ficou
+                            pendente, qual janela ainda está aberta e que decisões já foram tomadas para evitar
+                            repetição ou conflito de ação.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3>Checkpoints do turno</h3>
-                    <div class="timeline-item"><strong>08:00:</strong> status de abertura com nodes, Grafana, SLA e início da malha de faturamento.</div>
-                    <div class="timeline-item"><strong>11:00:</strong> envio das 4 planilhas com bilhetadoras, PutProc, espaço e SLA.</div>
-                    <div class="timeline-item"><strong>13:30:</strong> e-mail da daily com resumo de incidentes, status geral e total de jobs processados.</div>
+                    <div class="timeline-item"><strong>08:00:</strong> status de abertura com nodes, Grafana, SLA e
+                        início da malha de faturamento.</div>
+                    <div class="timeline-item"><strong>11:00:</strong> envio das 4 planilhas com bilhetadoras, PutProc,
+                        espaço e SLA.</div>
+                    <div class="timeline-item"><strong>13:30:</strong> e-mail da daily com resumo de incidentes, status
+                        geral e total de jobs processados.</div>
                 </div>
                 <div class="card">
                     <h3>Origem dos dados das planilhas</h3>
                     <br>
-                    <p><strong>01 - Bilhetadores:</strong> usar o job <span class="code">BILFIM</span> no CTMS ou o e-mail de término.</p>
-                    <p><strong>02 - SLA Email:</strong> coletar com <span class="code">SD</span> e <span class="code">DA OJOB</span> no TSO para os logs IBM.</p>
-                    <p><strong>03 - PUTPROC:</strong> consultar <span class="code">TSO ZCTO</span> na opção <span class="code">4E</span>.</p>
-                    <p><strong>04 - Espaço Prod:</strong> verificar volumes DASD para evitar interrupção do faturamento.</p>
+                    <p><strong>01 - Bilhetadores:</strong> usar o job <span class="code">BILFIM</span> no CTMS ou o
+                        e-mail de término.</p>
+                    <p><strong>02 - SLA Email:</strong> coletar com <span class="code">SD</span> e <span class="code">DA
+                            OJOB</span> no TSO para os logs IBM.</p>
+                    <p><strong>03 - PUTPROC:</strong> consultar <span class="code">TSO ZCTO</span> na opção <span
+                            class="code">4E</span>.</p>
+                    <p><strong>04 - Espaço Prod:</strong> verificar volumes DASD para evitar interrupção do faturamento.
+                    </p>
                 </div>
             </section>
 
             <section class="topic" id="emails-sla">
                 <h2>Cronograma de E-mails</h2>
                 <div class="card">
-                    <p>O cronograma de e-mails reforça que a comunicação faz parte da operação. Sempre que houver impacto, atraso relevante ou anomalia recorrente, a mensagem deve informar ambiente, fluxo afetado, horário, diagnóstico atual, ação tomada e próximo passo.</p>
+                    <p>O cronograma de e-mails reforça que a comunicação faz parte da operação. Sempre que houver
+                        impacto, atraso relevante ou anomalia recorrente, a mensagem deve informar ambiente, fluxo
+                        afetado, horário, diagnóstico atual, ação tomada e próximo passo.</p>
                     <div class="step-box">
-                        Em incidentes com SLA, priorize texto objetivo: o que falhou, desde quando, qual contingência foi aplicada e quem está atuando. Evite e-mails sem horário, sem identificação do job ou sem status atual.
+                        Em incidentes com SLA, priorize texto objetivo: o que falhou, desde quando, qual contingência
+                        foi aplicada e quem está atuando. Evite e-mails sem horário, sem identificação do job ou sem
+                        status atual.
                     </div>
-                    <p>Os checkpoints de <span class="code">08:00</span>, <span class="code">09:30</span> e <span class="code">13:30</span> devem ser seguidos rigidamente para reportar a saúde do BIM, do faturamento e dos chamados violados.</p>
+                    <p>Os checkpoints de <span class="code">08:00</span>, <span class="code">09:30</span> e <span
+                            class="code">13:30</span> devem ser seguidos rigidamente para reportar a saúde do BIM, do
+                        faturamento e dos chamados violados.</p>
                 </div>
                 <div class="card">
-                    <div class="timeline-item"><strong>08:00:</strong> combo de abertura com tasks, Grafana, SLA plan e chamados violados.</div>
-                    <div class="timeline-item"><strong>09:30:</strong> wait schedule com jobs em hold e análise de ODATE retroativo.</div>
-                    <div class="timeline-item"><strong>12:00:</strong> revalidação de tasks e pendências do período.</div>
-                    <div class="timeline-item"><strong>13:30:</strong> e-mail da daily com status geral, IPs e total de jobs.</div>
+                    <div class="timeline-item"><strong>08:00:</strong> combo de abertura com tasks, Grafana, SLA plan e
+                        chamados violados.</div>
+                    <div class="timeline-item"><strong>09:30:</strong> wait schedule com jobs em hold e análise de ODATE
+                        retroativo.</div>
+                    <div class="timeline-item"><strong>12:00:</strong> revalidação de tasks e pendências do período.
+                    </div>
+                    <div class="timeline-item"><strong>13:30:</strong> e-mail da daily com status geral, IPs e total de
+                        jobs.</div>
                     <div class="timeline-item"><strong>16:00:</strong> atualização de chamados violados.</div>
                     <div class="timeline-item"><strong>19:00:</strong> passagem de turno.</div>
                 </div>
                 <div class="card">
                     <h3>Observação de espaço antes do restart</h3>
-                    <p>Se o <span class="code">QDS</span> mostrar muitos <span class="code">Extents</span>, o job pode sofrer <span class="code">B37</span> ou <span class="code">D37</span>. Antes de reiniciar rotinas de faturamento, valide o espaço com <span class="code">STG LAST</span>.</p>
+                    <p>Se o <span class="code">QDS</span> mostrar muitos <span class="code">Extents</span>, o job pode
+                        sofrer <span class="code">B37</span> ou <span class="code">D37</span>. Antes de reiniciar
+                        rotinas de faturamento, valide o espaço com <span class="code">STG LAST</span>.</p>
                 </div>
                 <div class="card">
                     <h3>Abertura e congelamento aparente</h3>
-                    <p>No reporte de abertura, confirme saúde dos nodes, recepção de dados no Grafana e andamento da esteira. Se o dashboard aparentar congelamento, mas os jobs ainda estiverem em execução, valide o processo pelo <span class="code">SS</span> com o <span class="code">PNumber</span> coletado no <span class="code">SP</span>.</p>
+                    <p>No reporte de abertura, confirme saúde dos nodes, recepção de dados no Grafana e andamento da
+                        esteira. Se o dashboard aparentar congelamento, mas os jobs ainda estiverem em execução, valide
+                        o processo pelo <span class="code">SS</span> com o <span class="code">PNumber</span> coletado no
+                        <span class="code">SP</span>.</p>
                 </div>
                 <div class="card">
                     <h3>Comunicação formal de encerramento</h3>
-                    <p>Quando a rotina batch solicitada for concluída com sucesso absoluto, envie a comunicação formal de encerramento com ambiente, job, horário, status final e referência do chamado. Mantenha como referência operacional o destinatário padrão informado pela equipe e use o resumo das <span class="code">08:00</span> e <span class="code">13:30</span> como checkpoints fixos do turno.</p>
-                    <p>Em tickets de execução ligados a <span class="code">IIF</span> ou <span class="code">SCF</span>, o e-mail deve deixar claro que a rotina processou com sucesso e que a evidência técnica correspondente já foi anexada ao fluxo.</p>
+                    <p>Quando a rotina batch solicitada for concluída com sucesso absoluto, envie a comunicação formal
+                        de encerramento para o destinatário padrão: <span
+                            class="code">elisangela.n.lucas@accenture.com</span>.</p>
+                    <p><strong>Finalidade:</strong> Notificar formalmente o encerramento e o processamento com sucesso
+                        absoluto das rotinas batch solicitadas via chamados de execução (exemplificados pelos tickets
+                        das filas IIF e SCF, como <span class="code">PDST-2494519</span> e <span
+                            class="code">PDST-2495586</span>).</p>
+                    <p><strong>Horários de Checkpoint de Malha:</strong> Envio do e-mail de abertura e decolagem às
+                        <strong>08:00h</strong> e e-mail da Daily/Passagem de Turno com o resumo de volumetria às
+                        <strong>13:30h</strong>.</p>
+                    <p>Em tickets de execução ligados a <span class="code">IIF</span> ou <span class="code">SCF</span>,
+                        o e-mail deve deixar claro que a rotina processou com sucesso e que a evidência técnica
+                        correspondente já foi anexada ao fluxo.</p>
+                    <p style="margin-top: 1rem;"><strong>Padrão de Assinatura Institucional:</strong></p>
+                    <p class="code" style="display: inline-block; color: #1e293b;">Lucas Neves Carvalho de Mello —
+                        Analista e Desenvolvedor Mainframe (Global Hitss).</p>
                 </div>
             </section>
 
@@ -909,7 +1376,9 @@
                 <div class="row">
                     <div class="card">
                         <h3>Boa abertura de chamado</h3>
-                        <p>O registro precisa permitir que outra equipe reconstrua o caso sem voltar ao operador para pedir o básico. Inclua job, ambiente, data/hora, mensagem principal, ação operacional tentada e anexo da evidência.</p>
+                        <p>O registro precisa permitir que outra equipe reconstrua o caso sem voltar ao operador para
+                            pedir o básico. Inclua job, ambiente, data/hora, mensagem principal, ação operacional
+                            tentada e anexo da evidência.</p>
                     </div>
                     <div class="card">
                         <h3>Checklist de evidência</h3>
@@ -925,58 +1394,302 @@
                 </div>
                 <div class="row">
                     <div class="card">
-                        <p><strong>PDST:</strong> usado para execuções como rename, transmissão e sysout. Quando houver abend, o conteúdo do erro deve ser descrito antes da atualização do chamado.</p>
+                        <p><strong>PDST:</strong> usado para execuções como rename, transmissão e sysout. Quando houver
+                            abend, o conteúdo do erro deve ser descrito antes da atualização do chamado.</p>
                     </div>
                     <div class="card">
-                        <p><strong>OPS:</strong> concentrador dos abends e destravamentos. Localize pelo <span class="code">FIND [StepName]</span> e use navegação lateral com PF keys quando necessário.</p>
+                        <p><strong>OPS:</strong> concentrador dos abends e destravamentos. Localize pelo <span
+                                class="code">FIND [StepName]</span> e use navegação lateral com PF keys quando
+                            necessário.</p>
                         <div class="step-box">
-                            Fluxo resumido OPS: CTMS Tela 3 -> localizar job -> validar <span class="code">H</span> ou <span class="code">WC</span> -> aplicar <span class="code">O</span> e <span class="code">Y</span> para Force OK quando autorizado -> aplicar <span class="code">F</span> -> anexar a evidência.
+                            Fluxo resumido OPS: CTMS Tela 3 -> localizar job -> validar <span class="code">H</span> ou
+                            <span class="code">WC</span> -> aplicar <span class="code">O</span> e <span
+                                class="code">Y</span> para Force OK quando autorizado -> aplicar <span
+                                class="code">F</span> -> anexar a evidência.
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="card">
                         <h3>Quando abrir em PDST ou OPS</h3>
-                        <p><strong>PDST:</strong> mantenha para execuções e acompanhamentos operacionais, mas documente o abend antes de finalizar qualquer atualização.</p>
-                        <p><strong>OPS:</strong> trate como incidente técnico e concentre nele os casos com falha de processamento, destravamento, dependência anormal ou erro que exija evidência detalhada.</p>
+                        <p><strong>PDST:</strong> mantenha para execuções e acompanhamentos operacionais, mas documente
+                            o abend antes de finalizar qualquer atualização.</p>
+                        <p><strong>OPS:</strong> trate como incidente técnico e concentre nele os casos com falha de
+                            processamento, destravamento, dependência anormal ou erro que exija evidência detalhada.</p>
                     </div>
                     <div class="card">
                         <h3>Evidência mínima para anexar</h3>
-                        <p>Sempre anexe o log do erro e a imagem da Tela 3 do CTMS. Se a mensagem estiver truncada, use <span class="code">F11</span> para navegar para a direita e capturar o erro completo antes de registrar no Jira.</p>
+                        <p>Sempre anexe o log do erro e a imagem da Tela 3 do CTMS. Se a mensagem estiver truncada, use
+                            <span class="code">F11</span> para navegar para a direita e capturar o erro completo antes
+                            de registrar no Jira.</p>
                     </div>
                 </div>
                 <div class="card">
                     <h3>Solicitação de log e complementos</h3>
-                    <p>Quando o atendimento chegar sem detalhe suficiente, solicite o log completo antes de encerrar o caso. Isso é especialmente importante em demandas de rename, transmissão, print e jobs retidos por <span class="code">RC</span> ou <span class="code">Held</span>.</p>
-                    <p>O pacote ideal de evidências combina a Tela 3, o <span class="code">SYSOUT</span>/<span class="code">SDSF</span> e a mensagem expandida com <span class="code">F10</span> e <span class="code">F11</span>.</p>
+                    <p>Quando o atendimento chegar sem detalhe suficiente, solicite o log completo antes de encerrar o
+                        caso. Isso é especialmente importante em demandas de rename, transmissão, print e jobs retidos
+                        por <span class="code">RC</span> ou <span class="code">Held</span>.</p>
+                    <p>O pacote ideal de evidências combina a Tela 3, o <span class="code">SYSOUT</span>/<span
+                            class="code">SDSF</span> e a mensagem expandida com <span class="code">F10</span> e <span
+                            class="code">F11</span>.</p>
                 </div>
                 <div class="card">
                     <h3>Log Connect:Direct sob demanda</h3>
-                    <p>Para enviar log de transmissão do Mainframe, edite a lista de arquivos no dataset <span class="code">PCP.PSFD.LISTA.SOLICITA.CDMF</span> e execute o job <span class="code">LISTAMF_CD</span>.</p>
+                    <p>Para enviar log de transmissão do Mainframe, edite a lista de arquivos no dataset <span
+                            class="code">PCP.PSFD.LISTA.SOLICITA.CDMF</span> e execute o job <span
+                            class="code">LISTAMF_CD</span>.</p>
                     <ul class="tag-list">
                         <li>Acessar <span class="code">ZPROD3</span> e entrar em <span class="code">P.3.4</span>.</li>
                         <li>Localizar o dataset e abrir com <span class="code">E</span>.</li>
                         <li>Criar uma linha para cada arquivo transmitido.</li>
                         <li>Inserir os nomes exatamente no padrão solicitado.</li>
                         <li>Salvar com <span class="code">SAVE</span>.</li>
-                        <li>No <span class="code">UXMFPRD1</span>, localizar e executar <span class="code">LISTAMF_CD</span>.</li>
+                        <li>No <span class="code">UXMFPRD1</span>, localizar e executar <span
+                                class="code">LISTAMF_CD</span>.</li>
                     </ul>
-                    <p>Ao concluir, o envio automático sai pelo remetente <span class="code">Connect Direct</span> para a equipe e para o solicitante com o status da transmissão.</p>
+                    <p>Ao concluir, o envio automático sai pelo remetente <span class="code">Connect Direct</span> para
+                        a equipe e para o solicitante com o status da transmissão.</p>
                 </div>
                 <div class="card">
                     <h3>Fechamento e resolução</h3>
-                    <p>Em chamados <strong>PDST</strong>, use descrição objetiva para renames, transmissões e atendimentos simples. Em <strong>OPS</strong>, registre o passo executado, o grupo acionado, o erro encontrado e a evidência usada para normalização.</p>
-                    <p>Quando o log estiver largo, combine <span class="code">F10</span> e <span class="code">F11</span> para navegação lateral e capture a mensagem completa antes de concluir o atendimento ou marcar como resolvido.</p>
+                    <p>Em chamados <strong>PDST</strong>, use descrição objetiva para renames, transmissões e
+                        atendimentos simples. Em <strong>OPS</strong>, registre o passo executado, o grupo acionado, o
+                        erro encontrado e a evidência usada para normalização.</p>
+                    <p>Quando o log estiver largo, combine <span class="code">F10</span> e <span class="code">F11</span>
+                        para navegação lateral e capture a mensagem completa antes de concluir o atendimento ou marcar
+                        como resolvido.</p>
                 </div>
                 <div class="card">
                     <h3>Logs sob demanda do Connect Direct</h3>
-                    <p>Quando a investigação exigir trilha de transmissão, inclua os datasets em <span class="code">PCP.PSFD.LISTA.SOLICITA.CDMF</span> e execute o job <span class="code">LISTAMF_CD</span> para gerar a listagem técnica.</p>
-                    <p>Para evidências de Jira, mantenha a captura lateral do SDSF com <span class="code">F10</span>/<span class="code">F11</span>, porque muitos detalhes do erro aparecem fora da largura inicial da tela.</p>
+                    <p>Quando a investigação exigir trilha de transmissão, inclua os datasets em <span
+                            class="code">PCP.PSFD.LISTA.SOLICITA.CDMF</span> e execute o job <span
+                            class="code">LISTAMF_CD</span> para gerar a listagem técnica.</p>
+                    <p>Para evidências de Jira, mantenha a captura lateral do SDSF com <span
+                            class="code">F10</span>/<span class="code">F11</span>, porque muitos detalhes do erro
+                        aparecem fora da largura inicial da tela.</p>
                 </div>
                 <div class="card">
                     <h3>Filas e assinatura institucional</h3>
-                    <p>Use a fila <strong>PDST</strong> para execuções programadas, restores, renames e transmissões. Reserve a fila <strong>OPS</strong> para abends, erros técnicos e incidentes que exigem leitura detalhada de spool e anexos de evidência.</p>
-                    <p>Quando o padrão do turno exigir formalização institucional, mantenha a assinatura operacional padronizada no fechamento das comunicações e atualizações de atendimento.</p>
+                    <p>Use a fila <strong>PDST</strong> para execuções programadas, restores, renames e transmissões.
+                        Reserve a fila <strong>OPS</strong> para abends, erros técnicos e incidentes que exigem leitura
+                        detalhada de spool e anexos de evidência.</p>
+                    <p>Quando o padrão do turno exigir formalização institucional, mantenha a assinatura operacional
+                        padronizada no fechamento das comunicações e atualizações de atendimento.</p>
+                </div>
+            </section>
+
+            <section class="topic" id="auditoria-coe12">
+                <h2>Auditoria Mensal (COE12) & Contingência de Backup</h2>
+                <div class="card">
+                    <p>Esta rotina atende aos requisitos de controle de qualidade e compliance de Mainframe, executada
+                        obrigatoriamente nos dias 01 ou 02 de cada mês.</p>
+                </div>
+
+                <div class="row">
+                    <div class="card">
+                        <h3>Evidência 1: Confirmação do Sistema (E-mail COE12)</h3>
+                        <p><strong>Ação:</strong> Localizar o e-mail automático gerado pelo sistema com a referência
+                            COE12 do período corrente. Salvar em formato PDF utilizando a nomenclatura padronizada
+                            (Exemplo: <span class="code">COE12_Junho_2026</span>).</p>
+                        <div class="info-box"><strong>Regra de Compliance:</strong> Este e-mail original deve ser
+                            mantido na caixa de correio por no mínimo 1 ano; nunca o apague.</div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Evidência 2: Execução do Job PCPJPCOE (Control-M)</h3>
+                        <p>Comprova a execução do job mensal de Desmigre de Arquivos cadastrado na biblioteca <span
+                                class="code">CONTROLM.PROD.ADMIN</span> (Tabela/Grupo: <span
+                                class="code">PCPMEN</span>).</p>
+                        <ul style="padding-left: 20px; margin-bottom: 1rem;">
+                            <li><strong>Jobname MVS:</strong> <span class="code">PTPCPCOE</span></li>
+                            <li><strong>ID de Execução Real:</strong> Job Number <span class="code">0036802</span></li>
+                            <li><strong>Argumento de Data (CALCDATE):</strong> <span class="code">02/05/26</span></li>
+                            <li><strong>Resultado Esperado:</strong> Execução bem-sucedida (<span class="code">RC
+                                    0000</span>) nos steps <span class="code">DESMIGRA</span> (utilitário <span
+                                    class="code">IEFBR14</span>) e <span class="code">EMAILOK</span> (utilitário <span
+                                    class="code">ICEGENER</span> / DFSORT V2R4).</li>
+                        </ul>
+                        <p><strong>Captura de Tela (Print):</strong> Acessar a Tela 2 ou 3 do Control-M, abrir o job com
+                            o comando <span class="code">S</span>. O terminal deve estar em <strong>tela cheia</strong>
+                            para capturar o relógio, a data e a hora da barra de tarefas do Windows. Salvar o print em
+                            Word e exportar para PDF.</p>
+                        <p><em>Nota de Tratativa:</em> Se o job sofrer um Abend inicial, realize o restart e extraia o
+                            print do log final que comprova a reexecução com sucesso.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Matriz de Validação de Arquivos Desmigrados (Competência: Maio de 2026)</h3>
+                    <div class="table-scroll">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Sistema / Prefixo</th>
+                                    <th>Dataset Completo (DSN) Processado e Retido</th>
+                                    <th>Regra de Negócio / Histórico de Alterações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ARD</td>
+                                    <td><span class="code">ARD.PSFA.NB023.M10.GCB.O6.C01.D202605</span></td>
+                                    <td>Padrão ativo.</td>
+                                </tr>
+                                <tr>
+                                    <td>ATE</td>
+                                    <td><span class="code">ATE.PSVM.FDS.D2605</span></td>
+                                    <td>Antigo ATEN: Substituído definitivamente por ATE.</td>
+                                </tr>
+                                <tr>
+                                    <td>CBC</td>
+                                    <td><span class="code">CBC.PSFM.JUNTA.CPS.SON.P260601N.E05</span></td>
+                                    <td>Substitui o antigo CBC.PSFM.CCCB001.P260501 do job desativado CBCFT511.</td>
+                                </tr>
+                                <tr>
+                                    <td>CFD</td>
+                                    <td><span class="code">CFD.PGFD.CFDD00.CFD403.CAD(-1)</span></td>
+                                    <td>Alocado via Generation Data Group real: <span class="code">CAD.G1702V00</span>.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>CLE</td>
+                                    <td><span class="code">CLE.PSFM.FILTRO.PREVIA.REL58.D202605</span></td>
+                                    <td>Padrão ativo.</td>
+                                </tr>
+                                <tr>
+                                    <td>DER</td>
+                                    <td><span class="code">DER.PSFM.D02PC008.SMOVIM.P2605201.5800</span></td>
+                                    <td>Padrão ativo.</td>
+                                </tr>
+                                <tr>
+                                    <td>EBC</td>
+                                    <td><span class="code">EBC.PSFM.CLIENADM.M2605</span></td>
+                                    <td>Sistema SOX: Prefixo EBC passou a integrar o ecossistema SOX.</td>
+                                </tr>
+                                <tr>
+                                    <td>EMI</td>
+                                    <td><span class="code">EMI.PSFM.IBΜΗΤΟ.Ν.L2605015</span></td>
+                                    <td>Padrão ativo.</td>
+                                </tr>
+                                <tr>
+                                    <td>FCD</td>
+                                    <td><span class="code">FCD.PSFA.SEQ007.DESCOMP.RF202605</span></td>
+                                    <td>Padrão ativo.</td>
+                                </tr>
+                                <tr>
+                                    <td>FDS</td>
+                                    <td><span class="code">FDS.PSFM.T568.C4.D2605</span></td>
+                                    <td>Substituição: Substitui o arquivo legado do reporteador desativado.</td>
+                                </tr>
+                                <tr>
+                                    <td>FTC</td>
+                                    <td><span class="code">FTC.PSFA.VALRCL.A2605</span></td>
+                                    <td>Listado nos logs em conjunto com o resumo do faturamento.</td>
+                                </tr>
+                                <tr>
+                                    <td>IIF</td>
+                                    <td><span class="code">IIF.PSFM.CLEFIS.IIFM01.P2605FAT</span></td>
+                                    <td>Padrão ativo.</td>
+                                </tr>
+                                <tr>
+                                    <td>RCL</td>
+                                    <td><span class="code">RCL.PSFM.GARANTIA.RECEITA.D2604</span></td>
+                                    <td>Alocado com competência retroativa necessária.</td>
+                                </tr>
+                                <tr>
+                                    <td>RIN / TCO / TFI</td>
+                                    <td>(Consultar datasets na tabela individual de logs)</td>
+                                    <td>Antigo STI: O prefixo STI foi desmembrado nestes 3 novos prefixos ativos.</td>
+                                </tr>
+                                <tr>
+                                    <td>VAL</td>
+                                    <td><span class="code">VAL.PSFM.VALCB011.CONSUMO.D2605000</span></td>
+                                    <td>Padrão ativo.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="info-box"><strong>Nota de Exclusão:</strong> O prefixo <strong>CRH</strong> foi removido
+                        permanentemente da rotina (arquivos migrados para a plataforma externa RHEVOLUTION).</div>
+                </div>
+
+                <div class="row">
+                    <div class="card">
+                        <h3>Tratamento de Erros e Contingência (On Not OK)</h3>
+                        <p>Se o job apresentar o erro <span class="code">DATA SET NOT FOUND</span> durante o step <span
+                                class="code">DESMIGRA</span>, a regra de automação (<span class="code">ON PGMST</span>)
+                            dispara um comando <strong>SHOUT</strong> para o console com urgência Regular (<span
+                                class="code">URGN R</span>) e envia e-mails de alerta imediatos para: <span
+                                class="code">PRODUCAOTI@GLOBALHITSS.COM.BR</span> e <span
+                                class="code">PRODIBM@EMBRATEL.COM.BR</span>.</p>
+                        <p><strong>Ação do Operador:</strong> Sanar a indisponibilidade física do dataset e efetuar o
+                            <strong>Restart</strong> a partir do step afetado, mantendo a lista de alocação intacta.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Auditoria de Tratativas de Abends de Backup</h3>
+                        <p>É mandatório auditar mensalmente que os incidentes de backup foram controlados pela operação.
+                        </p>
+                        <ul style="padding-left: 20px;">
+                            <li><strong>Filtro:</strong> Buscar por <span class="code">BKP</span>, <span
+                                    class="code">BK</span> ou <span class="code">Backup</span> na console de alertas.
+                                Identificar os alertas de Abend do período anterior (Ex: código de erro de cancelamento
+                                corporativo <span class="code">3BHDO</span>).</li>
+                            <li><strong>Extração para PDF:</strong> Print em tela cheia do alerta demonstrando a
+                                tratativa inserida pelo operador (anotação manual, comando de Restart aplicado e linha
+                                final constando o status do End em OK).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Caso Real Consolidado (Evidência Prática): Incidente ALERT OPS-582324</h3>
+                    <ul style="padding-left: 20px; margin-bottom: 1rem;">
+                        <li><strong>ID do Alerta / Chamado:</strong> <span class="code">OPS-582324</span> |
+                            <strong>Serviço:</strong> TI MAINFRAME OPE (Portal do Colaborador TI).</li>
+                        <li><strong>Entidade Raiz:</strong> <span class="code">SBBKPDDB:58102;BKPDD071;ZOSP
+                                100526</span> | <strong>Status:</strong> Fechado (Closed).</li>
+                        <li><strong>Equipes:</strong> CLBR-TI-OPS-COTI, CLBR-TI-OPS-SUPORTE, CLBR-TI-OPS-ECC MFP.</li>
+                    </ul>
+                    <p><strong>Cronologia dos Fatos:</strong></p>
+                    <ol style="padding-left: 20px; margin-bottom: 1rem;">
+                        <li><strong>11 de Maio de 2026, 01:28 AM — Abertura do Alerta:</strong> Erro gerado
+                            automaticamente informando terminação anormal no processo de backup: <span
+                                class="code">SBBKPDDB 58102 BKPD0071 ZOSP 1005 JOB ENDED - NOT OK DUE TO CC ORDERID
+                                3AOWW</span>.</li>
+                        <li><strong>Análise do Log Técnico:</strong> O operador identificou falha no step <span
+                                class="code">BKPSAVDD</span> (<span class="code">Procedure Step S0623SAV</span>) com
+                            código de retorno <span class="code">RC 04</span>. Dados do JES2 confirmam: <span
+                                class="code">TOTAL BLOCKS = 155, VOLS FE1948</span>, fita alocada com sucesso no
+                            endereço <span class="code">0259</span> para o dataset <span
+                                class="code">ADA.PGFD.BC0071.BKSAVDLT.ONLINE.00002V00</span>. O Job terminou globalmente
+                            com RC=0004.</li>
+                        <li><strong>12 de Maio de 2026, 12:46 PM — Acionamento do Suporte:</strong> O analista insere a
+                            instrução de contingência: <em>"Favor dar 'force ok' e fechar o chamado"</em>.</li>
+                        <li><strong>12 de Maio de 2026, 01:01 PM — Resolução:</strong> O operador executa o comando via
+                            Control-M, forçando o término com sucesso e encerrando o incidente. Registro de Fechamento:
+                            <span class="code">BKPD0071 IBMPROD 100526 SBBKPDDB / 58102 JOB Ended "OK" Forced.
+                                Group-BKP-ADA-DIARIO. Note* OPS-58232</span>.</li>
+                    </ol>
+                    <p><strong>Evidência de Fechamento de Ciclo (E-mail):</strong> Em 02 de Junho de 2026, às 12:19 PM,
+                        Marcio Luiz Costa enviou formalmente o relatório em PDF para Thiago Da Silva Tavares (CC: <span
+                            class="code">producaoti@globalhitss.com.br</span>), contendo os prints do Jira e as capturas
+                        do TN3270 provando que o job rodou normalmente com status <span class="code">Backed up /
+                            C0000</span> nos dias anteriores, consolidando os indicadores de Operações - ITO.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Fluxo de Envio e Fechamento do Chamado de Auditoria</h3>
+                    <p>Responder à equipe de controle abrindo a comunicação do mês anterior e atualizando as referências
+                        cronológicas para o período vigente (Junho/2026). Anexar obrigatoriamente <strong>3 arquivos
+                            separados em PDF</strong>:</p>
+                    <ol style="padding-left: 20px;">
+                        <li>PDF do e-mail de confirmação do sistema (<span class="code">COE12_Junho_2026</span>).</li>
+                        <li>PDF com os prints de tela cheia da execução com sucesso do job <span
+                                class="code">PCPJPCOE</span> (relógio do Windows visível).</li>
+                        <li>PDF de evidências de tratativas de Abend Backup (incluindo o caso resolvido do incidente
+                            <span class="code">OPS-582324</span>).</li>
+                    </ol>
                 </div>
             </section>
 
@@ -985,26 +1698,36 @@
                 <div class="grid">
                     <div class="card">
                         <h3>Navegação básica</h3>
-                        <p>O operador usa menus, datasets particionados, membros e navegação por opções para localizar bibliotecas, editar membros, submeter JCL e consultar filas no SDSF.</p>
+                        <p>O operador usa menus, datasets particionados, membros e navegação por opções para localizar
+                            bibliotecas, editar membros, submeter JCL e consultar filas no SDSF.</p>
                     </div>
                     <div class="card">
                         <h3>Comandos úteis de editor</h3>
                         <ul class="tag-list">
                             <li>Editar com <span class="code">E</span></li>
                             <li>Browse com <span class="code">B</span></li>
-                            <li>Copiar com <span class="code">C</span>, mover com <span class="code">M</span> e repetir com <span class="code">R</span></li>
+                            <li>Copiar com <span class="code">C</span>, mover com <span class="code">M</span> e repetir
+                                com <span class="code">R</span></li>
                             <li>Localizar com <span class="code">F</span></li>
                             <li>Limpar destaque com <span class="code">LF</span></li>
-                            <li>Navegar lateralmente com <span class="code">F10</span> e <span class="code">F11</span></li>
-                            <li>Submeter membro JCL com <span class="code">SUB</span> ou <span class="code">SUBMIT</span></li>
+                            <li>Navegar lateralmente com <span class="code">F10</span> e <span class="code">F11</span>
+                            </li>
+                            <li>Submeter membro JCL com <span class="code">SUB</span> ou <span
+                                    class="code">SUBMIT</span></li>
                             <li>Voltar com <span class="code">F3</span> / <span class="code">PF3</span></li>
                         </ul>
                     </div>
                 </div>
                 <div class="card">
                     <h3>Busca rápida de erro em logs largos</h3>
-                    <p>Em sysout, reports e arquivos de retorno, procure primeiro termos diretos como <span class="code">missing</span>, <span class="code">not found</span>, <span class="code">abends</span>, <span class="code">retorno</span> e mensagens de leitura de arquivo. Se a causa estiver na lateral direita, use <span class="code">F10</span>/<span class="code">F11</span> antes de capturar evidência.</p>
-                    <p>Quando o destaque visual atrapalhar a leitura, use <span class="code">LF</span>, por exemplo <span class="code">LF TSO</span> ou <span class="code">LF CTMS</span>, para retirar o highlight da busca anterior.</p>
+                    <p>Em sysout, reports e arquivos de retorno, procure primeiro termos diretos como <span
+                            class="code">missing</span>, <span class="code">not found</span>, <span
+                            class="code">abends</span>, <span class="code">retorno</span> e mensagens de leitura de
+                        arquivo. Se a causa estiver na lateral direita, use <span class="code">F10</span>/<span
+                            class="code">F11</span> antes de capturar evidência.</p>
+                    <p>Quando o destaque visual atrapalhar a leitura, use <span class="code">LF</span>, por exemplo
+                        <span class="code">LF TSO</span> ou <span class="code">LF CTMS</span>, para retirar o highlight
+                        da busca anterior.</p>
                 </div>
                 <div class="card">
                     <h3>Rotina típica em TSO/ISPF</h3>
@@ -1017,8 +1740,77 @@
                 </div>
                 <div class="card">
                     <h3>Quando usar FIND e quando usar 3.14</h3>
-                    <p>Use <span class="code">FIND</span> quando você já estiver no membro certo e só precisar localizar uma string, step, DD ou mensagem. Use <span class="code">P.3.14</span> quando ainda não souber em qual biblioteca ou JCL a referência está distribuída.</p>
-                    <p>Em incidentes, o <span class="code">3.14</span> é a melhor ferramenta para mapear impacto em toda a malha antes da execução de uma alteração, rerun ou ajuste de parâmetro.</p>
+                    <p>Use <span class="code">FIND</span> quando você já estiver no membro certo e só precisar localizar
+                        uma string, step, DD ou mensagem. Use <span class="code">P.3.14</span> quando ainda não souber
+                        em qual biblioteca ou JCL a referência está distribuída.</p>
+                    <p>Em incidentes, o <span class="code">3.14</span> é a melhor ferramenta para mapear impacto em toda
+                        a malha antes da execução de uma alteração, rerun ou ajuste de parâmetro.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Desmigração de Datasets (HSM)</h3>
+                    <p><strong>Abend "Not Selected":</strong> Se o job falhar porque o arquivo está em fita (<span
+                            class="code">MIGRAT2</span>), vá ao menu <span class="code">P.3.4</span>, digite <span
+                            class="code">HRECALL</span> (ou <span class="code">H</span>) ao lado do dataset e aguarde o
+                        volume físico (DASD) retornar antes de dar Rerun.</p>
+                    <p><strong>Desmigração via Tela U (Opção 3 - Histórico):</strong></p>
+                    <ol style="padding-left: 20px;">
+                        <li>Digite <span class="code">R</span> (Restore) na frente do Job ➔ <span class="code">Confirm:
+                                Y</span> ➔ <span class="code">BY RESTORE MISSION: RSTEQP01</span>.</li>
+                        <li>Vá para a <strong>Tela =A</strong>, localize o <span class="code">RSTEQP01</span> e dê <span
+                                class="code">B</span> (Bypass) confirmando com <span class="code">Y-Y</span>.</li>
+                        <li><strong>Tratativa de Erro:</strong> Se o <span class="code">RSTEQP01</span> travar, dê <span
+                                class="code">C</span> (Cancel) na Tela U. Vá em <span class="code">DI A</span> no spool,
+                            localize o nome do dataset temporário (Ex: <span class="code">CTDJB1.JOBSDB...</span>),
+                            acesse o menu 3.4 e renomeie-o para <span class="code">.OLD</span>. Se o nome completo
+                            exceder o limite, renomeie para <span class="code">.OL</span>. Depois, rode o job <span
+                                class="code">RSTRESET</span> via Tela 3 com comando <span class="code">B</span> para
+                            destravar o ambiente.</li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <h3>Lista de Conferência sob Demanda (Logs Connect Direct)</h3>
+                    <ol style="padding-left: 20px;">
+                        <li><strong>Etapa 1 (Mainframe - P.3.4):</strong> Os Schedulers estruturam a lista de
+                            e-mails/nomes extraídos dos chamados do Jira dentro do arquivo de layout padrão <span
+                                class="code">PCP.PSFD.LISTA.SOLICITA.CDMF</span>. Exemplo de conteúdo/Sintaxe aceito:
+                            <span class="code">(IBELLO,INGRID.MAGALHAES@CLARO.COM.BR)</span>. O comando <span
+                                class="code">SAVE</span> deve ser executado após as alterações.</li>
+                        <li><strong>Etapa 2 (Control-M 9 Gráfico / Web Client):</strong> Localizar o Job do ambiente de
+                            Downsizing utilizando os seguintes parâmetros de busca: JOB: <span
+                                class="code">LISTAMF_CD</span> | APPLICATION: <span class="code">ADM_CONTROLM</span> |
+                            SUBAPPLICATION: <span class="code">CONNECT_ERRO_MF</span>.</li>
+                        <li><strong>Etapa 3 (Execução):</strong> Efetuar a liberação da rotina acionando o comando <span
+                                class="code">CONFIRM</span> ou <span class="code">RERUN</span> diretamente no ambiente
+                            gráfico.</li>
+                        <li><strong>Etapa 4 (Fechamento):</strong> Acompanhar o processamento no Spool e aguardar a
+                            chegada do e-mail de retorno do Connect Direct (Assunto Padrão: <em>Solicitacao
+                                INGRID_04_12_24-1608h - Connect Direct do MF</em>) antes de encerrar o chamado técnico.
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="row">
+                    <div class="card">
+                        <h3>Utilitários Avançados</h3>
+                        <ul style="padding-left: 20px;">
+                            <li><strong>QDS (Query Data Set):</strong> Comando rápido no P.3.4 para checar LRECL, RECFM
+                                e Extents, evitando Abends de espaço (<span class="code">B37/SD37</span>).</li>
+                            <li><strong>STG LAST:</strong> Comando obrigatório para checar o espaço disponível nos
+                                volumes antes de decolar o faturamento.</li>
+                            <li><strong>Compressão (C):</strong> Executado ao lado de bibliotecas PDS para recuperar
+                                espaço interno fragmentado.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3>ISPF 3.14 (Search-For)</h3>
+                        <p>O "Google do Mainframe". Usado para pesquisar strings em lote dentro de múltiplos membros ou
+                            datasets simultaneamente.</p>
+                        <p><strong>Campos principais:</strong> <em>Search String</em>, <em>Options/Any Case</em> e
+                            <em>Listing Dataset</em>.</p>
+                    </div>
                 </div>
             </section>
 
@@ -1027,8 +1819,13 @@
                 <div class="row">
                     <div class="card">
                         <h3>Blocos fundamentais</h3>
-                        <p><span class="code">JOB</span> identifica a execução, <span class="code">EXEC</span> chama programa ou procedure, e <span class="code">DD</span> descreve datasets, SYSOUT, SYSIN e parâmetros de alocação.</p>
-                        <p>O operador nem sempre altera JCL, mas precisa ler rapidamente <span class="code">DISP</span>, <span class="code">UNIT</span>, <span class="code">SPACE</span> e <span class="code">DCB</span> para entender por que um arquivo não abriu, não foi criado ou ficou sem espaço.</p>
+                        <p><span class="code">JOB</span> identifica a execução, <span class="code">EXEC</span> chama
+                            programa ou procedure, e <span class="code">DD</span> descreve datasets, SYSOUT, SYSIN e
+                            parâmetros de alocação.</p>
+                        <p>O operador nem sempre altera JCL, mas precisa ler rapidamente <span class="code">DISP</span>,
+                            <span class="code">UNIT</span>, <span class="code">SPACE</span> e <span
+                                class="code">DCB</span> para entender por que um arquivo não abriu, não foi criado ou
+                            ficou sem espaço.</p>
                     </div>
                     <div class="card">
                         <h3>Pontos de leitura operacional</h3>
@@ -1046,14 +1843,22 @@
                     <div class="card">
                         <h3>Cartão JOB</h3>
                         <p><span class="code">CLASS</span> define a fila de execução.</p>
-                        <p><span class="code">MSGCLASS</span> define o destino das mensagens do sistema, como <span class="code">Z</span> para visualização.</p>
-                        <p><span class="code">MSGLEVEL=(1,1)</span> exibe comandos codificados, expandidos e alocações de arquivos.</p>
-                        <p><span class="code">REGION</span> define a memória real necessária, por exemplo <span class="code">2048K</span>.</p>
+                        <p><span class="code">MSGCLASS</span> define o destino das mensagens do sistema, como <span
+                                class="code">Z</span> para visualização.</p>
+                        <p><span class="code">MSGLEVEL=(1,1)</span> exibe comandos codificados, expandidos e alocações
+                            de arquivos.</p>
+                        <p><span class="code">REGION</span> define a memória real necessária, por exemplo <span
+                                class="code">2048K</span>.</p>
                     </div>
                     <div class="card">
                         <h3>Cartões EXEC e DD</h3>
-                        <p>No <span class="code">EXEC</span>, <span class="code">PGM</span> indica o programa executável e <span class="code">COND</span> permite ignorar passos conforme o return code anterior.</p>
-                        <p>No <span class="code">DD</span>, <span class="code">DSN</span> identifica o arquivo, <span class="code">DISP</span> define seu status como <span class="code">NEW</span>, <span class="code">OLD</span>, <span class="code">SHR</span> ou <span class="code">MOD</span>, e <span class="code">UNIT</span>/<span class="code">SPACE</span> tratam de hardware e tamanho em disco.</p>
+                        <p>No <span class="code">EXEC</span>, <span class="code">PGM</span> indica o programa executável
+                            e <span class="code">COND</span> permite ignorar passos conforme o return code anterior.</p>
+                        <p>No <span class="code">DD</span>, <span class="code">DSN</span> identifica o arquivo, <span
+                                class="code">DISP</span> define seu status como <span class="code">NEW</span>, <span
+                                class="code">OLD</span>, <span class="code">SHR</span> ou <span class="code">MOD</span>,
+                            e <span class="code">UNIT</span>/<span class="code">SPACE</span> tratam de hardware e
+                            tamanho em disco.</p>
                     </div>
                 </div>
                 <div class="card">
@@ -1067,21 +1872,29 @@
                 </div>
                 <div class="card">
                     <h3>Validação com JVER</h3>
-                    <p>Antes de salvar ou submeter alterações mais sensíveis em JCL, use o comando <span class="code">JVER</span> na linha <span class="code">COMMAND ===&gt;</span> para validar sintaxe e resolução de variáveis. Isso ajuda a detectar erro estrutural antes que o job avance para fila com definição incompleta.</p>
+                    <p>Antes de salvar ou submeter alterações mais sensíveis em JCL, use o comando <span
+                            class="code">JVER</span> na linha <span class="code">COMMAND ===&gt;</span> para validar
+                        sintaxe e resolução de variáveis. Isso ajuda a detectar erro estrutural antes que o job avance
+                        para fila com definição incompleta.</p>
                 </div>
             </section>
 
             <section class="topic" id="tn3270">
                 <h2>Utilitários, Procedures e DFSORT</h2>
                 <div class="card">
-                    <p>Utilitários e cartões de controle são fundamentais para rotinas de cópia, classificação e tratamento de arquivos. Para a operação, isso ajuda a reconhecer rapidamente quando a falha está em parâmetro de sort, controle ausente, espaço insuficiente ou arquivo de apoio incorreto.</p>
+                    <p>Utilitários e cartões de controle são fundamentais para rotinas de cópia, classificação e
+                        tratamento de arquivos. Para a operação, isso ajuda a reconhecer rapidamente quando a falha está
+                        em parâmetro de sort, controle ausente, espaço insuficiente ou arquivo de apoio incorreto.</p>
                 </div>
                 <div class="grid">
                     <div class="card">
                         <h3>Utilitários IBM essenciais</h3>
                         <p><span class="code">ICEGENER</span> realiza cópias rápidas de arquivos sequenciais e VSAM.</p>
-                        <p><span class="code">IDCAMS</span> é usado para criação e manutenção de catálogos, arquivos VSAM e GDGs.</p>
-                        <p><span class="code">DFSORT</span> atende ordenação, filtro e consolidação com <span class="code">INCLUDE</span>, <span class="code">OMIT</span> e <span class="code">SUM</span>.</p>
+                        <p><span class="code">IDCAMS</span> é usado para criação e manutenção de catálogos, arquivos
+                            VSAM e GDGs.</p>
+                        <p><span class="code">DFSORT</span> atende ordenação, filtro e consolidação com <span
+                                class="code">INCLUDE</span>, <span class="code">OMIT</span> e <span
+                                class="code">SUM</span>.</p>
                         <p><span class="code">IEBCOPY</span> copia e comprime bibliotecas particionadas, como PDS.</p>
                     </div>
                     <div class="card">
@@ -1097,7 +1910,10 @@
                     </div>
                     <div class="card">
                         <h3>Erros recorrentes em sort</h3>
-                        <p>Nos user abends relacionados a sort, aparecem várias ocorrências ligadas a cartão de controle ausente, campos mal definidos, comprimento inválido e necessidade de ajuste de região ou capacidade, como <span class="code">U0005</span>, <span class="code">U0007</span>, <span class="code">U0016</span> e <span class="code">U0043</span>.</p>
+                        <p>Nos user abends relacionados a sort, aparecem várias ocorrências ligadas a cartão de controle
+                            ausente, campos mal definidos, comprimento inválido e necessidade de ajuste de região ou
+                            capacidade, como <span class="code">U0005</span>, <span class="code">U0007</span>, <span
+                                class="code">U0016</span> e <span class="code">U0043</span>.</p>
                     </div>
                 </div>
             </section>
@@ -1107,15 +1923,22 @@
                 <div class="grid">
                     <div class="card">
                         <h3>Abends essenciais</h3>
-                        <p><span class="code">S0C1</span> indica erro de operação, normalmente instrução inválida ou chamada incorreta.</p>
-                        <p><span class="code">S0C4</span> aponta proteção de memória, com acesso a área não permitida.</p>
-                        <p><span class="code">S0C7</span> sinaliza erro de dados, geralmente campo numérico com caracteres inválidos.</p>
-                        <p><span class="code">SB37</span> e <span class="code">SD37</span> indicam falta de espaço em disco para gravação.</p>
-                        <p><span class="code">S806</span> mostra que o programa ou módulo não foi encontrado na biblioteca.</p>
+                        <p><span class="code">S0C1</span> indica erro de operação, normalmente instrução inválida ou
+                            chamada incorreta.</p>
+                        <p><span class="code">S0C4</span> aponta proteção de memória, com acesso a área não permitida.
+                        </p>
+                        <p><span class="code">S0C7</span> sinaliza erro de dados, geralmente campo numérico com
+                            caracteres inválidos.</p>
+                        <p><span class="code">SB37</span> e <span class="code">SD37</span> indicam falta de espaço em
+                            disco para gravação.</p>
+                        <p><span class="code">S806</span> mostra que o programa ou módulo não foi encontrado na
+                            biblioteca.</p>
                     </div>
                     <div class="card">
                         <h3>Como usar essa leitura</h3>
-                        <p>Esses códigos ajudam a decidir se a ação é operacional, como liberar espaço ou ajustar restart, ou se a falha precisa de repasse para desenvolvimento, storage, catálogo ou suporte de infraestrutura.</p>
+                        <p>Esses códigos ajudam a decidir se a ação é operacional, como liberar espaço ou ajustar
+                            restart, ou se a falha precisa de repasse para desenvolvimento, storage, catálogo ou suporte
+                            de infraestrutura.</p>
                     </div>
                 </div>
             </section>
@@ -1125,4 +1948,5 @@
     <button id="scrollTop" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
     <script src="script.js"></script>
 </body>
+
 </html>
