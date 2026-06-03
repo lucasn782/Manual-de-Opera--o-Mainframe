@@ -93,7 +93,8 @@
                                 Alternada</strong>, <strong>Grafana 01</strong> e <strong>Grafana 02</strong> para
                             abertura de turno, contingência e validação de monitoração. Registre os IDs dos consoles na
                             rotina operacional e preserve as senhas apenas no cofre ou canal oficial de credenciais.</p>
-                        <ul class="tag-list">
+                        <p style="margin-bottom: 0.4rem;"><strong>Grupo de Credenciais (Atual / Turno Vigente):</strong></p>
+                        <ul class="tag-list" style="margin-bottom: 1rem;">
                             <li><strong>Console Master:</strong> ID <span class="code">725 237 438 28</span> | Senha:
                                 <span class="code">6010</span> (Acesso principal do turno via RDP)</li>
                             <li><strong>Console Alternada:</strong> ID <span class="code">410 184 611 49</span> | Senha:
@@ -1034,18 +1035,36 @@
                 <h2>Fluxo de Promoção GML</h2>
                 <div class="row">
                     <div class="card">
-                        <h3>Promoção GML</h3>
+                        <h3>Promoção GML — Gerência de Mudança (Desenvolvimento para Produção)</h3>
                         <div class="step-box">
                             <ol style="padding: 0 20px;">
-                                <li>Acessar <span class="badge">19 TSODSV</span> e entrar na opção <span
-                                        class="code">GML</span>.</li>
-                                <li>Ir para <span class="badge">TSO SPROD</span> e usar o prefixo <span
-                                        class="code">MP(GML)</span> para aprovação.</li>
-                                <li>No job <span class="code">NUMGML</span>, marcar com <span class="tag">S</span> e
-                                    confirmar.</li>
-                                <li>Copiar a evidência da tela e registrar no Jira em comentários e atividade.</li>
-                                <li>Promover somente quando o status estiver em <span class="tag">P</span>, indicando
-                                    liberação.</li>
+                                <li><strong>Validação Inicial:</strong> Certificar-se de que a GML está com o status
+                                    <em>"Pronta para Implementação"</em>. Sempre checar a aba de <em>"Atividades"</em>
+                                    para validar observações extras. Se constar <em>"Pode ser antes do horário
+                                    definido"</em>, a execução pode ser antecipada.</li>
+                                <li><strong>Navegação (Tela 19):</strong> Acessar através do atalho do SLM (<span
+                                        class="code">*JJ 19</span>) e executar o comando <span
+                                        class="code">TSO SPROD</span>.</li>
+                                <li><strong>Identificação do Prefixo:</strong> Digitar a inicial do projeto ou
+                                    componente no filtro (Ex: <span class="code">RCL</span>, <span
+                                        class="code">RCLJU</span> ou o nome completo). Identificar o Job e validar se
+                                    consta como <em>"Aguardando Implementação"</em>.</li>
+                                <li><strong>Promoção:</strong> Executar o comando de promoção da GML, confirmar o
+                                    envio do Job (<span class="code">JOB01</span>), validar a abertura/fechamento da
+                                    fatura e copiar a tela de sucesso como evidência.</li>
+                                <li><strong>Atualização via GBP:</strong> Seguir o caminho <span
+                                        class="code">DC</span> ➔ <span class="code">SIG</span> ➔ <span
+                                        class="code">3</span>. Colocar <span class="code">X</span> no giro para
+                                    avançar. Submeter a mudança informando o número do GBP no ambiente/comando (Ex:
+                                    <span class="code">RCL UPD03</span> ou <span class="code">RCL PE03</span>) e teclar
+                                    <span class="code">F12</span>.</li>
+                                <li><strong>Execução de Jobs Únicos:</strong> Se houver solicitação via fila <span
+                                        class="code">PDST</span>, as promoções normais devem ser finalizadas primeiro
+                                    (geralmente via SCCLM), executando o Job Único na sequência.</li>
+                                <li><strong>Encerramento:</strong> Alterar o status para <em>"Implementando"</em>,
+                                    anexar os prints de sucesso no log provando o término, usar o texto padrão
+                                    <em>"Evidências disponíveis no comentário da GML"</em> e atualizar o status final
+                                    para <em>"Concluído com Sucesso"</em>.</li>
                             </ol>
                         </div>
                     </div>
@@ -1357,7 +1376,7 @@
                             class="code">elisangela.n.lucas@accenture.com</span>.</p>
                     <p><strong>Finalidade:</strong> Notificar formalmente o encerramento e o processamento com sucesso
                         absoluto das rotinas batch solicitadas via chamados de execução (exemplificados pelos tickets
-                        das filas IIF e SCF, como <span class="code">PDST-2494519</span> e <span
+                        das filas IIF, SCF e GML, como <span class="code">PDST-2494519</span> e <span
                             class="code">PDST-2495586</span>).</p>
                     <p><strong>Horários de Checkpoint de Malha:</strong> Envio do e-mail de abertura e decolagem às
                         <strong>08:00h</strong> e e-mail da Daily/Passagem de Turno com o resumo de volumetria às
@@ -1368,6 +1387,18 @@
                     <p style="margin-top: 1rem;"><strong>Padrão de Assinatura Institucional:</strong></p>
                     <p class="code" style="display: inline-block; color: #1e293b;">Lucas Neves Carvalho de Mello —
                         Analista e Desenvolvedor Mainframe (Global Hitss).</p>
+                </div>
+                <div class="card">
+                    <h3>Gabarito de Resposta de Fechamento — Chamado AS400 (PDST-2504118)</h3>
+                    <p>Utilize o texto abaixo como modelo de encerramento formal ao concluir a exclusão de perfil no
+                        ambiente AS400 (IBM i):</p>
+                    <div class="step-box" style="font-style: italic;">
+                        "Olá, O chamado <strong>PDST-2504118</strong> foi atendido. O perfil
+                        <span class="code">PINANES</span> foi excluído com sucesso do AS400 em ambas as máquinas de
+                        produção solicitadas (Rio de Janeiro e São Paulo). Evidências da exclusão foram anexadas ao
+                        chamado. Estaremos encerrando este ticket. Caso necessite de algo mais, ficamos à
+                        disposição."
+                    </div>
                 </div>
             </section>
 
@@ -1788,6 +1819,30 @@
                             chegada do e-mail de retorno do Connect Direct (Assunto Padrão: <em>Solicitacao
                                 INGRID_04_12_24-1608h - Connect Direct do MF</em>) antes de encerrar o chamado técnico.
                         </li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <h3>Administração de Perfis no Ambiente AS400 (IBM i) — Chamado PDST-2504118</h3>
+                    <p><strong>Objetivo:</strong> Excluir o perfil de usuário <span class="code">PINANES</span> das
+                        LPARs de produção do Rio de Janeiro (RJ) e de São Paulo (SP). Exige autoridade <span
+                            class="code">*SECADM</span> ou <span class="code">*ALLOBJ</span>.</p>
+                    <p><strong>Roteiro de Execução Técnico:</strong></p>
+                    <ol style="padding-left: 20px;">
+                        <li>Conectar via emulador 5250 na partição de PRD do Rio de Janeiro (RJ).</li>
+                        <li>Executar o comando de validação para conferir o perfil:
+                            <span class="code">WRKUSRPRF USRPRF(PINANES)</span>.</li>
+                        <li>Verificar se existem objetos atrelados à propriedade do ID:
+                            <span class="code">WRKOBJOWN USRPRF(PINANES)</span>.</li>
+                        <li>Aplicar o comando de remoção segura, alterando a propriedade dos objetos remanescentes
+                            para o usuário padrão do sistema (<span class="code">QDFTOWN</span>):
+                            <span class="code">DLTUSRPRF USRPRF(PINANES) OWNOBJOPT(*CHGOWN QDFTOWN)</span>.</li>
+                        <li>Capturar o print da mensagem de rodapé: <em>User profile PINANES deleted.</em></li>
+                        <li>Desconectar do ambiente RJ, acessar a partição de PRD de São Paulo (SP) e replicar as
+                            mesmas etapas de validação e exclusão com o comando <span class="code">DLTUSRPRF</span>.
+                            Capturar evidência de SP.</li>
+                        <li>Validar o encerramento rodando <span class="code">WRKUSRPRF USRPRF(PINANES)</span> em
+                            ambas as LPARs para receber o retorno: <em>User profile PINANES not found.</em></li>
                     </ol>
                 </div>
 
