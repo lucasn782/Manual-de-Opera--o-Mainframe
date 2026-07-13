@@ -681,6 +681,156 @@
                             class="code">.OL</span>. Em seguida, rode o job <span class="code">RSTRESET</span> com <span
                             class="code">B</span> na Tela 3 para liberar o restore preso.</p>
                 </div>
+
+                <div class="card">
+                    <h3>Comandos Identificados nas Capturas de Tela do AS400</h3>
+                    <p>Durante o treinamento prático, foram identificados os seguintes comandos essenciais do AS400 (IBM i) para operação Mainframe:</p>
+                    <ul class="tag-list">
+                        <li><strong>wrkactjob:</strong> Comando para trabalhar com trabalhos ativos (Work with Active Jobs). Mostra o status e o desempenho dos jobs em execução no sistema.</li>
+                        <li><strong>dspmsg:</strong> Comando para exibir mensagens (Display Messages). Permite visualizar as mensagens enviadas para uma fila de mensagens.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Desmigração de Datasets (RECALL) — Objetivo</h3>
+                    <p>Realizar a desmigração (RECALL) de datasets migrados para fita quando um JOB ou processo falha por não encontrar o arquivo em disco.</p>
+                    <p>Um dos sintomas mais comuns é o ABEND apresentando mensagens semelhantes a <span class="code">DATASET NOT SELECTED</span>. Exemplo:</p>
+                    <div class="step-box" style="background-color: #f5f5dc; border-left: 4px solid #d4af37; padding: 10px;">
+                        TCO.PSFD.D01G.DFX<br>NOT SELECTED
+                    </div>
+                    <p>Normalmente isso indica que o dataset encontra-se migrado (HSM) e precisa ser recuperado.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Situação Mais Comum</h3>
+                    <p>Um JOB de backup ou processamento termina em ABEND. Exemplo de anotação:</p>
+                    <div class="step-box" style="background-color: #f0f8ff; border-left: 4px solid #4169e1; padding: 10px;">
+                        JOB:<br>PTSPIBK1<br>PCPBK
+                    </div>
+                    <p>Ao analisar o log é identificado:</p>
+                    <div class="step-box" style="background-color: #ffe4e1; border-left: 4px solid #dc143c; padding: 10px;">
+                        Dataset TCO.PSFD.D01G.DFX<br>NOT SELECTED
+                    </div>
+                    <p>Nesse caso deve-se verificar se o dataset está migrado.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Método 1 — Desmigração Manual (P.3.4)</h3>
+                    <ol style="padding-left: 20px; margin-bottom: 1rem;">
+                        <li><strong>Passo 1:</strong> Acessar a opção <span class="code">P.3.4</span></li>
+                        <li><strong>Passo 2:</strong> Informar o nome completo do dataset. Exemplo: <span class="code">TCO.PSFD.D01G.DFX</span></li>
+                        <li><strong>Passo 3:</strong> Verificar o status. Se estiver migrado, executar o comando: <span class="code">HRECALL TCO.PSFD.D01G.DFX</span></li>
+                        <li><strong>Passo 4:</strong> Aguardar a conclusão do RECALL. Ao finalizar aparecerá o volume físico onde o dataset foi restaurado. Exemplo: <span class="code">P36914</span> (este volume confirma que o dataset voltou para disco).</li>
+                        <li><strong>Passo 5:</strong> Retornar ao JOB que estava aguardando. Executar: <span class="code">RERUN</span> ou reiniciar a etapa correspondente.</li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <h3>Desmigração de Vários Arquivos</h3>
+                    <p>Quando o chamado solicita dezenas ou centenas de datasets, não é viável executar HRECALL individualmente. Utiliza-se então o processo de <strong>ZREFER</strong>.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Preparação da Lista para ZREFER</h3>
+                    <p>Na P.3.4, utilizar curinga para listar múltiplos datasets relacionados:</p>
+                    <div class="step-box" style="background-color: #f5f5f5; border-left: 4px solid #808080; padding: 10px;">
+                        Exemplo 1: <span class="code">TCO.PSFD.D01G.*</span><br>
+                        Exemplo 2: <span class="code">TCO.PSFD.D01G.S60.*</span>
+                    </div>
+                    <p>Isso exibe todos os datasets relacionados.</p>
+                    <p><strong>Criando a Catalog List:</strong> Salvar a pesquisa utilizando <span class="code">SAVE</span> para criar uma Catalog List.</p>
+                    <p><strong>Comandos úteis:</strong></p>
+                    <ul class="tag-list">
+                        <li><span class="code">X ALL</span> — Apresentar todas as linhas</li>
+                        <li><span class="code">DEL X ALL</span> — Remover linhas marcadas com X</li>
+                    </ul>
+                    <p>Esses comandos facilitam a seleção e manipulação da lista.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Processo do ZREFER — Passo a Passo</h3>
+                    <ol style="padding-left: 20px; margin-bottom: 1rem;">
+                        <li><strong>Criar um arquivo texto:</strong> Inserir um dataset por linha. Exemplo:
+                            <div class="step-box" style="background-color: #f0f0f0; border-left: 4px solid #666; padding: 10px; margin-top: 5px; margin-bottom: 5px;">
+                                TCO.PSFD.D01G.S60.D011125<br>
+                                TCO.PSFD.D01G.S60.D021125<br>
+                                TCO.PSFD.D01G.S60.D031125
+                            </div>
+                        </li>
+                        <li><strong>Salvar com nome padrão:</strong> <span class="code">GRE.PSFO.REFER.ADIL.Dxxxxxx</span> (onde o sufixo corresponde à retenção desejada; se não houver retenção solicitada, utilizar até 10 dias).</li>
+                        <li><strong>Copiar o arquivo:</strong> Salvar sem extensão ".TXT" e copiar para a pasta pessoal indicada no procedimento.</li>
+                        <li><strong>Transmitir via FTP:</strong> Executar <span class="code">FTP 10.4.23.30</span>, informar usuário e senha.</li>
+                        <li><strong>Enviar para o Mainframe:</strong> Executar <span class="code">PUT GRE.PSFO.REFER.ADIL.Dxxxxxx</span> e confirmar que a transmissão ocorreu com sucesso.</li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <h3>Validação no Mainframe</h3>
+                    <p>Após a transmissão:</p>
+                    <ol style="padding-left: 20px; margin-bottom: 1rem;">
+                        <li>Selecionar o arquivo.</li>
+                        <li>Aplicar a opção <span class="code">?</span> para validar todos os datasets enviados.</li>
+                    </ol>
+                    <p><strong>Resultado da validação — Caso 1:</strong> Aparece <span class="code">LIBRBMG1</span> = os datasets não necessitam montagem de fita.</p>
+                    <p><strong>Resultado da validação — Caso 2:</strong> Aparece <span class="code">SHELF</span> = os arquivos estão em fita e será necessária intervenção da Fitoteca.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Quando Aparecer SHELF — Procedimento da Fitoteca</h3>
+                    <ol style="padding-left: 20px; margin-bottom: 1rem;">
+                        <li>Selecionar <span class="code">S</span> para visualizar o número de cada fita.</li>
+                        <li>Copiar todos os números de fita identificados.</li>
+                        <li>Enviar para a Fitoteca realizar a montagem das fitas.</li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <h3>Após a Montagem das Fitas</h3>
+                    <p>Quando a Fitoteca concluir a montagem:</p>
+                    <ol style="padding-left: 20px; margin-bottom: 1rem;">
+                        <li>Selecionar <span class="code">R</span> para iniciar o recall.</li>
+                        <li>Entrar na linha de comando.</li>
+                        <li>Executar <span class="code">SUB</span> para enviar o processo para a fila de RECALL automaticamente.</li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <h3>Anotações Adicionais do Fluxo Operacional</h3>
+                    <p>Durante o ZREFER, foi anotado o seguinte fluxo operacional:</p>
+                    <ul class="tag-list">
+                        <li>Executar o ZREFER para validação</li>
+                        <li>Pressionar <strong>Enter</strong> para iniciar a validação</li>
+                        <li>Utilizar <strong>F7</strong> para navegar entre páginas, quando necessário</li>
+                        <li>Após validar, copiar as informações geradas</li>
+                        <li>Encaminhar os resultados para os responsáveis (Thiago e Mariano) quando houver necessidade de montagem de fitas</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Fluxo Resumido de Desmigração</h3>
+                    <div class="step-box" style="background-color: #f9f9f9; border-left: 4px solid #888; padding: 10px; font-size: 0.9em; line-height: 1.6;">
+                        Chamado recebido ↓<br>
+                        JOB termina em ABEND ↓<br>
+                        Verificar mensagem "DATASET NOT SELECTED" ↓<br>
+                        Consultar dataset na P.3.4 ↓<br>
+                        <br>
+                        <strong>Está migrado?</strong><br>
+                        ├─ <strong>Sim:</strong> HRECALL ↓ Dataset restaurado ↓<br>
+                        │  └─ Se poucos datasets: Executar RERUN do JOB<br>
+                        │  └─ Se muitos datasets: Criar lista → Executar ZREFER<br>
+                        │<br>
+                        └─ <strong>Não:</strong> Investigar outra causa<br>
+                        <br>
+                        Validar com <span class="code">?</span> ↓<br>
+                        <br>
+                        <strong>Resultado?</strong><br>
+                        ├─ LIBRBMG1 → SUB (nenhuma montagem necessária)<br>
+                        └─ SHELF → Solicitar montagem da fita → Após montagem: SUB<br>
+                        <br>
+                        RECALL automático ↓<br>
+                        Reexecutar o processamento
+                    </div>
+                </div>
             </section>
 
             <section class="topic" id="decolate">
